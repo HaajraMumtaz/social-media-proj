@@ -1,6 +1,6 @@
 #pragma once
 #include "User.h" 
-class Application
+class Driver
 {
 
 private:
@@ -11,11 +11,11 @@ private:
 	int pageCount_;
 
 public:
-	Application();
-	void SetLoginUser(User*);
-	User& CreateUser();
-	Post& CreatePost();
-	Page& CreatePage();
-	void Run();
-	~Application();
+	Driver();
+	void setLoginUser(User*);
+	void createUser();
+	void createPost();
+	void createPage();
+	void run();
+	~Driver();
 };

@@ -7,17 +7,19 @@ using namespace std;
 class User
 {
 private:
-	string Id_;
-	string Name_;
+	string id_;
+	string name_;
 	Post** oPostArr_;
 	int numPosts_;
 	User** friendsArr_;
 	int numFriends_;
-	Page** lPageArr;
+	Page** lPageArr_;
 	Post** lPostArr_;
+	int numLikedPosts_;
+	int numLikedPages_;
 public:
 	User();
-	User(string id, string name);
+	User(const string id, const string name);
 	void ViewHome();
 	void ViewLikedPages();
 	void ViewLikedPosts();
@@ -27,12 +29,9 @@ public:
 	void AddPost();
 	void ShareMemory();
 	void LikePage();
+	int getNumPosts();
+	void displayValidPosts();
 	string GetId();
 	~User();
-
-
-
-
-
 
 };

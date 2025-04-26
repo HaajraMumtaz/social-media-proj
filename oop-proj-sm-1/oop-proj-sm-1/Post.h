@@ -19,5 +19,6 @@ public:
 	virtual void DisplayPost();
 	void DisplayLikedUsers();
 	void AddLike();
+	bool validDate();
 	virtual ~Post();
 };

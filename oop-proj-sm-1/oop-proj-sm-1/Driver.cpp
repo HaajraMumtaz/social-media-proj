@@ -1,7 +1,9 @@
 #include <SFML/Graphics.hpp>
+#include "Driver.h"
 
-int main() {
-    // Create a window with 800x600 resolution and the title "SFML Test"
+
+void Driver::run()
+{
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Test");
 
     // Main loop that keeps the window open until it's closed
@@ -21,5 +23,13 @@ int main() {
         window.display();
     }
 
+
+}
+
+int main() {
+    // Create a window with 800x600 resolution and the title "SFML Test"
+    
+    Driver application;
+    application.run();
     return 0;
 }

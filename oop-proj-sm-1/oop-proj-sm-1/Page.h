@@ -16,6 +16,7 @@ public:
 	void DisplayPosts();
 	int GetNumLikes();
 	void AddLike();
+	void DisplayName();
 	~Page();
 
 
