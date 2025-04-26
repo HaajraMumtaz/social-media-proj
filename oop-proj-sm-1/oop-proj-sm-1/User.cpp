@@ -1,5 +1,5 @@
 #include "User.h"
-
+#include "Driver.h"
 
 User::User()
 {
@@ -63,22 +63,75 @@ void User::AddFriend(User*friendptr)
 {
 	friendsArr_[numFriends_++] = friendptr;
 }
-void AddPost()
+void User::AddPost()
 {
-	
+	Post** tempArr = new Post * [numPosts_ + 1];
+	for (int i = 0; i < numPosts_; i++)
+	{
+		tempArr[i] = oPostArr_[i];
+	}
+	tempArr[numPosts_] = new Post("p1", "sample post", "4/26/2025");
 }
-void ShareMemory();
+void User::ShareMemory()
+{
+	string memoryId, desc;
+	cout << "enter id:";
+
+	getline(cin,memoryId);
+	for (int i = 0; i < numPosts_; i++)
+	{
+		if (memoryId == (oPostArr_[i]->GetId()))
+		{
+			cout << "what message to display with it?";
+			getline(cin,desc);
+			oPostArr_[i]->DisplayPost();
+		}
+	}
+}
 void LikePage();
 int getNumPosts();
-void User::displayValidPosts()
+void User::DisplayValidPosts()
 {
 	for (int j = 0; j < numPosts_; j++)
 	{
-		if (oPostArr_[j]->validDate())
+		if (oPostArr_[j]->ValidDate())
 		{
 			oPostArr_[j]->DisplayPost();
 		}
 	}
 }
-string GetId();
-~User();
+string User:: GetId()
+{
+	return id_;
+}
+
+void User::DisplayDetails()
+{
+	cout << id_ << "  " << name_;
+}
+User::~User()
+{
+
+	for (int i = 0; i < numPosts_; i++)
+	{
+		delete[]oPostArr_[i];
+	}
+	delete[]oPostArr_;
+
+	for (int i = 0; i < numPosts_; i++)
+	{
+		delete[]friendsArr_[i];
+	}
+	delete[]friendsArr_;
+
+	for (int i = 0; i < numPosts_; i++)
+	{
+		delete[]lPageArr_[i];
+	}
+	delete[]lPageArr_;
+	for (int i = 0; i < numPosts_; i++)
+	{
+		delete[]lPostArr_[i];
+	}
+	delete[]lPostArr_;
+}

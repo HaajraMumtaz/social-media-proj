@@ -1,6 +1,7 @@
 #pragma once
 #include <cstring>
 #include <string>
+#include<iostream>
 #include "Post.h"
 #include "Activity.h"
 using namespace std;
@@ -21,6 +22,7 @@ public:
 	User();
 	User(const string id, const string name);
 	void ViewHome();
+	string GetId();
 	void ViewLikedPages();
 	void ViewLikedPosts();
 	void DisplayPosts();
@@ -29,9 +31,8 @@ public:
 	void AddPost();
 	void ShareMemory();
 	void LikePage();
-	int getNumPosts();
-	void displayValidPosts();
-	string GetId();
+	int GetNumPosts();
+	void DisplayValidPosts();
+	void DisplayDetails();
 	~User();
-
 };

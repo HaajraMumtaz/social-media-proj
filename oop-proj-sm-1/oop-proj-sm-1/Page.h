@@ -9,14 +9,17 @@ private:
 	string title_;
 	Post** postsArr_;
 	int numLikes_;
+	int numPosts_;
 
 public:
-	Page(const string id="", User* owner=nullptr,const string title="", Post** postarr = nullptr, int numlikes = 0);
+	Page(const string id="", User* owner=nullptr, const string title="", Post** postarr=nullptr,int numlikes=0,int numposts=0);
 	string GetId();
 	void DisplayPosts();
 	int GetNumLikes();
 	void AddLike();
 	void DisplayName();
+	void AddPost();
+	void DisplayPage();
 	~Page();
 
 

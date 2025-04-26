@@ -9,13 +9,13 @@ private:
 	Page** allPages_;
 	int userCount_;
 	int pageCount_;
-
+	string currentDate_;
 public:
 	Driver();
-	void setLoginUser(User*);
-	void createUser();
-	void createPost();
-	void createPage();
-	void run();
+	void SetLoginUser(User*);
+	void CreateUser();
+	void AddPost(Post*);
+	void CreatePage();
+	void Run();
 	~Driver();
 };

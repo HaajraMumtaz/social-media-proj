@@ -1,35 +1,73 @@
 #include <SFML/Graphics.hpp>
 #include "Driver.h"
+#include "Common.h"
+using namespace sf;
 
-
-void Driver::run()
+void Driver::Run()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Test");
+    int width = 800;
+    int height = 600;
+    RectangleShape rect1(Vector2f(100,100));
+    Sprite but1;
+    Texture buttonTexture;
+    if (!buttonTexture.loadFromFile("D:\\haajra\\oop-proj\\UI inspo\\button.png"))
+    {
+        cout << "unable to load" << endl;
+    }
 
-    // Main loop that keeps the window open until it's closed
+    float scaleFactor = min(width / buttonTexture.getSize().x, height / buttonTexture.getSize().y);
+    but1.setScale(scaleFactor/3.5, scaleFactor/3.5);
+    RenderWindow window(sf::VideoMode(width, height), "SFML Test");
+    but1.setOrigin(Vector2f(0, 0));
+    but1.setTexture(buttonTexture);
+    but1.setPosition(30,height/3);
+    Sprite but3 = but1;
+    but3.setPosition(but1.getPosition().x, but1.getPosition().y + (height / 3));
+    Sprite but2 = but1;
+    but2.setPosition((but1.getPosition().x + but3.getPosition().x) / 2, (but1.getPosition().y + but3.getPosition().y) / 2);
+    FloatRect boundingBoxB1 = but1.getGlobalBounds();
+    FloatRect boundingBoxB2 = but2.getGlobalBounds();
+    FloatRect boundingBoxB3 = but3.getGlobalBounds();
     while (window.isOpen()) {
-        // Event loop to handle events like closing the window
-        sf::Event event;
+   
+        Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+            Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
+            if (event.type == Event::Closed) {
                 window.close();
+            }
+            if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left && boundingBoxB1.contains(mousePos))
+            {
+                cout << "ok works" << endl;
             }
         }
 
-        // Clear the screen with a black color
-        window.clear(sf::Color::Black);
+        window.clear(Color::Black);
+        window.draw(but1);
 
-        // Display the content of the window (shows the black screen)
+        
+        window.draw(but2);
+        window.draw(but3);
         window.display();
     }
 
 
 }
 
+Driver::Driver()
+{
+    userCount_ = 0;
+    pageCount_ = 0;
+}
+Driver::~Driver()
+{
+    userCount_ = 0;
+    pageCount_ = 0;
+}
 int main() {
     // Create a window with 800x600 resolution and the title "SFML Test"
     
     Driver application;
-    application.run();
+    application.Run();
     return 0;
 }

@@ -133,7 +133,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Activity.h" />
-    <ClInclude Include="Comment.h" />
+    <ClInclude Include="Common.h" />
     <ClInclude Include="Driver.h" />
     <ClInclude Include="Page.h" />
     <ClInclude Include="Post.h" />
@@ -141,7 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Activity.cpp" />
-    <ClCompile Include="Comment.cpp" />
+    <ClCompile Include="Common.cpp" />
     <ClCompile Include="Driver.cpp" />
     <ClCompile Include="Page.cpp" />
     <ClCompile Include="Post.cpp" />
