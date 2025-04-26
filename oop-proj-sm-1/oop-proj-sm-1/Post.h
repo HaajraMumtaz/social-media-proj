@@ -1,6 +1,5 @@
 #pragma once
 #include "Page.h"
-#include "Comment.h"
 #include "Common.h"
 class Post
 {

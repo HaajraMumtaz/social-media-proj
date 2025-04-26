@@ -54,20 +54,74 @@ void Driver::Run()
 
 }
 
+void Driver::SetLoginUser(User* user)
+{
+    loginUser_ = user;
+}
+void Driver::CreateUser()
+{
+    User** temp = new User*[userCount_+1];
+    for (int i = 0; i < userCount_; i++)
+    {
+        temp[i] = allUsers_[i];
+    }
+    cout << "enter id:";
+    string id, name;
+    getline(cin, id);
+    cout << "enter name:";
+    getline(cin, name);
+    temp[userCount_] = new User(id, name);
+}
+
+void Driver::CreatePage()
+{
+    Page** temp = new Page* [pageCount_ + 1];
+    for (int i = 0; i < pageCount_; i++)
+    {
+        temp[i] = allPages_[i];
+    }
+    cout << "enter id:";
+    string id, name,ownerid;
+    getline(cin, id);
+    cout << "enter title:";
+    getline(cin, name);
+    cout << "enter owner id:";
+    getline(cin, ownerid);
+    bool found = 0;
+    for (int i = 0; i < userCount_&&!found; i++)
+    {
+        if (allUsers_[i]->GetId() == ownerid)
+        {
+            temp[userCount_] = new Page(id,allUsers_[i],name);
+            found = 1;
+        }
+    }
+    
+}
+Driver::~Driver()
+{
+    for (int i = 0; i < userCount_; i++)
+    {
+        delete[]allUsers_[i];
+    }
+    for (int i = 0; i < pageCount_; i++)
+    {
+        delete[]allPages_[i];
+    }
+    delete[]allUsers_;
+    delete[]allPages_;
+}
 Driver::Driver()
 {
+    loginUser_ = nullptr;
+    allUsers_ = nullptr;
+    allPages_ = nullptr;
     userCount_ = 0;
     pageCount_ = 0;
+    currentDate_ = Date(0,0,0);
 }
 Driver::~Driver()
 {
     userCount_ = 0;
     pageCount_ = 0;
-}
-int main() {
-    // Create a window with 800x600 resolution and the title "SFML Test"
-    
-    Driver application;
-    application.Run();
-    return 0;
 }

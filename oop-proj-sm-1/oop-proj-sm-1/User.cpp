@@ -29,7 +29,10 @@ User::User(const string id, const string name)
 	numLikedPages_ = 0;
 }
 
-void ViewHome();
+void ViewHome()
+{
+	cout << "in home" << endl;
+}
 void User::ViewLikedPages()
 {
 	for (int i = 0; i < numLikedPages_; i++)
@@ -52,25 +55,30 @@ void User::DisplayPosts()
 		oPostArr_[i]->DisplayPost();
 	}
 }
-void User::ViewTimeline()
+void User::ViewTimeline(Date& current)
 {
 	for (int i = 0; i < numFriends_; i++)
 	{
-		
+		friendsArr_[i]->DisplayValidPosts(current);
+	}
+	for (int i = 0; i <numLikedPages_; i++)
+	{
+		friendsArr_[i]->DisplayValidPosts(current);
 	}
 }
 void User::AddFriend(User*friendptr)
 {
 	friendsArr_[numFriends_++] = friendptr;
 }
-void User::AddPost()
+void User::AddPost(Date&current)
 {
 	Post** tempArr = new Post * [numPosts_ + 1];
 	for (int i = 0; i < numPosts_; i++)
 	{
 		tempArr[i] = oPostArr_[i];
 	}
-	tempArr[numPosts_] = new Post("p1", "sample post", "4/26/2025");
+	tempArr[numPosts_] = new Post("p1", "sample post", current.GetDay(), current.GetMonth(), current.GetYear());
+	oPostArr_ = tempArr;
 }
 void User::ShareMemory()
 {
@@ -88,13 +96,36 @@ void User::ShareMemory()
 		}
 	}
 }
-void LikePage();
-int getNumPosts();
-void User::DisplayValidPosts()
+void User:: LikePage(Page** pagearr, int totalpages)
+{
+	Page** temp = new Page * [numLikedPages_ + 1];
+	for (int i = 0; i < numLikedPages_; i++)
+	{
+		temp[i] = lPageArr_[i];
+	}
+	cout << "enter id of page you want to like:";
+	string id;
+	getline(cin, id);
+	bool found = 0;
+	for (int i = 0; i < totalpages&&!found; i++)
+	{
+		if (pagearr[i]->GetId() == id)
+		{
+			found = 1;
+			lPageArr_[i] = pagearr[i];
+			numLikedPages_++;
+		}
+	}
+}
+int User::GetNumPosts()
+{
+	return numPosts_;
+}
+void User::DisplayValidPosts(Date&current)
 {
 	for (int j = 0; j < numPosts_; j++)
 	{
-		if (oPostArr_[j]->ValidDate())
+		if (oPostArr_[j]->ValidDate(current))
 		{
 			oPostArr_[j]->DisplayPost();
 		}

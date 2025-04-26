@@ -1,7 +1,7 @@
 #include "Activity.h"
 
 
-Activity::Activity(const string type = "", const string value = "", string desc, string id, int d, int m, int y) :Post(id, desc, d, m, y)
+Activity::Activity(const string type , const string value , string desc, string id, int d, int m, int y) :Post(id, desc, d, m, y)
 {
 	type_ = type;
 	value_ = value;

@@ -20,6 +20,7 @@ public:
 	void DisplayName();
 	void AddPost();
 	void DisplayPage();
+	void DisplayValidPosts(Date& current);
 	~Page();
 
 

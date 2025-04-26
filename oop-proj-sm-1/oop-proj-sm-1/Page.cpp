@@ -73,3 +73,14 @@ void Page::DisplayPage()
 	owner_->DisplayDetails();
 	DisplayPosts();
 }
+
+void Page::DisplayValidPosts(Date&current)
+{
+	for (int j = 0; j < numPosts_; j++)
+	{
+		if (postsArr_[j]->ValidDate(current))
+		{
+			postsArr_[j]->DisplayPost();
+		}
+	}
+}

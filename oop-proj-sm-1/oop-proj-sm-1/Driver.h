@@ -9,7 +9,7 @@ private:
 	Page** allPages_;
 	int userCount_;
 	int pageCount_;
-	string currentDate_;
+	Date currentDate_;
 public:
 	Driver();
 	void SetLoginUser(User*);

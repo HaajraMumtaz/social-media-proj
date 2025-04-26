@@ -26,13 +26,13 @@ public:
 	void ViewLikedPages();
 	void ViewLikedPosts();
 	void DisplayPosts();
-	void ViewTimeline();
+	void ViewTimeline(Date& current);
 	void AddFriend(User*);
-	void AddPost();
+	void AddPost(Date&);
 	void ShareMemory();
-	void LikePage();
+	void LikePage(Page** pagearr,int totalpages);
 	int GetNumPosts();
-	void DisplayValidPosts();
+	void DisplayValidPosts(Date& current);
 	void DisplayDetails();
 	~User();
 };
