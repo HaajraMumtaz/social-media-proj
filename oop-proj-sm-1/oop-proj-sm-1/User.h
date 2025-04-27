@@ -2,9 +2,11 @@
 #include <cstring>
 #include <string>
 #include<iostream>
-#include "Post.h"
-#include "Activity.h"
 using namespace std;
+
+class Post;
+class Page;
+class Date;
 class User
 {
 private:
@@ -21,7 +23,7 @@ private:
 public:
 	User();
 	User(const string id, const string name);
-	void ViewHome();
+	/*void ViewHome();*/
 	string GetId();
 	void ViewLikedPages();
 	void ViewLikedPosts();

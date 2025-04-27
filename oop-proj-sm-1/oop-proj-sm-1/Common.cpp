@@ -2,7 +2,7 @@
 
 
 
-Date::Date(int d = 0, int m = 0, int y = 0) :day_(d), month_(m), year_(y){}
+Date::Date(int d, int m , int y ) :day_(d), month_(m), year_(y){}
 int Date::GetDay()
 {
 	return day_;
@@ -12,7 +12,7 @@ int Date::GetYear() { return year_; }
 Date::~Date() { day_ = month_ = year_ = 0; }
 
 
-Comment::Comment(const string id = "", const string text = "")
+Comment::Comment(const string id, const string text)
 {
 	userId_ = id;
 	text_ = text;

@@ -1,5 +1,6 @@
 #include "Page.h"
-
+#include "Post.h"
+#include "User.h"
 
 Page::Page(const string id,User* owner, const string title, Post** postarr,int numlikes, int numposts)
 {
@@ -11,7 +12,7 @@ Page::Page(const string id,User* owner, const string title, Post** postarr,int n
 	numPosts_ = numposts;
 }
 
-string Page:: GetId()
+string Page::GetId()
 {
 	return Id_;
 }

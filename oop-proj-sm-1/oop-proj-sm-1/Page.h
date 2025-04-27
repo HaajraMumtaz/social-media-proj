@@ -1,6 +1,12 @@
 #pragma once
-#include "User.h"
 
+#include <cstring>
+#include <string>
+
+class User;
+class Post;
+class Date;
+using namespace std;
 class Page
 {
 private:

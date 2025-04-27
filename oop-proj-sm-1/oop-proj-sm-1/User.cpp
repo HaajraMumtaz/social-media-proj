@@ -1,6 +1,8 @@
 #include "User.h"
 #include "Driver.h"
-
+#include "Page.h"
+#include "Post.h"
+#include "Common.h"
 User::User()
 {
 	id_ = "";

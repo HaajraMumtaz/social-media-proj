@@ -1,14 +1,18 @@
 #pragma once
-#include "Page.h"
+#include<cstring>
 #include "Common.h"
+class User;
+class Comment;
+
+
 class Post
 {
 private:
 	string Id_;
 	User** usersLiked_;
 	Comment** commentsArr_;
-	Date date_;
 	int numberLikes_;
+	Date date_;
 	int numberComments_;
 	string description_;//can be an image path
 public:

@@ -9,7 +9,7 @@ private:
 	string type_;
 	string value_;
 public:
-	Activity(const string type = "", const string value = "", string desc, string id, int d, int m, int y);
+	Activity(const string type = "", const string value = "", string desc="", string id="", int d=0, int m=0, int y=0);
 	void DisplayPost() override;
 	~Activity()override;
 
@@ -23,5 +23,5 @@ private:
 public:
 	Memory(Post* original, string desc,string id,int d, int m , int y);
 	void DisplayPost() override;
-	~Memory();
+	~Memory() override;
 };

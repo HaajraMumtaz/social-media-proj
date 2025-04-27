@@ -1,5 +1,10 @@
-#include "Post.h"
+#include <iostream>
+#include <string>
+using namespace std;
 
+#include "User.h"
+#include "Post.h"
+#include "Common.h"
 string Post:: GetId()
 {
     return Id_;

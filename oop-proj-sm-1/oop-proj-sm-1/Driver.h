@@ -1,5 +1,11 @@
 #pragma once
 #include "User.h" 
+//#include "Page.h"
+#include "Common.h"
+
+class User;
+class Page;
+
 class Driver
 {
 
@@ -14,7 +20,7 @@ public:
 	Driver();
 	void SetLoginUser(User*);
 	void CreateUser();
-	void AddPost(Post*);
+	/*void AddPost(Post*);*/
 	void CreatePage();
 	void Run();
 	~Driver();

@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Driver.h"
 #include "Common.h"
+#include "Page.h"
 using namespace sf;
 
 void Driver::Run()
@@ -120,8 +121,4 @@ Driver::Driver()
     pageCount_ = 0;
     currentDate_ = Date(0,0,0);
 }
-Driver::~Driver()
-{
-    userCount_ = 0;
-    pageCount_ = 0;
-}
+
