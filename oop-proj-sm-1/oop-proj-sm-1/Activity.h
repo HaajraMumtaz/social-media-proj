@@ -10,7 +10,7 @@ private:
 	string value_;
 public:
 	Activity(const string type = "", const string value = "", string desc="", string id="", int d=0, int m=0, int y=0);
-	void DisplayPost() override;
+	void DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr) override;
 	~Activity()override;
 
 };
@@ -22,6 +22,6 @@ private:
 	Post* originalPost_;
 public:
 	Memory(Post* original, string desc,string id,int d, int m , int y);
-	void DisplayPost() override;
+	void DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr) override;
 	~Memory() override;
 };

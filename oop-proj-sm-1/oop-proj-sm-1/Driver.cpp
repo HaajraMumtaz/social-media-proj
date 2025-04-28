@@ -6,8 +6,10 @@ using namespace sf;
 
 void Driver::Run()
 {
-    int width = 800;
-    int height = 600;
+
+    // Initializing variables & objects
+    int width = 1280;
+    int height = 720;
     RectangleShape rect1(Vector2f(100,100));
     Sprite but1;
     Texture buttonTexture;
@@ -15,7 +17,11 @@ void Driver::Run()
     {
         cout << "unable to load" << endl;
     }
-
+    Font font;
+    if (!font.loadFromFile("D:\\haajra\\oop-proj\\additional-files\\GeistMonoBold.ttf"))
+    {
+        cout<<"cant load"<<endl;
+    }
     float scaleFactor = min(width / buttonTexture.getSize().x, height / buttonTexture.getSize().y);
     but1.setScale(scaleFactor/3.5, scaleFactor/3.5);
     RenderWindow window(sf::VideoMode(width, height), "SFML Test");
@@ -29,6 +35,28 @@ void Driver::Run()
     FloatRect boundingBoxB1 = but1.getGlobalBounds();
     FloatRect boundingBoxB2 = but2.getGlobalBounds();
     FloatRect boundingBoxB3 = but3.getGlobalBounds();
+    int num = 1;
+    RectangleShape** todraw=new RectangleShape*[1];
+    todraw[0]=new RectangleShape(Vector2f(width/2,height/5));
+    todraw[0]->setPosition(Vector2f(but1.getPosition().x + boundingBoxB1.width + 10, 0));
+    todraw[0]->setOutlineColor(Color::White);
+    todraw[0]->setOutlineThickness(10);
+    Text** todrawtext = new Text*[1];
+    todrawtext[0] = new Text;
+    todrawtext[0]->setFillColor(Color::Black);
+    todrawtext[0]->setPosition(todraw[0]->getPosition());
+    todrawtext[0]->setCharacterSize(28);
+   
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    CreateUser();
+    CreateUser();
+    allUsers_[0]->DisplayDetails();
+    allUsers_[0]->AddFriend(allUsers_[1]);
+    allUsers_[1]->AddPost(currentDate_);
+    allUsers_[1]->AddPost(currentDate_);
+    //allUsers_[1]->DisplayPosts();
+    bool on = 0;
     while (window.isOpen()) {
    
         Event event;
@@ -40,19 +68,33 @@ void Driver::Run()
             if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left && boundingBoxB1.contains(mousePos))
             {
                 cout << "ok works" << endl;
+                allUsers_[0]->ViewTimeline(currentDate_, window, font, height, width, num, todraw, todrawtext);
+                on = 1;
+                
             }
         }
 
         window.clear(Color::Black);
+
         window.draw(but1);
 
-        
+
         window.draw(but2);
         window.draw(but3);
+        /*  window.draw(*todraw[0]);*/
+      
+        if (on)
+        {
+            for (int i = 1; i < num; i++)
+            {
+                window.draw(*todraw[i]);
+                window.draw(*todrawtext[i]);
+            }
+        }
+       
         window.display();
     }
-
-
+    
 }
 
 void Driver::SetLoginUser(User* user)
@@ -72,6 +114,9 @@ void Driver::CreateUser()
     cout << "enter name:";
     getline(cin, name);
     temp[userCount_] = new User(id, name);
+    userCount_++;
+    delete[]allUsers_;
+    allUsers_ = temp;
 }
 
 void Driver::CreatePage()
@@ -97,17 +142,21 @@ void Driver::CreatePage()
             found = 1;
         }
     }
+    delete[]allPages_;
+    allPages_ = temp;
+    pageCount_++;
     
 }
 Driver::~Driver()
 {
+    cout << "~driver() called" << endl;
     for (int i = 0; i < userCount_; i++)
     {
-        delete[]allUsers_[i];
+        delete allUsers_[i];
     }
     for (int i = 0; i < pageCount_; i++)
     {
-        delete[]allPages_[i];
+        delete allPages_[i];
     }
     delete[]allUsers_;
     delete[]allPages_;

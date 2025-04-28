@@ -32,3 +32,11 @@ public:
 
 
 };
+
+struct PostVisual
+{
+	RectangleShape* box;
+	Text* label;
+
+	PostVisual(RectangleShape* b, Text* l) : box(b), label(l) {}
+};

@@ -2,8 +2,9 @@
 #include <cstring>
 #include <string>
 #include<iostream>
+#include <SFML/Graphics.hpp>
 using namespace std;
-
+using namespace sf;
 class Post;
 class Page;
 class Date;
@@ -26,15 +27,16 @@ public:
 	/*void ViewHome();*/
 	string GetId();
 	void ViewLikedPages();
-	void ViewLikedPosts();
-	void DisplayPosts();
-	void ViewTimeline(Date& current);
+	void ViewLikedPosts(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr);
+	void DisplayPosts(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
+	void ViewTimeline(Date& current, RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
 	void AddFriend(User*);
 	void AddPost(Date&);
-	void ShareMemory();
+	void ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr);
 	void LikePage(Page** pagearr,int totalpages);
 	int GetNumPosts();
-	void DisplayValidPosts(Date& current);
+	bool DisplayValidPosts(Date& current,RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
 	void DisplayDetails();
+	void ViewHome(Date& current, RenderWindow&window, Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr);
 	~User();
 };

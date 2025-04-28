@@ -9,8 +9,36 @@ string Post:: GetId()
 {
     return Id_;
 }
-void Post::DisplayPost()
+void Post::DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num,RectangleShape**& toDrawArr, Text**& textDrawArr)
 {
+   
+    RectangleShape** temp = new RectangleShape*[num + 1];
+    Text** temp2 = new Text * [num + 1];
+    for (int i = 0; i < num; i++)
+    {
+        temp[i] = toDrawArr[i];
+        temp2[i] = textDrawArr[i];
+    }
+    temp[num] = new RectangleShape(toDrawArr[0]->getSize());
+    temp[num]->setPosition(Vector2f(toDrawArr[0]->getPosition().x, temp[0]->getPosition().y +(num* temp[0]->getSize().y)));
+    temp2[num] = new Text;
+    temp2[num]->setPosition(temp[num]->getPosition());
+    temp2[num]->setString(description_);
+    temp2[num]->setCharacterSize(40);
+    temp2[num]->setFillColor(Color::Black);
+    temp2[num]->setFont(font);
+    delete[]textDrawArr;
+    textDrawArr = temp2;
+    delete[]toDrawArr;
+    toDrawArr = temp;
+    num++;
+
+    /*text.setPosition(window.getSize().x / 3.0f, (window.getSize().y /6.0f)+(num*textRect.height));*/
+   
+    /*window.draw(text);*/
+    // Center the text
+ 
+    //window.draw(*textDrawArr[num-1]);
     cout << "id:" << Id_ << "descrption:" << description_ << endl;
 }
 void Post:: DisplayLikedUsers()
@@ -26,6 +54,7 @@ void Post::AddLike()
 }
 bool Post::ValidDate(Date&current)
 {
+    cout << "here" << endl;
     if ((date_.GetDay() >= current.GetDay() - 1 && date_.GetMonth() == current.GetMonth() && date_.GetYear() == current.GetYear())||(current.GetDay() == 1 && date_.GetMonth() == current.GetMonth() - 1 && date_.GetYear() == current.GetYear()))
     {
         return 1;
@@ -40,6 +69,7 @@ bool Post::ValidDate(Date&current)
 }
 Post::~Post()
 {
+    cout << "~Post() called " << Id_ << endl;
     for (int i = 0; i < numberLikes_; i++)
     {
         delete[]usersLiked_[i];
@@ -54,7 +84,10 @@ Post::~Post()
   
 }
 
-
+void Post::SetDate(int d,int m,int y)
+{
+    date_ = Date(d, m, y);
+}
 Post::Post(string id, string description,int d, int m, int y)
     :Id_(id), description_(description)
 {
@@ -86,5 +119,22 @@ void Post::AddComment(Comment& comment)
     }
     temp[numberComments_] = &comment;
     commentsArr_ = temp;
+
+}
+
+void Post::Input()
+{
+    int d, m, y;
+    cout << "enter id:";
+    getline(cin, Id_);
+    cout << "title:";
+    getline(cin,description_);
+    cout << "Date: enter day:";
+    cin >> d;
+    cout << "month:";
+    cin >> m;
+    cout << "year:";
+    cin >> y;
+    SetDate(d, m, y);
 
 }

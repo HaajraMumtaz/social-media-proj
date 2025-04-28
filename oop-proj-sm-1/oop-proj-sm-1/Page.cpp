@@ -16,11 +16,11 @@ string Page::GetId()
 {
 	return Id_;
 }
-void Page::DisplayPosts()
+void Page::DisplayPosts(Date& current, RenderWindow& window, sf::Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr)
 {
 	for (int i = 0; i < numPosts_; i++)
 	{
-		postsArr_[i]->DisplayPost();
+		postsArr_[i]->DisplayPost(window, font, height, width, num, toDrawArr, textDrawArr);
 	}
 }
 int Page:: GetNumLikes()
@@ -65,23 +65,27 @@ void Page::AddPost()
 	int month = stoi(date.substr(3, 2));
 	int year = stoi(date.substr(6, 2));
 	temp[numPosts_] = new Post(id, desc, day, month, year);
+	delete[]postsArr_;
 	postsArr_ = temp;
 }
 
-void Page::DisplayPage()
+void Page::DisplayPage(Date& current, RenderWindow& window, sf::Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr)
 {
 	cout << Id_ << " " << title_;
 	owner_->DisplayDetails();
-	DisplayPosts();
+	DisplayPosts(current,window, font, height, width, num, toDrawArr, textDrawArr);
 }
 
-void Page::DisplayValidPosts(Date&current)
+bool Page::DisplayValidPosts(Date& current, sf::RenderWindow& window,sf::Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr)
 {
+	bool exists = 0;
 	for (int j = 0; j < numPosts_; j++)
 	{
 		if (postsArr_[j]->ValidDate(current))
 		{
-			postsArr_[j]->DisplayPost();
+			exists = 1;
+			postsArr_[j]->DisplayPost(window,font,height,width,num,toDrawArr, textDrawArr);
 		}
 	}
+	return exists;
 }

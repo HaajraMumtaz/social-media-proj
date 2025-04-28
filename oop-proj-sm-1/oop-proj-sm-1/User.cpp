@@ -3,6 +3,8 @@
 #include "Page.h"
 #include "Post.h"
 #include "Common.h"
+
+using namespace sf;
 User::User()
 {
 	id_ = "";
@@ -43,46 +45,64 @@ void User::ViewLikedPages()
 	}
 }
 
-void User::ViewLikedPosts()
+void User::ViewLikedPosts(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr)
 {
 	for (int i = 0; i < numLikedPosts_; i++)
 	{
-		lPostArr_[i]->DisplayPost();
+		lPostArr_[i]->DisplayPost(window, font, height, width, num, toDrawArr, textDrawArr);
 	}
 }
-void User::DisplayPosts()
+void User::DisplayPosts(RenderWindow& window, Font& font, int height, int width, int&num, RectangleShape**& toDrawArr, Text**& textDrawArr)
 {
 	for (int i = 0; i < numPosts_; i++)
 	{
-		oPostArr_[i]->DisplayPost();
+		oPostArr_[i]->DisplayPost(window, font, height, width, num, toDrawArr,textDrawArr);
 	}
 }
-void User::ViewTimeline(Date& current)
+void User::ViewTimeline(Date& current, RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr)
 {
+	bool exists = 0;
 	for (int i = 0; i < numFriends_; i++)
 	{
-		friendsArr_[i]->DisplayValidPosts(current);
+		exists=friendsArr_[i]->DisplayValidPosts(current,window, font, height, width, num,toDrawArr,textDrawArr);
 	}
+	bool exists2 = 0;
 	for (int i = 0; i <numLikedPages_; i++)
 	{
-		friendsArr_[i]->DisplayValidPosts(current);
+		exists2=lPageArr_[i]->DisplayValidPosts(current,window, font, height, width,num,toDrawArr,textDrawArr);
 	}
+	if (!exists && !exists2)
+	{
+		cout << "No post to show!" << endl;
+	}
+
 }
 void User::AddFriend(User*friendptr)
 {
-	friendsArr_[numFriends_++] = friendptr;
+	User** temp = new User * [numFriends_ + 1];
+	for (int i = 0; i < numFriends_; i++)
+	{
+		temp[i] = friendsArr_[i];
+	}
+	temp[numFriends_++]= friendptr;
+	delete[]friendsArr_;
+	friendsArr_ = temp;
 }
 void User::AddPost(Date&current)
 {
+
 	Post** tempArr = new Post * [numPosts_ + 1];
 	for (int i = 0; i < numPosts_; i++)
 	{
 		tempArr[i] = oPostArr_[i];
 	}
-	tempArr[numPosts_] = new Post("p1", "sample post", current.GetDay(), current.GetMonth(), current.GetYear());
+	tempArr[numPosts_] = new Post;
+
+	tempArr[numPosts_++]->Input();
+	delete[]oPostArr_;
 	oPostArr_ = tempArr;
 }
-void User::ShareMemory()
+void User::ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr)
 {
 	string memoryId, desc;
 	cout << "enter id:";
@@ -94,7 +114,7 @@ void User::ShareMemory()
 		{
 			cout << "what message to display with it?";
 			getline(cin,desc);
-			oPostArr_[i]->DisplayPost();
+			oPostArr_[i]->DisplayPost(window, font, height, width, num,toDrawArr,textDrawArr);
 		}
 	}
 }
@@ -114,24 +134,31 @@ void User:: LikePage(Page** pagearr, int totalpages)
 		if (pagearr[i]->GetId() == id)
 		{
 			found = 1;
-			lPageArr_[i] = pagearr[i];
+			temp[numLikedPages_] = pagearr[i];
 			numLikedPages_++;
 		}
 	}
+	delete[]lPageArr_;
+	lPageArr_ = temp;
+
 }
 int User::GetNumPosts()
 {
 	return numPosts_;
 }
-void User::DisplayValidPosts(Date&current)
+bool User::DisplayValidPosts(Date&current,RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr)
 {
+	bool exists = 0;
 	for (int j = 0; j < numPosts_; j++)
 	{
 		if (oPostArr_[j]->ValidDate(current))
 		{
-			oPostArr_[j]->DisplayPost();
+			exists = 1;
+			oPostArr_[j]->DisplayPost(window,font,height, width, num,toDrawArr,textDrawArr);
 		}
 	}
+	return exists;
+
 }
 string User:: GetId()
 {
@@ -144,27 +171,21 @@ void User::DisplayDetails()
 }
 User::~User()
 {
-
+	cout << "~user() called" <<this->id_<< endl;
 	for (int i = 0; i < numPosts_; i++)
 	{
-		delete[]oPostArr_[i];
+		delete oPostArr_[i];
 	}
 	delete[]oPostArr_;
 
-	for (int i = 0; i < numPosts_; i++)
-	{
-		delete[]friendsArr_[i];
-	}
 	delete[]friendsArr_;
-
-	for (int i = 0; i < numPosts_; i++)
-	{
-		delete[]lPageArr_[i];
-	}
 	delete[]lPageArr_;
-	for (int i = 0; i < numPosts_; i++)
-	{
-		delete[]lPostArr_[i];
-	}
 	delete[]lPostArr_;
+}
+
+void User::ViewHome(Date&current, sf::RenderWindow&window, Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr)
+{
+	DisplayValidPosts(current, window, font, height, width, num,toDrawArr,textDrawArr);
+	
+
 }

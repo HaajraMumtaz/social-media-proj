@@ -2,7 +2,7 @@
 #include "User.h" 
 //#include "Page.h"
 #include "Common.h"
-
+using namespace sf;
 class User;
 class Page;
 
