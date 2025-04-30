@@ -12,8 +12,10 @@ string Post:: GetId()
 void Post::DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num,RectangleShape**& toDrawArr, Text**& textDrawArr)
 {
    
+
+    cout << "num:" << num<<endl;
     RectangleShape** temp = new RectangleShape*[num + 1];
-    Text** temp2 = new Text * [num + 1];
+    Text** temp2 = new Text* [num + 1];
     for (int i = 0; i < num; i++)
     {
         temp[i] = toDrawArr[i];

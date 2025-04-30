@@ -47,14 +47,17 @@ void Driver::Run()
     todrawtext[0]->setPosition(todraw[0]->getPosition());
     todrawtext[0]->setCharacterSize(28);
    
-
+    
     ////////////////////////////////////////////////////////////////////////////////////////////////
     CreateUser();
     CreateUser();
+    CreatePage();
     allUsers_[0]->DisplayDetails();
     allUsers_[0]->AddFriend(allUsers_[1]);
+    allUsers_[0]->LikePage(allPages_, pageCount_);
     allUsers_[1]->AddPost(currentDate_);
     allUsers_[1]->AddPost(currentDate_);
+    allPages_[0]->AddPost();
     //allUsers_[1]->DisplayPosts();
     bool on = 0;
     while (window.isOpen()) {
@@ -65,12 +68,17 @@ void Driver::Run()
             if (event.type == Event::Closed) {
                 window.close();
             }
-            if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left && boundingBoxB1.contains(mousePos))
+            if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left && boundingBoxB1.contains(mousePos)&&!on)
             {
                 cout << "ok works" << endl;
                 allUsers_[0]->ViewTimeline(currentDate_, window, font, height, width, num, todraw, todrawtext);
                 on = 1;
                 
+            }
+            if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left && boundingBoxB2.contains(mousePos))
+            {
+                on = 0;
+                num = 1;
             }
         }
 
@@ -89,6 +97,7 @@ void Driver::Run()
             {
                 window.draw(*todraw[i]);
                 window.draw(*todrawtext[i]);
+            
             }
         }
        
@@ -138,7 +147,7 @@ void Driver::CreatePage()
     {
         if (allUsers_[i]->GetId() == ownerid)
         {
-            temp[userCount_] = new Page(id,allUsers_[i],name);
+            temp[pageCount_] = new Page(id,allUsers_[i],name);
             found = 1;
         }
     }
