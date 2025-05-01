@@ -20,7 +20,9 @@ PopupForm::PopupForm(const Font& font, Vector2f position) {
     inputDisplay.setPosition(position.x + 20, position.y + 70);
 }
 
-void PopupForm::handleEvent(const Event& event,const string&prompt2) {
+void PopupForm::handleEvent(const Event&event,const string& prompt2,bool showOne)
+{
+    
     if (stage == 2) return;
 
     if (event.type == Event::TextEntered) {
@@ -29,12 +31,22 @@ void PopupForm::handleEvent(const Event& event,const string&prompt2) {
                 currentInput.pop_back();
         }
         else if (event.text.unicode == '\r') {
-            if (stage == 0) {
+            if (stage == 0) 
+            {
+                if (!showOne)
+                {
+                    promptText.setString(prompt2);
+                    stage = 1;
+                }
+                if (showOne)
+                {
+                    title = "";
+                    stage = 2;
+                }
                 id = currentInput;
                 currentInput.clear();
-                promptText.setString(prompt2);
-                stage = 1;
             }
+          
             else if (stage == 1) {
                 title = currentInput;
                 currentInput.clear();

@@ -71,19 +71,24 @@ void Driver::Run()
     userButton.setTexture(userTexture);
     userButton.setScale(1, 1);
     userButton.setPosition(0, 0);
-
+    userButton.setPosition(width - boundingBoxB3.width, 10);
+    Text loginUserId;
+    loginUserId.setFont(font);
+    loginUserId.setFillColor(Color::Black);
+    loginUserId.setCharacterSize(22);
+    loginUserId.setPosition(userButton.getPosition().x+7,(loginUserId.getPosition().y+18));
+    
     Sprite addUserB;
     addUserB.setTexture(addTexture);
-    addUserB.setScale(1.5, 1.5);
-    addUserB.setPosition(0,0);
+    addUserB.setScale(1, 1);
+    addUserB.setPosition(width-userButton.getLocalBounds().width-150, 10);
 
     FloatRect boundingBoxAddUserB = addUserB.getGlobalBounds();
 
     CircleShape AddPostB(500);
     AddPostB.setFillColor(Color::Cyan);
     AddPostB.setPosition(width / 2, 9 * height / 10);
-    userButton.setPosition(width - boundingBoxB3.width, 10);
-   
+
     FloatRect boundingBoxUserB = userButton.getGlobalBounds();
     PopupForm popup(font, Vector2f((width/2)-500/2, (height/2)-350/2));
     Text Sample1;
@@ -100,6 +105,7 @@ void Driver::Run()
     //allUsers_[1]->AddPost(currentDate_);
     //allPages_[0]->AddPost();
     bool UserInputPopup = 0;
+    bool changeUserPopup = 0;
     //allUsers_[1]->DisplayPosts();
     bool on = 0;
     while (window.isOpen()) {
@@ -118,15 +124,19 @@ void Driver::Run()
                     allUsers_[0]->ViewTimeline(currentDate_, window, font, height, width, num, todraw, todrawtext);
                     on = 1;
                 }
-                if (boundingBoxUserB.contains(mousePos) && !UserInputPopup)
+            
+                   
+                if (boundingBoxAddUserB.contains(mousePos) && !UserInputPopup)
                 {
                     cout << "add user via window" << endl;
                     UserInputPopup = 1;
 
                 }
-                if (boundingBoxB2.contains(mousePos))
+                if (boundingBoxUserB.contains(mousePos))
                 {
                     on = 0;
+                    changeUserPopup = 1;
+
                     for (int i = 1; i < num; i++)
                     {
                         delete todraw[i];
@@ -138,7 +148,11 @@ void Driver::Run()
             }
             if (UserInputPopup||screenState==0)
             {
-                popup.handleEvent(event,"Enter name:");
+                popup.handleEvent(event,"Enter name:",0);
+            }
+            if (changeUserPopup)
+            {
+                popup.handleEvent(event, "Enter name:", 1);
             }
             
         }
@@ -152,6 +166,7 @@ void Driver::Run()
                 screenState = 1;
                 CreateUser(popup.getID(), popup.getTitle());
                 SetLoginUser(allUsers_[0]);
+                loginUserId.setString("Logged in: "+popup.getID());
                 popup.reset();
             }
             
@@ -165,6 +180,7 @@ void Driver::Run()
             window.draw(but3);
             window.draw(userButton);
             window.draw(AddPostB);
+            window.draw(loginUserId);
             /*  window.draw(*todraw[0]);*/
 
             if (on)
@@ -186,6 +202,26 @@ void Driver::Run()
                     popup.reset();
                 }
 
+            }
+            if (changeUserPopup)
+            {
+                popup.draw(window);
+                if (popup.isDone())
+                {
+                    bool found = 0;
+                    for (int i = 0; i < userCount_&&!found; i++)
+                    {
+                        if (allUsers_[i]->GetId() == popup.getID())
+                        {
+                            found = 1;
+                            SetLoginUser(allUsers_[i]);
+                            loginUserId.setString("Logged in: "+popup.getID());
+                        }
+                         
+                    }
+                    popup.reset();
+                    changeUserPopup = 0;
+                }
             }
 
 
