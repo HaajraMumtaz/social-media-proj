@@ -120,11 +120,8 @@ void User::ShareMemory(RenderWindow& window, Font& font, int height, int width, 
 }
 void User:: LikePage(Page** pagearr, int totalpages)
 {
-	Page** temp = new Page * [numLikedPages_ + 1];
-	for (int i = 0; i < numLikedPages_; i++)
-	{
-		temp[i] = lPageArr_[i];
-	}
+
+	
 	cout << "enter id of page you want to like:";
 	string id;
 	getline(cin, id);
@@ -134,12 +131,19 @@ void User:: LikePage(Page** pagearr, int totalpages)
 		if (pagearr[i]->GetId() == id)
 		{
 			found = 1;
+			Page** temp = new Page * [numLikedPages_ + 1];
+			for (int i = 0; i < numLikedPages_; i++)
+			{
+				temp[i] = lPageArr_[i];
+			}
 			temp[numLikedPages_] = pagearr[i];
 			numLikedPages_++;
+
+			delete[]lPageArr_;
+			lPageArr_ = temp;
 		}
 	}
-	delete[]lPageArr_;
-	lPageArr_ = temp;
+
 
 }
 int User::GetNumPosts()

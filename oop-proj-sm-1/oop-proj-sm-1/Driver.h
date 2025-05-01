@@ -19,6 +19,9 @@ private:
 public:
 	Driver();
 	void SetLoginUser(User*);
+	User* GetLoginUser();
+	/*void CreateUser(RenderWindow& window,RectangleShape& popup,Font&font,int width, int height,Text&,Text&);*/
+	void CreateUser(string id, string name);
 	void CreateUser();
 	/*void AddPost(Post*);*/
 	void CreatePage();
