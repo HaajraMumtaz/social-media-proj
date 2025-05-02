@@ -82,13 +82,18 @@ void Driver::Run()
     addUserB.setTexture(addTexture);
     addUserB.setScale(1, 1);
     addUserB.setPosition(width - userButton.getLocalBounds().width - 150, 10);
-
     FloatRect boundingBoxAddUserB = addUserB.getGlobalBounds();
 
-    Sprite AddPostB = addUserB;
-    AddPostB.setPosition(width / 2, 9 * height / 10);
-    FloatRect boundingBoxAddPostB = AddPostB.getGlobalBounds();
+    Sprite addPostB = addUserB;
+    addPostB.setPosition(width / 2, 9 * height / 10);
+
+    Sprite addFriendB;
+    addFriendB = addPostB;
+    addFriendB.setPosition(width / 3, 9 * height / 10);
+
+    FloatRect boundingBoxAddPostB = addPostB.getGlobalBounds();
     FloatRect boundingBoxUserB = userButton.getGlobalBounds();
+    FloatRect boundingBoxAddFriendB = addFriendB.getGlobalBounds();
     PopupForm popup(font, Vector2f((width / 2) - 500 / 2, (height / 2) - 350 / 2));
     Text Sample1;
     Text Sample2;
@@ -106,6 +111,7 @@ void Driver::Run()
     bool UserInputPopup = 0;
     bool changeUserPopup = 0;
     bool addPostPopup = 0;
+    bool addFriendPopup = 0;
     //allUsers_[1]->DisplayPosts();
     bool on = 0;
     while (window.isOpen()) {
@@ -121,7 +127,7 @@ void Driver::Run()
                 if (boundingBoxB1.contains(mousePos) && !on)
                 {
                     cout << "ok works" << endl;
-                    allUsers_[0]->ViewTimeline(currentDate_, window, font, height, width, num, todraw, todrawtext);
+                    loginUser_->ViewTimeline(currentDate_, window, font, height, width, num, todraw, todrawtext);
                     on = 1;
                 }
 
@@ -150,12 +156,17 @@ void Driver::Run()
                     addPostPopup = 1;
                     cout << "add post via window:" << endl;
                 }
+                if (boundingBoxAddFriendB.contains(mousePos) && !addFriendPopup)
+                {
+                    addFriendPopup = 1;
+                    cout << "add friend via window" << endl;
+                }
             }
             if (UserInputPopup || screenState == 0)
             {
                 popup.handleEvent(event, 2);
             }
-            if (changeUserPopup)
+            if (changeUserPopup || addFriendPopup)
             {
                 popup.handleEvent(event, 1);
             }
@@ -163,6 +174,7 @@ void Driver::Run()
             {
                 popup.handleEvent(event, 3, "Enter Description of post:");
             }
+           
         }
 
         window.clear(myColor);
@@ -187,8 +199,10 @@ void Driver::Run()
             window.draw(but2);
             window.draw(but3);
             window.draw(userButton);
-            window.draw(AddPostB);
+            window.draw(addPostB);
+            window.draw(addFriendB);
             window.draw(loginUserId);
+          
             /*  window.draw(*todraw[0]);*/
 
             if (on)
@@ -241,6 +255,25 @@ void Driver::Run()
                     addPostPopup = 0;
                 }
              
+            }
+            if (addFriendPopup)
+            {
+                popup.draw(window);
+                if (popup.isDone())
+                {
+                    bool found = 0;
+                    for (int i = 0; i < userCount_&&!found; i++)
+                    {
+                        if (allUsers_[i]->GetId() == popup.getID())
+                        {
+                            loginUser_->AddFriend(allUsers_[i]);
+                            allUsers_[i]->AddFriend(loginUser_);
+                            found = 1;
+                        }
+                    }
+                    popup.reset();
+                    addFriendPopup = 0;
+                }
             }
 
 
