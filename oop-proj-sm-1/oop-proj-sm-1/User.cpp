@@ -102,6 +102,20 @@ void User::AddPost(Date&current)
 	delete[]oPostArr_;
 	oPostArr_ = tempArr;
 }
+void User::AddPost(Date& current,string id, string desc, string date)
+{
+
+	Post** tempArr = new Post * [numPosts_ + 1];
+	for (int i = 0; i < numPosts_; i++)
+	{
+		tempArr[i] = oPostArr_[i];
+	}
+	tempArr[numPosts_] = new Post;
+
+	tempArr[numPosts_++]->setPost(id, desc, date);
+	delete[]oPostArr_;
+	oPostArr_ = tempArr;
+}
 void User::ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr)
 {
 	string memoryId, desc;

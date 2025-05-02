@@ -25,6 +25,7 @@ public:
 	void CreateUser();
 	/*void AddPost(Post*);*/
 	void CreatePage();
+	void resetArr(string**&,int);
 	void Run();
 	~Driver();
 };

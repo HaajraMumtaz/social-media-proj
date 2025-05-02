@@ -90,6 +90,14 @@ void Post::SetDate(int d,int m,int y)
 {
     date_ = Date(d, m, y);
 }
+void Post::SetDetails(const string**&arr)
+{
+    Id_= *arr[0];
+    description_ = *arr[1];
+    SetDate(stoi(*arr[2]), stoi(*arr[3]), stoi(*arr[4]));
+
+    
+}
 Post::Post(string id, string description,int d, int m, int y)
     :Id_(id), description_(description)
 {
@@ -139,4 +147,36 @@ void Post::Input()
     cin >> y;
     SetDate(d, m, y);
 
+}
+void Post:: setPost(string id, string desc, string date)
+{
+    Id_ = id;
+    description_ = desc;
+    setDate(date);
+    cout << "added post "<<id << endl;
+}
+
+void Post::setDate(string date)
+{
+    string elem;
+    int day=0, month=0, year=0;
+    for (int i = 0; i < date.length();i++)
+    {
+        if (date[i] != '//')
+        {
+            elem = elem + date[i];
+        }
+        else
+        {
+            if (i <= 2)
+                day = stoi(elem);
+            else if (i <= 5)
+                month = stoi(elem);
+            else
+                year = stoi(elem);
+            i++;
+           
+        }
+    }
+    date_ = Date(day, month, year);
 }

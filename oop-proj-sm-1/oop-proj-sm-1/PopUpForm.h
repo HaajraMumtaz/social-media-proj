@@ -15,14 +15,16 @@ private:
     string currentInput;
     string id;
     string title;
-
-    int stage = 0; // 0 = ID, 1 = Title, 2 = Done
+    string date;
+    int stage = 0; // 0 = ID, 1 = Title, 2 = Date, 3=Done
+   
 public:
-    PopupForm(const Font& font,Vector2f position);
-    void handleEvent(const Event& event, const string& prompt2,bool show);
+    PopupForm(const Font& font, Vector2f position);
+    void handleEvent(const Event& event,int num, const string& prompt2="Enter name:");
     void draw(RenderWindow& window);
     bool isDone();
     string getID();
     string getTitle();
+    string getDate();
     void reset();
 };

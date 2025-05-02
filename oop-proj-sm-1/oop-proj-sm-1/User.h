@@ -32,6 +32,7 @@ public:
 	void ViewTimeline(Date& current, RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
 	void AddFriend(User*);
 	void AddPost(Date&);
+	void AddPost(Date& current, string id, string desc, string date);
 	void ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr);
 	void LikePage(Page** pagearr,int totalpages);
 	int GetNumPosts();

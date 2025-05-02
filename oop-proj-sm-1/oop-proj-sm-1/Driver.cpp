@@ -16,9 +16,9 @@ void Driver::Run()
     RenderWindow window(VideoMode(width, height), "Enter ID and Name");
 
     RectangleShape inputWindow(Vector2f(450, 300));
-    RectangleShape rect1(Vector2f(100,100));
+    RectangleShape rect1(Vector2f(100, 100));
 
-    inputWindow.setPosition(200,200);
+    inputWindow.setPosition(200, 200);
     inputWindow.setFillColor(Color::Cyan);
     Sprite but1;
     Texture buttonTexture;
@@ -29,7 +29,7 @@ void Driver::Run()
     Font font;
     if (!font.loadFromFile("D:\\haajra\\oop-proj\\additional-files\\GeistMonoBold.ttf"))
     {
-        cout<<"cant load"<<endl;
+        cout << "cant load" << endl;
     }
     Texture userTexture;
     if (!userTexture.loadFromFile("D:\\haajra\\oop-proj\\UI inspo\\canva-elements\\4 (2).png"))
@@ -43,7 +43,7 @@ void Driver::Run()
     }
     float scaleFactor = min(width / buttonTexture.getSize().x, height / buttonTexture.getSize().y);
 
- 
+
     but1.setTexture(buttonTexture);
     but1.setScale(0.2, 0.2);
 
@@ -56,17 +56,17 @@ void Driver::Run()
     FloatRect boundingBoxB2 = but2.getGlobalBounds();
     FloatRect boundingBoxB3 = but3.getGlobalBounds();
     int num = 1;
-    RectangleShape** todraw=new RectangleShape*[1];
-    todraw[0]=new RectangleShape(Vector2f(width/2,height/5));
+    RectangleShape** todraw = new RectangleShape * [1];
+    todraw[0] = new RectangleShape(Vector2f(width / 2, height / 5));
     todraw[0]->setPosition(Vector2f(but1.getPosition().x + boundingBoxB1.width + 10, 0));
     todraw[0]->setOutlineColor(Color::White);
     todraw[0]->setOutlineThickness(10);
-    Text** todrawtext = new Text*[1];
+    Text** todrawtext = new Text * [1];
     todrawtext[0] = new Text;
     todrawtext[0]->setFillColor(Color::Black);
     todrawtext[0]->setPosition(todraw[0]->getPosition());
     todrawtext[0]->setCharacterSize(28);
-   
+
     Sprite userButton;
     userButton.setTexture(userTexture);
     userButton.setScale(1, 1);
@@ -76,21 +76,20 @@ void Driver::Run()
     loginUserId.setFont(font);
     loginUserId.setFillColor(Color::Black);
     loginUserId.setCharacterSize(22);
-    loginUserId.setPosition(userButton.getPosition().x+7,(loginUserId.getPosition().y+18));
-    
+    loginUserId.setPosition(userButton.getPosition().x + 7, (loginUserId.getPosition().y + 18));
+
     Sprite addUserB;
     addUserB.setTexture(addTexture);
     addUserB.setScale(1, 1);
-    addUserB.setPosition(width-userButton.getLocalBounds().width-150, 10);
+    addUserB.setPosition(width - userButton.getLocalBounds().width - 150, 10);
 
     FloatRect boundingBoxAddUserB = addUserB.getGlobalBounds();
 
-    CircleShape AddPostB(500);
-    AddPostB.setFillColor(Color::Cyan);
+    Sprite AddPostB = addUserB;
     AddPostB.setPosition(width / 2, 9 * height / 10);
-
+    FloatRect boundingBoxAddPostB = AddPostB.getGlobalBounds();
     FloatRect boundingBoxUserB = userButton.getGlobalBounds();
-    PopupForm popup(font, Vector2f((width/2)-500/2, (height/2)-350/2));
+    PopupForm popup(font, Vector2f((width / 2) - 500 / 2, (height / 2) - 350 / 2));
     Text Sample1;
     Text Sample2;
     int screenState = 0;
@@ -106,10 +105,11 @@ void Driver::Run()
     //allPages_[0]->AddPost();
     bool UserInputPopup = 0;
     bool changeUserPopup = 0;
+    bool addPostPopup = 0;
     //allUsers_[1]->DisplayPosts();
     bool on = 0;
     while (window.isOpen()) {
-   
+
         Event event;
         while (window.pollEvent(event)) {
             Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
@@ -124,8 +124,8 @@ void Driver::Run()
                     allUsers_[0]->ViewTimeline(currentDate_, window, font, height, width, num, todraw, todrawtext);
                     on = 1;
                 }
-            
-                   
+
+
                 if (boundingBoxAddUserB.contains(mousePos) && !UserInputPopup)
                 {
                     cout << "add user via window" << endl;
@@ -145,16 +145,24 @@ void Driver::Run()
                     num = 1;
 
                 }
+                if (boundingBoxAddPostB.contains(mousePos)&&!addPostPopup)
+                {
+                    addPostPopup = 1;
+                    cout << "add post via window:" << endl;
+                }
             }
-            if (UserInputPopup||screenState==0)
+            if (UserInputPopup || screenState == 0)
             {
-                popup.handleEvent(event,"Enter name:",0);
+                popup.handleEvent(event, 2);
             }
             if (changeUserPopup)
             {
-                popup.handleEvent(event, "Enter name:", 1);
+                popup.handleEvent(event, 1);
             }
-            
+            if (addPostPopup)
+            {
+                popup.handleEvent(event, 3, "Enter Description of post:");
+            }
         }
 
         window.clear(myColor);
@@ -166,10 +174,10 @@ void Driver::Run()
                 screenState = 1;
                 CreateUser(popup.getID(), popup.getTitle());
                 SetLoginUser(allUsers_[0]);
-                loginUserId.setString("Logged in: "+popup.getID());
+                loginUserId.setString("Logged in: " + popup.getID());
                 popup.reset();
             }
-            
+
 
         }
         else if (screenState == 1)
@@ -209,26 +217,37 @@ void Driver::Run()
                 if (popup.isDone())
                 {
                     bool found = 0;
-                    for (int i = 0; i < userCount_&&!found; i++)
+                    for (int i = 0; i < userCount_ && !found; i++)
                     {
                         if (allUsers_[i]->GetId() == popup.getID())
                         {
                             found = 1;
                             SetLoginUser(allUsers_[i]);
-                            loginUserId.setString("Logged in: "+popup.getID());
+                            loginUserId.setString("Logged in: " + popup.getID());
                         }
-                         
+
                     }
                     popup.reset();
                     changeUserPopup = 0;
                 }
+            }
+            if (addPostPopup)
+            {
+                popup.draw(window);
+                if (popup.isDone())
+                {
+                    loginUser_->AddPost(currentDate_,popup.getID(),popup.getTitle(),popup.getDate());
+                    popup.reset();
+                    addPostPopup = 0;
+                }
+             
             }
 
 
         }
         window.display();
     }
-    
+
 }
 
 void Driver::SetLoginUser(User* user)
@@ -238,7 +257,7 @@ void Driver::SetLoginUser(User* user)
 }
 void Driver::CreateUser()
 {
-    User** temp = new User*[userCount_+1];
+    User** temp = new User * [userCount_ + 1];
     for (int i = 0; i < userCount_; i++)
     {
         temp[i] = allUsers_[i];
@@ -269,31 +288,31 @@ void Driver::CreateUser(string id, string name)
 
 void Driver::CreatePage()
 {
-    Page** temp = new Page* [pageCount_ + 1];
+    Page** temp = new Page * [pageCount_ + 1];
     for (int i = 0; i < pageCount_; i++)
     {
         temp[i] = allPages_[i];
     }
     cout << "enter id:";
-    string id, name,ownerid;
+    string id, name, ownerid;
     getline(cin, id);
     cout << "enter title:";
     getline(cin, name);
     cout << "enter owner id:";
     getline(cin, ownerid);
     bool found = 0;
-    for (int i = 0; i < userCount_&&!found; i++)
+    for (int i = 0; i < userCount_ && !found; i++)
     {
         if (allUsers_[i]->GetId() == ownerid)
         {
-            temp[pageCount_] = new Page(id,allUsers_[i],name);
+            temp[pageCount_] = new Page(id, allUsers_[i], name);
             found = 1;
         }
     }
     delete[]allPages_;
     allPages_ = temp;
     pageCount_++;
-    
+
 }
 Driver::~Driver()
 {
@@ -316,7 +335,7 @@ Driver::Driver()
     allPages_ = nullptr;
     userCount_ = 0;
     pageCount_ = 0;
-    currentDate_ = Date(0,0,0);
+    currentDate_ = Date(0, 0, 0);
 }
 
 User* Driver::GetLoginUser()
