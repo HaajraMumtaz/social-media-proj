@@ -4,7 +4,7 @@
 #include "Page.h"
 #include "PopUpForm.h"
 using namespace sf;
-
+using namespace std;
 void Driver::Run()
 {
 
@@ -22,7 +22,7 @@ void Driver::Run()
     inputWindow.setFillColor(Color::Cyan);
     Sprite but1;
     Texture buttonTexture;
-    if (!buttonTexture.loadFromFile("D:\\haajra\\oop-proj\\UI inspo\\canva-elements\\2-n.png"))
+    if (!buttonTexture.loadFromFile("D:\\haajra\\oop-proj\\UI inspo\\canva-elements\\2\\6.png"))
     {
         cout << "unable to load" << endl;
     }
@@ -32,12 +32,17 @@ void Driver::Run()
         cout << "cant load" << endl;
     }
     Texture userTexture;
-    if (!userTexture.loadFromFile("D:\\haajra\\oop-proj\\UI inspo\\canva-elements\\4 (2).png"))
+    if (!userTexture.loadFromFile("D:\\haajra\\oop-proj\\UI inspo\\canva-elements\\2\\2.png"))
     {
         cout << "unable to load" << endl;
     }
     Texture addTexture;
-    if (!addTexture.loadFromFile("D:\\haajra\\oop-proj\\UI inspo\\canva-elements\\3 (2).png"))
+    if (!addTexture.loadFromFile("D:\\haajra\\oop-proj\\UI inspo\\canva-elements\\2\\4.png"))
+    {
+        cout << "unable to load" << endl;
+    }
+    Texture searchTexture;
+    if (!searchTexture.loadFromFile("D:\\haajra\\oop-proj\\UI inspo\\canva-elements\\2\\3.png"))
     {
         cout << "unable to load" << endl;
     }
@@ -45,7 +50,7 @@ void Driver::Run()
 
 
     but1.setTexture(buttonTexture);
-    but1.setScale(0.2, 0.2);
+    but1.setScale(0.9, 0.9);
 
     but1.setPosition(10, window.getSize().y / 3);
     Sprite but3 = but1;
@@ -55,6 +60,7 @@ void Driver::Run()
     FloatRect boundingBoxB1 = but1.getGlobalBounds();
     FloatRect boundingBoxB2 = but2.getGlobalBounds();
     FloatRect boundingBoxB3 = but3.getGlobalBounds();
+   
     int num = 1;
     RectangleShape** todraw = new RectangleShape * [1];
     todraw[0] = new RectangleShape(Vector2f(width / 2, height / 5));
@@ -71,26 +77,48 @@ void Driver::Run()
     userButton.setTexture(userTexture);
     userButton.setScale(1, 1);
     userButton.setPosition(0, 0);
-    userButton.setPosition(width - boundingBoxB3.width, 10);
+
+    userButton.setPosition(width - userButton.getLocalBounds().width-50, 0);
     Text loginUserId;
     loginUserId.setFont(font);
     loginUserId.setFillColor(Color::Black);
     loginUserId.setCharacterSize(22);
-    loginUserId.setPosition(userButton.getPosition().x + 7, (loginUserId.getPosition().y + 18));
-
+    loginUserId.setPosition(userButton.getPosition().x, (userButton.getPosition().y + 50));
+    
     Sprite addUserB;
     addUserB.setTexture(addTexture);
     addUserB.setScale(1, 1);
-    addUserB.setPosition(width - userButton.getLocalBounds().width - 150, 10);
+    addUserB.setPosition(width - userButton.getLocalBounds().width-addUserB.getLocalBounds().width-70, 30);
     FloatRect boundingBoxAddUserB = addUserB.getGlobalBounds();
 
     Sprite addPostB = addUserB;
-    addPostB.setPosition(width / 2, 9 * height / 10);
-
+    int buttonGapPos = (width - addPostB.getLocalBounds().width * 4) / 4;
+    addPostB.setPosition(buttonGapPos, 9 * height / 10);
+    int downButtonWidth = addPostB.getLocalBounds().width;
     Sprite addFriendB;
     addFriendB = addPostB;
-    addFriendB.setPosition(width / 3, 9 * height / 10);
+    addFriendB.setPosition(addPostB.getPosition().x+downButtonWidth+buttonGapPos, 9 * height / 10);
 
+    Sprite likePageB;
+    likePageB = addFriendB;
+    likePageB.setPosition(addFriendB.getPosition().x +downButtonWidth+ buttonGapPos, 9 * height / 10);
+
+    Sprite addPagePostB;
+    addPagePostB= addFriendB;
+    addPagePostB.setPosition(likePageB.getPosition().x + downButtonWidth + buttonGapPos, 9 * height / 10);
+
+
+    Sprite searchUserB;
+    searchUserB.setTexture(searchTexture);
+    searchUserB.setScale(0.9, 0.9);
+    searchUserB.setPosition(width - searchUserB.getLocalBounds().width - 30, but1.getPosition().y);
+
+    Sprite searchPageB;
+    searchPageB = searchUserB;
+    searchPageB.setPosition(searchUserB.getPosition().x, but2.getPosition().y);
+    Sprite searchPostB;
+    searchPostB = searchUserB;
+    searchPostB.setPosition(searchUserB.getPosition().x, but3.getPosition().y);
     FloatRect boundingBoxAddPostB = addPostB.getGlobalBounds();
     FloatRect boundingBoxUserB = userButton.getGlobalBounds();
     FloatRect boundingBoxAddFriendB = addFriendB.getGlobalBounds();
@@ -114,6 +142,7 @@ void Driver::Run()
     bool addFriendPopup = 0;
     //allUsers_[1]->DisplayPosts();
     bool on = 0;
+    bool on2 = 0;
     while (window.isOpen()) {
 
         Event event;
@@ -129,9 +158,22 @@ void Driver::Run()
                     cout << "ok works" << endl;
                     loginUser_->ViewTimeline(currentDate_, window, font, height, width, num, todraw, todrawtext);
                     on = 1;
+                    on2 = 0;
                 }
-
-
+                if (boundingBoxB2.contains(mousePos) && !on2)
+                {
+                    on = 0;
+                    on2 = 1;
+                    for (int i = 1; i < num; i++)
+                    {
+                        delete todraw[i];
+                        delete todrawtext[i];
+                    }
+                    num = 1;
+                    cout<< "displaying your own posts:";
+                    loginUser_->DisplayPosts(window,font,height,width,num,todraw,todrawtext);
+                   
+                }
                 if (boundingBoxAddUserB.contains(mousePos) && !UserInputPopup)
                 {
                     cout << "add user via window" << endl;
@@ -201,11 +243,15 @@ void Driver::Run()
             window.draw(userButton);
             window.draw(addPostB);
             window.draw(addFriendB);
+            window.draw(likePageB);
+            window.draw(addPagePostB);
             window.draw(loginUserId);
-          
+            window.draw(searchUserB);
+            window.draw(searchPostB);
+            window.draw(searchPageB);
             /*  window.draw(*todraw[0]);*/
 
-            if (on)
+            if (on||on2)
             {
                 for (int i = 1; i < num; i++)
                 {
