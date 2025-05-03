@@ -10,6 +10,7 @@ Page::Page(const string id,User* owner, const string title, Post** postarr,int n
 	postsArr_ = postarr;
 	numLikes_=numlikes;
 	numPosts_ = numposts;
+	cout << "Page created " << Id_ << endl;
 }
 
 string Page::GetId()

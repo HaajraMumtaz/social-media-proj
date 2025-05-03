@@ -15,10 +15,10 @@ void Driver::Run()
     sf::Color myColor(185, 207, 208);
     RenderWindow window(VideoMode(width, height), "Enter ID and Name");
 
-    RectangleShape inputWindow(Vector2f(450, 300));
+    RectangleShape inputWindow(Vector2f(500, 350));
     RectangleShape rect1(Vector2f(100, 100));
 
-    inputWindow.setPosition(200, 200);
+    inputWindow.setPosition(Vector2f(((width / 2) - 500 / 2), ((height / 2) - 350 / 2)+20));
     inputWindow.setFillColor(Color::Cyan);
     Sprite but1;
     Texture buttonTexture;
@@ -57,14 +57,14 @@ void Driver::Run()
     but3.setPosition(but1.getPosition().x, but1.getPosition().y + (height / 3));
     Sprite but2 = but1;
     but2.setPosition((but1.getPosition().x + but3.getPosition().x) / 2, (but1.getPosition().y + but3.getPosition().y) / 2);
-    FloatRect boundingBoxB1 = but1.getGlobalBounds();
-    FloatRect boundingBoxB2 = but2.getGlobalBounds();
-    FloatRect boundingBoxB3 = but3.getGlobalBounds();
+    FloatRect bbB1 = but1.getGlobalBounds();
+    FloatRect bbB2 = but2.getGlobalBounds();
+    FloatRect bbB3 = but3.getGlobalBounds();
    
     int num = 1;
     RectangleShape** todraw = new RectangleShape * [1];
     todraw[0] = new RectangleShape(Vector2f(width / 2, height / 5));
-    todraw[0]->setPosition(Vector2f(but1.getPosition().x + boundingBoxB1.width + 10, 0));
+    todraw[0]->setPosition(Vector2f(but1.getPosition().x + bbB1.width + 10, 0));
     todraw[0]->setOutlineColor(Color::White);
     todraw[0]->setOutlineThickness(10);
     Text** todrawtext = new Text * [1];
@@ -89,7 +89,7 @@ void Driver::Run()
     addUserB.setTexture(addTexture);
     addUserB.setScale(1, 1);
     addUserB.setPosition(width - userButton.getLocalBounds().width-addUserB.getLocalBounds().width-70, 30);
-    FloatRect boundingBoxAddUserB = addUserB.getGlobalBounds();
+    FloatRect bbAddUserB = addUserB.getGlobalBounds();
 
     Sprite addPostB = addUserB;
     int buttonGapPos = (width - addPostB.getLocalBounds().width * 4) / 4;
@@ -107,7 +107,6 @@ void Driver::Run()
     addPagePostB= addFriendB;
     addPagePostB.setPosition(likePageB.getPosition().x + downButtonWidth + buttonGapPos, 9 * height / 10);
 
-
     Sprite searchUserB;
     searchUserB.setTexture(searchTexture);
     searchUserB.setScale(0.9, 0.9);
@@ -116,12 +115,22 @@ void Driver::Run()
     Sprite searchPageB;
     searchPageB = searchUserB;
     searchPageB.setPosition(searchUserB.getPosition().x, but2.getPosition().y);
+
     Sprite searchPostB;
     searchPostB = searchUserB;
     searchPostB.setPosition(searchUserB.getPosition().x, but3.getPosition().y);
-    FloatRect boundingBoxAddPostB = addPostB.getGlobalBounds();
-    FloatRect boundingBoxUserB = userButton.getGlobalBounds();
-    FloatRect boundingBoxAddFriendB = addFriendB.getGlobalBounds();
+
+    Sprite addPageB;
+    addPageB = addUserB;
+    addPageB.setPosition(addUserB.getPosition().x, addUserB.getPosition().y + 80);
+
+    Sprite opt1;
+    Sprite opt2;
+
+    FloatRect bbAddPostB = addPostB.getGlobalBounds();
+    FloatRect bbUserB = userButton.getGlobalBounds();
+    FloatRect bbAddFriendB = addFriendB.getGlobalBounds();
+    FloatRect bbAddPageB = addPageB.getGlobalBounds();
     PopupForm popup(font, Vector2f((width / 2) - 500 / 2, (height / 2) - 350 / 2));
     Text Sample1;
     Text Sample2;
@@ -140,9 +149,16 @@ void Driver::Run()
     bool changeUserPopup = 0;
     bool addPostPopup = 0;
     bool addFriendPopup = 0;
+    bool addPagePopup = 0;
+    bool popupOpen = 0;
+    bool subButton1Clicked=0,subButton2Clicked = 0;
+    bool likePage=0;
+    bool defaultstate = 0;
+    int state = -1;//0-timeline,1- homepage 2- details 3-useriput 4-changeuser 5-addpost
     //allUsers_[1]->DisplayPosts();
     bool on = 0;
     bool on2 = 0;
+    bool on3 = 0;
     while (window.isOpen()) {
 
         Event event;
@@ -151,36 +167,77 @@ void Driver::Run()
             if (event.type == Event::Closed) {
                 window.close();
             }
-            if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
+            if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left&&!popupOpen)
             {
-                if (boundingBoxB1.contains(mousePos) && !on)
+                if (bbB1.contains(mousePos) && state!=0)
                 {
                     cout << "ok works" << endl;
+                    if (num != 1)
+                    {
+                        for (int i = 1; i < num; i++)
+                        {
+                            delete todraw[i];
+                            delete todrawtext[i];
+                        }
+                        num = 1;
+                    }
                     loginUser_->ViewTimeline(currentDate_, window, font, height, width, num, todraw, todrawtext);
                     on = 1;
                     on2 = 0;
+                    on3 = 0;
+                    popupOpen = 0;
+                    subButton1Clicked = 0;
                 }
-                if (boundingBoxB2.contains(mousePos) && !on2)
+                if (bbB2.contains(mousePos) && !on2)
                 {
                     on = 0;
                     on2 = 1;
-                    for (int i = 1; i < num; i++)
+                    if (num != 1)
                     {
-                        delete todraw[i];
-                        delete todrawtext[i];
+                        for (int i = 1; i < num; i++)
+                        {
+                            delete todraw[i];
+                            delete todrawtext[i];
+                        }
+                        num = 1;
                     }
-                    num = 1;
                     cout<< "displaying your own posts:";
                     loginUser_->DisplayPosts(window,font,height,width,num,todraw,todrawtext);
-                   
+                    popupOpen = 0;
+                    on3 = 0;
+                    subButton1Clicked = 0;
                 }
-                if (boundingBoxAddUserB.contains(mousePos) && !UserInputPopup)
+                if (bbB3.contains(mousePos) && !on3)
+                {
+
+                    on = on2 = 0;
+                    popupOpen = 1;
+                    on3 = 1;
+                    opt1 = opt2 = addPostB;
+                    popupOpen = 1;
+
+                    if (num != 1)
+                    {
+                        for (int i = 1; i < num; i++)
+                        {
+                            delete todraw[i];
+                            delete todrawtext[i];
+                        }
+                        num = 1;
+                    }
+                    opt1.setPosition((inputWindow.getPosition().x + but1.getLocalBounds().width/2)-40, (inputWindow.getPosition().y + but1.getLocalBounds().height));
+                    opt2.setPosition(opt1.getPosition().x, opt1.getPosition().y + 100);
+
+                    cout << "atleast here" << endl;
+                }
+                if (bbAddUserB.contains(mousePos) && !UserInputPopup)
                 {
                     cout << "add user via window" << endl;
                     UserInputPopup = 1;
+                    popupOpen = 1;
 
                 }
-                if (boundingBoxUserB.contains(mousePos))
+                if (bbUserB.contains(mousePos))
                 {
                     on = 0;
                     changeUserPopup = 1;
@@ -191,17 +248,30 @@ void Driver::Run()
                         delete todrawtext[i];
                     }
                     num = 1;
+                    popupOpen = 1;
 
                 }
-                if (boundingBoxAddPostB.contains(mousePos)&&!addPostPopup)
+                if (bbAddPostB.contains(mousePos)&&!addPostPopup)
                 {
                     addPostPopup = 1;
                     cout << "add post via window:" << endl;
+                    popupOpen = 1;
                 }
-                if (boundingBoxAddFriendB.contains(mousePos) && !addFriendPopup)
+                if (bbAddFriendB.contains(mousePos) && !addFriendPopup)
                 {
                     addFriendPopup = 1;
                     cout << "add friend via window" << endl;
+                    popupOpen = 1;
+                }
+                if (bbAddPageB.contains(mousePos) && !addPagePopup)
+                {
+                    addPagePopup = 1;
+                    popupOpen = 1;
+                }
+                if (likePageB.getGlobalBounds().contains(mousePos) && !likePage)
+                {
+                    likePage = 1;
+                    popupOpen = 1;
                 }
             }
             if (UserInputPopup || screenState == 0)
@@ -216,6 +286,37 @@ void Driver::Run()
             {
                 popup.handleEvent(event, 3, "Enter Description of post:");
             }
+            if (addPagePopup)
+            {
+                popup.handleEvent(event, 3, "Enter Owner ID:", "Enter Title:");
+            }
+            if (on3)
+            {
+                cout << "here in event" << endl;
+                    if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
+                    {
+                        if (opt1.getGlobalBounds().contains(mousePos))
+                        {
+                            subButton1Clicked = 1;
+                            popupOpen = 0;
+                            cout << "going in to get stuck" << endl;
+                            loginUser_->DisplayDetails(window, font, height, width, num, todraw, todrawtext);
+                        }
+                        if(opt2.getGlobalBounds().contains(mousePos))
+                        {
+                            subButton1Clicked = 0;
+                            defaultstate = 1;
+                            popupOpen = 0;
+                            on3 = 0;
+                            
+                        }
+                    }
+   
+            }
+            if (likePage)
+            {
+                popup.handleEvent(event, 1);
+            }
            
         }
 
@@ -229,6 +330,7 @@ void Driver::Run()
                 CreateUser(popup.getID(), popup.getTitle());
                 SetLoginUser(allUsers_[0]);
                 loginUserId.setString("Logged in: " + popup.getID());
+                popupOpen = 0;
                 popup.reset();
             }
 
@@ -236,7 +338,9 @@ void Driver::Run()
         }
         else if (screenState == 1)
         {
+            
             window.draw(addUserB);
+            window.draw(addPageB);
             window.draw(but1);
             window.draw(but2);
             window.draw(but3);
@@ -249,6 +353,38 @@ void Driver::Run()
             window.draw(searchUserB);
             window.draw(searchPostB);
             window.draw(searchPageB);
+            if (on3)
+            {    
+                if (!subButton1Clicked)
+                {
+                    /*cout << "here in display" << endl;*/
+                    if (!defaultstate)
+                    {
+                        window.draw(inputWindow);
+                        window.draw(opt1);
+                        window.draw(opt2);
+                    }
+                    else
+                    {
+                        cout << "in else" << endl;
+                        on3 = 0;
+                        popupOpen = 0;
+                        
+                    }
+                }
+                
+
+                if (subButton1Clicked)
+                {
+                    for (int i = 1; i < num; i++)
+                    {
+                        window.draw(*todraw[i]);
+                        window.draw(*todrawtext[i]);
+                    }
+                }
+                
+            }
+          
             /*  window.draw(*todraw[0]);*/
 
             if (on||on2)
@@ -267,6 +403,7 @@ void Driver::Run()
                 {
                     CreateUser(popup.getID(), popup.getTitle());
                     UserInputPopup = 0;
+                    popupOpen = 0;
                     popup.reset();
                 }
 
@@ -289,6 +426,7 @@ void Driver::Run()
                     }
                     popup.reset();
                     changeUserPopup = 0;
+                    popupOpen = 0;
                 }
             }
             if (addPostPopup)
@@ -299,6 +437,7 @@ void Driver::Run()
                     loginUser_->AddPost(currentDate_,popup.getID(),popup.getTitle(),popup.getDate());
                     popup.reset();
                     addPostPopup = 0;
+                    popupOpen = 0;
                 }
              
             }
@@ -308,8 +447,9 @@ void Driver::Run()
                 if (popup.isDone())
                 {
                     bool found = 0;
-                    for (int i = 0; i < userCount_&&!found; i++)
+                    for (int i = 0; i < userCount_&&!found&&popup.getID()!=loginUser_->GetId(); i++)
                     {
+                        
                         if (allUsers_[i]->GetId() == popup.getID())
                         {
                             loginUser_->AddFriend(allUsers_[i]);
@@ -319,7 +459,59 @@ void Driver::Run()
                     }
                     popup.reset();
                     addFriendPopup = 0;
+                    popupOpen = 0;
                 }
+            }
+            if (addPagePopup)
+            {
+                popup.draw(window);
+                if (popup.isDone())
+                {
+                    bool found = 0;
+                    for (int i = 0; i < userCount_ && !found; i++)
+                    {
+                        if (allUsers_[i]->GetId() == popup.getTitle())
+                        {
+                            Page** temp = new Page * [pageCount_ + 1];
+                            for (int i = 0; i < pageCount_; i++)
+                            {
+                                temp[i] = allPages_[i];
+                            }
+                            delete[]allPages_;
+                            allPages_ = temp;
+                            found = 1;
+                            allPages_[pageCount_++] = new Page(popup.getID(), allUsers_[i], popup.getDate());
+                            cout << allPages_[pageCount_ - 1]->GetId() << endl;
+                            
+                        }
+
+                    }
+                    popupOpen = 0;
+                    addPagePopup = 0;
+                    popup.reset();
+                }
+             
+            }
+            if (likePage)
+            {
+                popup.draw(window);
+                if (popup.isDone())
+
+                {
+                    bool found =0;
+                    for (int i = 0; i <pageCount_&& !found; i++)
+                    {
+                        if (allPages_[i]->GetId() == popup.getID())
+                        {
+                            found = 1;
+                            loginUser_->LikePage(allPages_[i]);
+                        }
+                    }
+                    likePage = 0;
+                    popupOpen = 0;
+                    popup.reset();
+                }
+               
             }
 
 

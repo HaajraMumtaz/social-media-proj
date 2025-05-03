@@ -27,6 +27,10 @@ public:
 	void AddPost();
 	void DisplayPage(Date& current, RenderWindow& window, sf::Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
 	bool DisplayValidPosts(Date& current, RenderWindow& window,Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
+	inline string GetName()
+	{
+		return title_;
+	}
 	~Page();
 
 

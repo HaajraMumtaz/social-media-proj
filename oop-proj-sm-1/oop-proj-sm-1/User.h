@@ -33,11 +33,24 @@ public:
 	void AddFriend(User*);
 	void AddPost(Date&);
 	void AddPost(Date& current, string id, string desc, string date);
-	void ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr);
+	void ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
 	void LikePage(Page** pagearr,int totalpages);
+	void LikePage(Page*);
 	int GetNumPosts();
 	bool DisplayValidPosts(Date& current,RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
 	void DisplayDetails();
-	void ViewHome(Date& current, RenderWindow&window, Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr);
+	void ViewHome(Date& current, RenderWindow&window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
+	void DisplayDetails(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
+	void DisplayFriends(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
+	void DisplayLikedPages(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
+	void DisplayLikedPosts(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
+	inline string GetName()
+	{
+		return name_;
+	}
+	inline int GetNumLikedPg()
+	{
+		return numLikedPages_;
+	}
 	~User();
 };

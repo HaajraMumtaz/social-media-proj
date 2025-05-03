@@ -20,7 +20,7 @@ PopupForm::PopupForm(const Font& font, Vector2f position) {
     inputDisplay.setPosition(position.x + 20, position.y + 70);
 }
 
-void PopupForm::handleEvent(const Event& event, int num, const string& prompt2)
+void PopupForm::handleEvent(const Event& event, int num, const string& prompt2,const string&prompt3)
 {
 
     if (stage == 3) return;
@@ -51,18 +51,17 @@ void PopupForm::handleEvent(const Event& event, int num, const string& prompt2)
                 {
                     if (num > 2)
                     {
-                        title = currentInput;
-                        currentInput.clear();
                         stage = 2;
-                        promptText.setString("Enter Date: (DD/MM/YYYY)");
-                        stage = 2;
+                        promptText.setString(prompt3);
+                     
                     }
                     else
                     {
-                        title = "";
                         stage = 3;
 
                     }
+                    title = currentInput;
+                    currentInput.clear();
                 }
             }
             else if (stage == 2)
