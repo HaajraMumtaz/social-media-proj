@@ -145,20 +145,11 @@ void Driver::Run()
     //allUsers_[1]->AddPost(currentDate_);
     //allUsers_[1]->AddPost(currentDate_);
     //allPages_[0]->AddPost();
-    bool UserInputPopup = 0;
-    bool changeUserPopup = 0;
-    bool addPostPopup = 0;
-    bool addFriendPopup = 0;
-    bool addPagePopup = 0;
     bool popupOpen = 0;
     bool subButton1Clicked=0,subButton2Clicked = 0;
-    bool likePage=0;
     bool defaultstate = 0;
-    int state = -1;//0-timeline,1- homepage 2- details 3-useriput 4-changeuser 5-addpost
+    int state = -1;//0-timeline,1- homepage 2- details 3-userAdd 4-AddPage 5-changeuser 6-addpost 7-LikePage 8-addFriend
     //allUsers_[1]->DisplayPosts();
-    bool on = 0;
-    bool on2 = 0;
-    bool on3 = 0;
     while (window.isOpen()) {
 
         Event event;
@@ -182,16 +173,14 @@ void Driver::Run()
                         num = 1;
                     }
                     loginUser_->ViewTimeline(currentDate_, window, font, height, width, num, todraw, todrawtext);
-                    on = 1;
-                    on2 = 0;
-                    on3 = 0;
+                    state=0;
                     popupOpen = 0;
                     subButton1Clicked = 0;
                 }
-                if (bbB2.contains(mousePos) && !on2)
+                if (bbB2.contains(mousePos) && state!=1)
                 {
-                    on = 0;
-                    on2 = 1;
+                    
+                    state = 1;
                     if (num != 1)
                     {
                         for (int i = 1; i < num; i++)
@@ -204,15 +193,14 @@ void Driver::Run()
                     cout<< "displaying your own posts:";
                     loginUser_->DisplayPosts(window,font,height,width,num,todraw,todrawtext);
                     popupOpen = 0;
-                    on3 = 0;
                     subButton1Clicked = 0;
                 }
-                if (bbB3.contains(mousePos) && !on3)
+                if (bbB3.contains(mousePos) && state!=2)
                 {
 
-                    on = on2 = 0;
+                    
                     popupOpen = 1;
-                    on3 = 1;
+                    state = 2;
                     opt1 = opt2 = addPostB;
                     popupOpen = 1;
 
@@ -230,18 +218,17 @@ void Driver::Run()
 
                     cout << "atleast here" << endl;
                 }
-                if (bbAddUserB.contains(mousePos) && !UserInputPopup)
+                if (bbAddUserB.contains(mousePos) && state!=3)
                 {
                     cout << "add user via window" << endl;
-                    UserInputPopup = 1;
+                    state=3;
                     popupOpen = 1;
 
                 }
                 if (bbUserB.contains(mousePos))
                 {
-                    on = 0;
-                    changeUserPopup = 1;
-
+                    
+                    state = 5;
                     for (int i = 1; i < num; i++)
                     {
                         delete todraw[i];
@@ -251,52 +238,53 @@ void Driver::Run()
                     popupOpen = 1;
 
                 }
-                if (bbAddPostB.contains(mousePos)&&!addPostPopup)
+                if (bbAddPostB.contains(mousePos)&&state!=6)
                 {
-                    addPostPopup = 1;
+                    state=6;
                     cout << "add post via window:" << endl;
                     popupOpen = 1;
                 }
-                if (bbAddFriendB.contains(mousePos) && !addFriendPopup)
+                if (bbAddFriendB.contains(mousePos) && state!=8)
                 {
-                    addFriendPopup = 1;
+                    state = 8;
                     cout << "add friend via window" << endl;
                     popupOpen = 1;
                 }
-                if (bbAddPageB.contains(mousePos) && !addPagePopup)
+                if (bbAddPageB.contains(mousePos) && state!=4)
                 {
-                    addPagePopup = 1;
+                    state = 4;
                     popupOpen = 1;
                 }
-                if (likePageB.getGlobalBounds().contains(mousePos) && !likePage)
+                if (likePageB.getGlobalBounds().contains(mousePos) && state!=7)
                 {
-                    likePage = 1;
+                    state = 7;
                     popupOpen = 1;
                 }
             }
-            if (UserInputPopup || screenState == 0)
+            if (state==3|| screenState == 0)
             {
                 popup.handleEvent(event, 2);
             }
-            if (changeUserPopup || addFriendPopup)
+            if (state==5 || state==8)
             {
                 popup.handleEvent(event, 1);
             }
-            if (addPostPopup)
+            if (state==6)
             {
                 popup.handleEvent(event, 3, "Enter Description of post:");
             }
-            if (addPagePopup)
+            if (state==4)
             {
                 popup.handleEvent(event, 3, "Enter Owner ID:", "Enter Title:");
             }
-            if (on3)
+            if (state==2)
             {
                 cout << "here in event" << endl;
                     if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
                     {
                         if (opt1.getGlobalBounds().contains(mousePos))
                         {
+                            defaultstate = 0;
                             subButton1Clicked = 1;
                             popupOpen = 0;
                             cout << "going in to get stuck" << endl;
@@ -307,13 +295,13 @@ void Driver::Run()
                             subButton1Clicked = 0;
                             defaultstate = 1;
                             popupOpen = 0;
-                            on3 = 0;
+                            state = -1;
                             
                         }
                     }
    
             }
-            if (likePage)
+            if (state==7)
             {
                 popup.handleEvent(event, 1);
             }
@@ -353,7 +341,7 @@ void Driver::Run()
             window.draw(searchUserB);
             window.draw(searchPostB);
             window.draw(searchPageB);
-            if (on3)
+            if (state==2)
             {    
                 if (!subButton1Clicked)
                 {
@@ -367,7 +355,7 @@ void Driver::Run()
                     else
                     {
                         cout << "in else" << endl;
-                        on3 = 0;
+                        state = -1;
                         popupOpen = 0;
                         
                     }
@@ -387,7 +375,7 @@ void Driver::Run()
           
             /*  window.draw(*todraw[0]);*/
 
-            if (on||on2)
+            if (state==0||state==1)
             {
                 for (int i = 1; i < num; i++)
                 {
@@ -396,19 +384,19 @@ void Driver::Run()
 
                 }
             }
-            if (UserInputPopup)
+            if (state==3)
             {
                 popup.draw(window);
                 if (popup.isDone())
                 {
                     CreateUser(popup.getID(), popup.getTitle());
-                    UserInputPopup = 0;
+                    state = -1;
                     popupOpen = 0;
                     popup.reset();
                 }
 
             }
-            if (changeUserPopup)
+            if (state==5)
             {
                 popup.draw(window);
                 if (popup.isDone())
@@ -425,23 +413,23 @@ void Driver::Run()
 
                     }
                     popup.reset();
-                    changeUserPopup = 0;
+                    state = -1;
                     popupOpen = 0;
                 }
             }
-            if (addPostPopup)
+            if (state==6)
             {
                 popup.draw(window);
                 if (popup.isDone())
                 {
                     loginUser_->AddPost(currentDate_,popup.getID(),popup.getTitle(),popup.getDate());
                     popup.reset();
-                    addPostPopup = 0;
+                    state = -1;
                     popupOpen = 0;
                 }
              
             }
-            if (addFriendPopup)
+            if (state==8)
             {
                 popup.draw(window);
                 if (popup.isDone())
@@ -458,11 +446,11 @@ void Driver::Run()
                         }
                     }
                     popup.reset();
-                    addFriendPopup = 0;
+                    state = -1;
                     popupOpen = 0;
                 }
             }
-            if (addPagePopup)
+            if (state==4)
             {
                 popup.draw(window);
                 if (popup.isDone())
@@ -487,12 +475,13 @@ void Driver::Run()
 
                     }
                     popupOpen = 0;
-                    addPagePopup = 0;
+                    state = -1;
+             
                     popup.reset();
                 }
              
             }
-            if (likePage)
+            if (state==7)
             {
                 popup.draw(window);
                 if (popup.isDone())
@@ -507,7 +496,7 @@ void Driver::Run()
                             loginUser_->LikePage(allPages_[i]);
                         }
                     }
-                    likePage = 0;
+                    state = -1;
                     popupOpen = 0;
                     popup.reset();
                 }
