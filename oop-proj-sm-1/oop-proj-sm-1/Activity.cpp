@@ -19,15 +19,16 @@ void Activity::DisplayPost(RenderWindow& window, Font& font, int height, int wid
 }
 
 
-Memory::Memory(Post* original, string desc,string id,int d, int m, int y):Post(id,desc,d,m,y)
+Memory::Memory(Post* original, string desc,string id,string date):Post(id,desc,date)
 {
 	originalPost_ = original;
 	
 }
 void Memory::DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr)
 {
-	Post::DisplayPost(window,font,  height, width, num, toDrawArr, textDrawArr);
+
 	originalPost_->DisplayPost(window, font, height, width, num, toDrawArr, textDrawArr);
 }
+
 Activity::~Activity() = default;
 Memory::~Memory() = default;

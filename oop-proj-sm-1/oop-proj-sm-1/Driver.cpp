@@ -126,7 +126,9 @@ void Driver::Run()
 
     Sprite opt1;
     Sprite opt2;
+    Sprite opt3;
 
+   
     FloatRect bbAddPostB = addPostB.getGlobalBounds();
     FloatRect bbUserB = userButton.getGlobalBounds();
     FloatRect bbAddFriendB = addFriendB.getGlobalBounds();
@@ -145,11 +147,13 @@ void Driver::Run()
     //allUsers_[1]->AddPost(currentDate_);
     //allUsers_[1]->AddPost(currentDate_);
     //allPages_[0]->AddPost();
-    bool popupOpen = 0;
-    bool subButton1Clicked=0,subButton2Clicked = 0;
+    bool popupOpen = 0,completed=0;
+    bool subButton1Clicked=0,subButton2Clicked = 0,subButton3Clicked=0;
     bool defaultstate = 0;
     int state = -1;//0-timeline,1- homepage 2- details 3-userAdd 4-AddPage 5-changeuser 6-addpost 7-LikePage 8-addFriend
     //allUsers_[1]->DisplayPosts();
+
+    string name, id, date;
     while (window.isOpen()) {
 
         Event event;
@@ -225,7 +229,7 @@ void Driver::Run()
                     popupOpen = 1;
 
                 }
-                if (bbUserB.contains(mousePos))
+                if (bbUserB.contains(mousePos)&&state!=5)
                 {
                     
                     state = 5;
@@ -241,6 +245,10 @@ void Driver::Run()
                 if (bbAddPostB.contains(mousePos)&&state!=6)
                 {
                     state=6;
+                    opt1 = opt2 = opt3=addPostB;
+                    opt1.setPosition((inputWindow.getPosition().x + but1.getLocalBounds().width / 2) - 40, (inputWindow.getPosition().y + but1.getLocalBounds().height)-50);
+                    opt2.setPosition(opt1.getPosition().x, opt1.getPosition().y + 80);
+                    opt3.setPosition(opt2.getPosition().x, opt1.getPosition().y + 160);
                     cout << "add post via window:" << endl;
                     popupOpen = 1;
                 }
@@ -271,7 +279,39 @@ void Driver::Run()
             }
             if (state==6)
             {
-                popup.handleEvent(event, 3, "Enter Description of post:");
+               /* popup.handleEvent(event, 3, "Enter Description of post:");
+                cout << "here in post event" << endl;
+                popup.handleEvent(event, 3, "Enter title");*/
+                if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
+                {
+                   
+                    if (opt1.getGlobalBounds().contains(mousePos))
+                    {
+                        defaultstate = 0;
+                        subButton1Clicked = 1;
+                        popupOpen = 0;
+                        popup.handleEvent(event, 3);
+                       
+                    }
+                    if (opt2.getGlobalBounds().contains(mousePos))
+                    {
+                        subButton1Clicked = 0;
+                        subButton2Clicked = 1;
+                        defaultstate = 1;
+                        popupOpen = 0;
+                        popup.handleEvent(event, 2,"Enter originsl post ID:","Enter Description:");
+                       
+                    }
+                    if (opt3.getGlobalBounds().contains(mousePos))
+                    {
+                        subButton1Clicked = subButton2Clicked=0;
+                        subButton3Clicked = 1;
+                        defaultstate = 1;
+                        popupOpen = 0;
+                        
+
+                    }
+                }
             }
             if (state==4)
             {
@@ -419,16 +459,42 @@ void Driver::Run()
             }
             if (state==6)
             {
-                popup.draw(window);
+               popup.draw(window);
+
                 if (popup.isDone())
                 {
-                    loginUser_->AddPost(currentDate_,popup.getID(),popup.getTitle(),popup.getDate());
-                    popup.reset();
-                    state = -1;
-                    popupOpen = 0;
+                    if (subButton1Clicked)
+                    {
+                        subButton1Clicked = 0;
+                        loginUser_->AddPost(currentDate_,popup.getID(), popup.getTitle(), popup.getDate());
+                    }
                 }
+
+                if (completed && subButton1Clicked)
+                {
+
+                    loginUser_->AddPost(currentDate_,id, name, date);
+                    completed = 0;
+                    subButton1Clicked = 0;
+                    state = -1;
+                    cout << "simple post added:" << id << endl;
+                }
+                if (completed && subButton2Clicked)
+                {
+
+                    loginUser_->AddPost(currentDate_, id, name, date);
+                    completed = 0;
+                    subButton1Clicked = 0;
+                    state = -1;
+                    cout << "simple post added:" << id << endl;
+                }
+                window.draw(inputWindow);
+                window.draw(opt1);
+                window.draw(opt2);
+                window.draw(opt3);
              
             }
+            
             if (state==8)
             {
                 popup.draw(window);

@@ -3,7 +3,7 @@
 #include "Page.h"
 #include "Post.h"
 #include "Common.h"
-
+#include"Activity.h"
 using namespace sf;
 User::User()
 {
@@ -272,4 +272,16 @@ void User:: LikePage(Page* pageToLike)
 	numLikedPages_++;
 
 	
+}
+void User::AddPost(Date& current, string id, string desc, string date, Post* original)
+{
+	Post** tempArr = new Post * [numPosts_ + 1];
+	for (int i = 0; i < numPosts_; i++)
+	{
+		tempArr[i] = oPostArr_[i];
+	}
+	tempArr[numPosts_] = new Memory(original,id,desc,date);
+	numPosts_++;
+	delete[]oPostArr_;
+	oPostArr_ = tempArr;
 }

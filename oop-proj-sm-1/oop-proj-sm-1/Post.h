@@ -17,9 +17,9 @@ private:
 	string description_;//can be an image path
 public:
 	Post();
-	Post(string ID, string desc,int d, int m , int y);
+	Post(string ID, string desc,string date);
 	void Input();
-	void setPost(string id, string desc, string date);
+	virtual void setPost(string id, string desc, string date);
 	void SetDetails(const string**&);
 	void AddComment(Comment&);
 	string GetId();

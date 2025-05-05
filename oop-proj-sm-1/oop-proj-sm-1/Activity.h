@@ -21,7 +21,9 @@ class Memory :public Post
 private:
 	Post* originalPost_;
 public:
-	Memory(Post* original, string desc,string id,int d, int m , int y);
+	
+	/*void setPost(string id="", string desc="", string date="", Post* original=nullptr);*/
+	Memory(Post* original, string desc,string id,string date);
 	void DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr) override;
 	~Memory() override;
 };

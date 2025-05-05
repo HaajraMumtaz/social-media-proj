@@ -26,5 +26,10 @@ public:
     string getID();
     string getTitle();
     string getDate();
+    inline void setPrompt(string toSet)
+    {
+        promptText.setString(toSet);
+
+    }
     void reset();
 };

@@ -98,10 +98,10 @@ void Post::SetDetails(const string**&arr)
 
     
 }
-Post::Post(string id, string description,int d, int m, int y)
+Post::Post(string id, string description,string Date)
     :Id_(id), description_(description)
 {
-    date_= Date(d, m, y);
+    this->setDate(Date);
     usersLiked_ = nullptr;
     commentsArr_ = nullptr;
     numberLikes_ = 0;

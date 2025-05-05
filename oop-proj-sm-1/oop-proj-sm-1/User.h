@@ -33,6 +33,8 @@ public:
 	void AddFriend(User*);
 	void AddPost(Date&);
 	void AddPost(Date& current, string id, string desc, string date);
+	void AddPost(Date& current, string id, string desc, string date,string type, string value);
+	void AddPost(Date& current, string id, string desc, string date,Post*original);
 	void ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
 	void LikePage(Page** pagearr,int totalpages);
 	void LikePage(Page*);
@@ -44,6 +46,7 @@ public:
 	void DisplayFriends(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
 	void DisplayLikedPages(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
 	void DisplayLikedPosts(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
+	
 	inline string GetName()
 	{
 		return name_;
