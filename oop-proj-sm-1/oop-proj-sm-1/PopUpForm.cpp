@@ -2,6 +2,7 @@
 using namespace std;
 using namespace sf;
 PopupForm::PopupForm(const Font& font, Vector2f position) {
+
     box.setSize(Vector2f(500, 350));
     box.setFillColor(sf::Color(50, 50, 50, 230));
     box.setOutlineColor(sf::Color::White);
@@ -18,6 +19,8 @@ PopupForm::PopupForm(const Font& font, Vector2f position) {
     inputDisplay.setCharacterSize(20);
     inputDisplay.setFillColor(sf::Color::Cyan);
     inputDisplay.setPosition(position.x + 20, position.y + 70);
+ 
+
 }
 
 void PopupForm::handleEvent(const Event& event, int num, const string& prompt2,const string&prompt3)
@@ -111,3 +114,92 @@ string PopupForm::getDate()
 {
     return date;
 }
+
+
+
+    DisplayLayout::DisplayLayout(const Font& font, Vector2f position, Vector2f size)
+    {
+  
+        
+
+        box_.setSize(size);
+        box_.setPosition(position);
+        box_.setFillColor(Color(220, 220, 220));
+        box_.setOutlineColor(Color::Black);
+        box_.setOutlineThickness(2);
+
+        descText_.setFont(font);
+        dateText_.setFont(font);
+        idText_.setFont(font);
+        ownerText_.setFont(font);
+
+        descText_.setCharacterSize(18);
+        dateText_.setCharacterSize(18);
+        idText_.setCharacterSize(18);
+        ownerText_.setCharacterSize(18);
+
+        descText_.setFillColor(Color::Black);
+        dateText_.setFillColor(Color::Black);
+        idText_.setFillColor(Color::Black);
+        ownerText_.setFillColor(Color::Black);
+    
+    }
+
+    void DisplayLayout::setBase(const Font& font, Vector2f position, Vector2f size)
+    {
+        box_.setSize(size);
+        box_.setPosition(position);
+        box_.setFillColor(Color(220, 220, 220));
+        box_.setOutlineColor(Color::Black);
+        box_.setOutlineThickness(2);
+
+        descText_.setFont(font);
+        dateText_.setFont(font);
+        idText_.setFont(font);
+        ownerText_.setFont(font);
+
+        descText_.setCharacterSize(18);
+        dateText_.setCharacterSize(18);
+        idText_.setCharacterSize(18);
+        ownerText_.setCharacterSize(18);
+
+        descText_.setFillColor(Color::Black);
+        dateText_.setFillColor(Color::Black);
+        idText_.setFillColor(Color::Black);
+        ownerText_.setFillColor(Color::Black);
+
+    }
+    void DisplayLayout::setData(const string& id, const string& desc, const string& date, const string& owner)
+    {
+        id_ = id;
+        description_ = desc;
+        date_ = date;
+        ownerName_ = owner;
+
+        idText_.setString("ID: " + id_);
+        descText_.setString("Title: " + description_);
+        dateText_.setString("Date: " + date_);
+        ownerText_.setString("Owner: " + ownerName_);
+
+        // Adjust text positions relative to box_
+        Vector2f pos = box_.getPosition();
+        idText_.setPosition(pos.x + 10, pos.y + 10);
+        descText_.setPosition(pos.x + 10, pos.y + 40);
+        dateText_.setPosition(pos.x + 10, pos.y + 70);
+        ownerText_.setPosition(pos.x + 10, pos.y + 100);
+    }
+
+    void DisplayLayout::draw(RenderWindow& window)
+    {
+        window.draw(box_);
+        window.draw(idText_);
+        window.draw(ownerText_);
+      
+            window.draw(box_);
+            window.draw(idText_);
+            window.draw(descText_);
+            window.draw(dateText_);
+            window.draw(ownerText_);
+        
+        
+    }

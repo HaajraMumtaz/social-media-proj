@@ -3,6 +3,7 @@
 #include "Common.h"
 class User;
 class Comment;
+class DisplayLayout;
 using namespace sf;
 
 class Post
@@ -23,7 +24,7 @@ public:
 	void SetDetails(const string**&);
 	void AddComment(Comment&);
 	string GetId();
-	virtual void DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**&toDrawArr,Text**& textDrawArr);
+	virtual void DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	void DisplayLikedUsers();
 	void AddLike();
 	void SetDate(int d,int m, int y);

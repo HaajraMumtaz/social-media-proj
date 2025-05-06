@@ -5,34 +5,28 @@ using namespace std;
 #include "User.h"
 #include "Post.h"
 #include "Common.h"
+#include "PopUpForm.h"
 string Post:: GetId()
 {
     return Id_;
 }
-void Post::DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num,RectangleShape**& toDrawArr, Text**& textDrawArr)
+void Post::DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
 {
    
 
     cout << "num:" << num<<endl;
-    RectangleShape** temp = new RectangleShape*[num + 1];
-    Text** temp2 = new Text* [num + 1];
+    DisplayLayout** temp = new DisplayLayout*[num + 1];
     for (int i = 0; i < num; i++)
     {
-        temp[i] = toDrawArr[i];
-        temp2[i] = textDrawArr[i];
+        temp[i] = displayArr[i];
+       
     }
-    temp[num] = new RectangleShape(toDrawArr[0]->getSize());
-    temp[num]->setPosition(Vector2f(toDrawArr[0]->getPosition().x, temp[0]->getPosition().y +(num* temp[0]->getSize().y)));
-    temp2[num] = new Text;
-    temp2[num]->setPosition(temp[num]->getPosition());
-    temp2[num]->setString(description_);
-    temp2[num]->setCharacterSize(40);
-    temp2[num]->setFillColor(Color::Black);
-    temp2[num]->setFont(font);
-    delete[]textDrawArr;
-    textDrawArr = temp2;
-    delete[]toDrawArr;
-    toDrawArr = temp;
+    temp[num] = new DisplayLayout(font, { displayArr[0]->getPosition().x,displayArr[0]->getPosition().y + (num * displayArr[0]->getSize().y) }, displayArr[0]->getSize());
+  /*  temp[num]->setPosition(Vector2f(toDrawArr[0]->getPosition().x, temp[0]->getPosition().y +(num* temp[0]->getSize().y)));*/
+    
+    temp[num]->setData(this->Id_, this->description_, this->date_.getDate(), "");
+    delete[]displayArr;
+    displayArr = temp;
     num++;
 
     /*text.setPosition(window.getSize().x / 3.0f, (window.getSize().y /6.0f)+(num*textRect.height));*/

@@ -18,6 +18,13 @@ public:
 	int GetDay();
 	int GetMonth();
 	int GetYear();
+	inline string getDate()
+	{
+		string date = to_string(this->day_) + "//" + to_string(this->month_);
+		date = date + "//";
+		date = date + to_string(this->year_);
+		return(date);
+	}
 	~Date();
 };
 
@@ -33,10 +40,3 @@ public:
 
 };
 
-struct PostVisual
-{
-	RectangleShape* box;
-	Text* label;
-
-	PostVisual(RectangleShape* b, Text* l) : box(b), label(l) {}
-};

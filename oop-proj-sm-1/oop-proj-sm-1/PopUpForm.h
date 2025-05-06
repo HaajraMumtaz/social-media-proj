@@ -19,7 +19,7 @@ private:
     int stage = 0; // 0 = ID, 1 = Title, 2 = Date, 3=Done
    
 public:
-    PopupForm(const Font& font, Vector2f position);
+    PopupForm(const sf::Font& font, sf::Vector2f position);
     void handleEvent(const Event& event,int num, const string& prompt2="Enter name:",const string&prompt3="Enter Date (DD/MM/YYYY):");
     void draw(RenderWindow& window);
     bool isDone();
@@ -32,4 +32,49 @@ public:
 
     }
     void reset();
+};
+
+class Displaylayout
+{
+private:
+    RectangleShape box_;
+    String description_;
+    String Date_;
+    String Id_;
+    String OwnerName_;
+    Text descText_;
+    Text dateText_;
+    Text idText_;
+    Text ownerText_;
+public:
+
+};
+
+class DisplayLayout
+{
+private:
+    RectangleShape box_;
+    string description_;
+    string date_;
+    string id_;
+    string ownerName_;
+
+    Text descText_;
+    Text dateText_;
+    Text idText_;
+    Text ownerText_;
+
+public:
+    DisplayLayout(const sf::Font&font, sf::Vector2f position, sf::Vector2f size);
+    void setData(const string& id, const string& desc, const string& date, const string& owner);
+    void draw(RenderWindow& window);
+    inline Vector2f getPosition()
+    {
+        return box_.getPosition();
+    }
+    inline Vector2f getSize()
+    {
+        return box_.getSize();
+    }
+    void setBase(const Font& font, Vector2f position, Vector2f size);
 };

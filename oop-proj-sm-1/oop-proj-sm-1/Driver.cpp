@@ -65,14 +65,7 @@ void Driver::Run()
     RectangleShape** todraw = new RectangleShape * [1];
     todraw[0] = new RectangleShape(Vector2f(width / 2, height / 5));
     todraw[0]->setPosition(Vector2f(but1.getPosition().x + bbB1.width + 10, 0));
-    todraw[0]->setOutlineColor(Color::White);
-    todraw[0]->setOutlineThickness(10);
-    Text** todrawtext = new Text * [1];
-    todrawtext[0] = new Text;
-    todrawtext[0]->setFillColor(Color::Black);
-    todrawtext[0]->setPosition(todraw[0]->getPosition());
-    todrawtext[0]->setCharacterSize(28);
-
+   
     Sprite userButton;
     userButton.setTexture(userTexture);
     userButton.setScale(1, 1);
@@ -134,6 +127,10 @@ void Driver::Run()
     FloatRect bbAddFriendB = addFriendB.getGlobalBounds();
     FloatRect bbAddPageB = addPageB.getGlobalBounds();
     PopupForm popup(font, Vector2f((width / 2) - 500 / 2, (height / 2) - 350 / 2));
+    DisplayLayout layout(font,todraw[0]->getPosition(), {300, 150});
+    layout.setData("u1", "temp", "0/0/0", "haajra");
+    DisplayLayout** layoutArr = new DisplayLayout*[1];
+    layoutArr[0] = new DisplayLayout(font, todraw[0]->getPosition(), { 300, 150 });
     Text Sample1;
     Text Sample2;
     int screenState = 0;
@@ -171,12 +168,11 @@ void Driver::Run()
                     {
                         for (int i = 1; i < num; i++)
                         {
-                            delete todraw[i];
-                            delete todrawtext[i];
+                            delete layoutArr;
                         }
                         num = 1;
                     }
-                    loginUser_->ViewTimeline(currentDate_, window, font, height, width, num, todraw, todrawtext);
+                    loginUser_->ViewTimeline(currentDate_, window, font, height, width, num, layoutArr);
                     state=0;
                     popupOpen = 0;
                     subButton1Clicked = 0;
@@ -189,13 +185,12 @@ void Driver::Run()
                     {
                         for (int i = 1; i < num; i++)
                         {
-                            delete todraw[i];
-                            delete todrawtext[i];
+                            delete layoutArr[i];
                         }
                         num = 1;
                     }
                     cout<< "displaying your own posts:";
-                    loginUser_->DisplayPosts(window,font,height,width,num,todraw,todrawtext);
+                    loginUser_->DisplayPosts(window,font,height,width,num,layoutArr);
                     popupOpen = 0;
                     subButton1Clicked = 0;
                 }
@@ -212,8 +207,8 @@ void Driver::Run()
                     {
                         for (int i = 1; i < num; i++)
                         {
-                            delete todraw[i];
-                            delete todrawtext[i];
+                          
+                            delete layoutArr[i];
                         }
                         num = 1;
                     }
@@ -235,8 +230,8 @@ void Driver::Run()
                     state = 5;
                     for (int i = 1; i < num; i++)
                     {
-                        delete todraw[i];
-                        delete todrawtext[i];
+                      
+                        delete layoutArr[i];
                     }
                     num = 1;
                     popupOpen = 1;
@@ -282,31 +277,32 @@ void Driver::Run()
                /* popup.handleEvent(event, 3, "Enter Description of post:");
                 cout << "here in post event" << endl;
                 popup.handleEvent(event, 3, "Enter title");*/
-                if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
+                if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left||subButton1Clicked||subButton2Clicked||subButton3Clicked)
                 {
                    
-                    if (opt1.getGlobalBounds().contains(mousePos))
+                    if (opt1.getGlobalBounds().contains(mousePos)||subButton1Clicked)
                     {
-                        defaultstate = 0;
+                        
+                        cout << "here in event" << endl;
                         subButton1Clicked = 1;
                         popupOpen = 0;
                         popup.handleEvent(event, 3);
                        
                     }
-                    if (opt2.getGlobalBounds().contains(mousePos))
+                    if (opt2.getGlobalBounds().contains(mousePos)||subButton2Clicked)
                     {
                         subButton1Clicked = 0;
                         subButton2Clicked = 1;
-                        defaultstate = 1;
+                        
                         popupOpen = 0;
-                        popup.handleEvent(event, 2,"Enter originsl post ID:","Enter Description:");
+                        popup.handleEvent(event, 2,"Enter original post ID:","Enter Description:");
                        
                     }
-                    if (opt3.getGlobalBounds().contains(mousePos))
+                    if (opt3.getGlobalBounds().contains(mousePos)||subButton3Clicked)
                     {
                         subButton1Clicked = subButton2Clicked=0;
                         subButton3Clicked = 1;
-                        defaultstate = 1;
+                       
                         popupOpen = 0;
                         
 
@@ -328,7 +324,7 @@ void Driver::Run()
                             subButton1Clicked = 1;
                             popupOpen = 0;
                             cout << "going in to get stuck" << endl;
-                            loginUser_->DisplayDetails(window, font, height, width, num, todraw, todrawtext);
+                            loginUser_->DisplayDetails(window, font, height, width, num,layoutArr);
                         }
                         if(opt2.getGlobalBounds().contains(mousePos))
                         {
@@ -381,6 +377,7 @@ void Driver::Run()
             window.draw(searchUserB);
             window.draw(searchPostB);
             window.draw(searchPageB);
+            
             if (state==2)
             {    
                 if (!subButton1Clicked)
@@ -406,8 +403,7 @@ void Driver::Run()
                 {
                     for (int i = 1; i < num; i++)
                     {
-                        window.draw(*todraw[i]);
-                        window.draw(*todrawtext[i]);
+                        layoutArr[i]->draw(window);
                     }
                 }
                 
@@ -419,8 +415,7 @@ void Driver::Run()
             {
                 for (int i = 1; i < num; i++)
                 {
-                    window.draw(*todraw[i]);
-                    window.draw(*todrawtext[i]);
+                    layoutArr[i]->draw(window);
 
                 }
             }
@@ -459,39 +454,47 @@ void Driver::Run()
             }
             if (state==6)
             {
-               popup.draw(window);
-
-                if (popup.isDone())
+               
+                if (!subButton1Clicked && !subButton2Clicked && !subButton3Clicked)
                 {
-                    if (subButton1Clicked)
+                    window.draw(inputWindow);
+                    window.draw(opt1);
+                    window.draw(opt2);
+                    window.draw(opt3);
+                }
+                else
+                {
+                    popup.draw(window);
+
+                    if (popup.isDone())
                     {
-                        subButton1Clicked = 0;
-                        loginUser_->AddPost(currentDate_,popup.getID(), popup.getTitle(), popup.getDate());
+                        if (subButton1Clicked)
+                        {
+                            subButton1Clicked = 0;
+                            popupOpen = 0;
+                            loginUser_->AddPost(currentDate_, popup.getID(), popup.getTitle(), popup.getDate());
+                        }
                     }
-                }
 
-                if (completed && subButton1Clicked)
-                {
+                 /*   if (completed && subButton1Clicked)
+                    {
 
-                    loginUser_->AddPost(currentDate_,id, name, date);
-                    completed = 0;
-                    subButton1Clicked = 0;
-                    state = -1;
-                    cout << "simple post added:" << id << endl;
-                }
-                if (completed && subButton2Clicked)
-                {
+                        loginUser_->AddPost(currentDate_, id, name, date);
+                        completed = 0;
+                        subButton1Clicked = 0;
+                        state = -1;
+                        cout << "simple post added:" << id << endl;
+                    }
+                    if (completed && subButton2Clicked)
+                    {
 
-                    loginUser_->AddPost(currentDate_, id, name, date);
-                    completed = 0;
-                    subButton1Clicked = 0;
-                    state = -1;
-                    cout << "simple post added:" << id << endl;
+                        loginUser_->AddPost(currentDate_, id, name, date);
+                        completed = 0;
+                        subButton1Clicked = 0;
+                        state = -1;
+                        cout << "simple post added:" << id << endl;
+                    }*/
                 }
-                window.draw(inputWindow);
-                window.draw(opt1);
-                window.draw(opt2);
-                window.draw(opt3);
              
             }
             

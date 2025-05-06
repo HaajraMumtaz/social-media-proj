@@ -17,11 +17,11 @@ string Page::GetId()
 {
 	return Id_;
 }
-void Page::DisplayPosts(Date& current, RenderWindow& window, sf::Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr)
+void Page::DisplayPosts(Date& current, RenderWindow& window, sf::Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
 {
 	for (int i = 0; i < numPosts_; i++)
 	{
-		postsArr_[i]->DisplayPost(window, font, height, width, num, toDrawArr, textDrawArr);
+		postsArr_[i]->DisplayPost(window, font, height, width, num, displayArr);
 	}
 }
 int Page:: GetNumLikes()
@@ -62,14 +62,14 @@ void Page::AddPost()
 	postsArr_ = tempArr;
 }
 
-void Page::DisplayPage(Date& current, RenderWindow& window, sf::Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr)
+void Page::DisplayPage(Date& current, RenderWindow& window, sf::Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
 {
 	cout << Id_ << " " << title_;
 	owner_->DisplayDetails();
-	DisplayPosts(current,window, font, height, width, num, toDrawArr, textDrawArr);
+	DisplayPosts(current,window, font, height, width, num,displayArr);
 }
 
-bool Page::DisplayValidPosts(Date& current, sf::RenderWindow& window,sf::Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr)
+bool Page::DisplayValidPosts(Date& current, sf::RenderWindow& window,sf::Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
 {
 	bool exists = 0;
 	for (int j = 0; j < numPosts_; j++)
@@ -78,7 +78,7 @@ bool Page::DisplayValidPosts(Date& current, sf::RenderWindow& window,sf::Font& f
 		{
 			cout << "going in" << endl;
 			exists = 1;
-			postsArr_[j]->DisplayPost(window,font,height,width,num,toDrawArr, textDrawArr);
+			postsArr_[j]->DisplayPost(window,font,height,width,num,displayArr);
 		}
 	}
 	return exists;

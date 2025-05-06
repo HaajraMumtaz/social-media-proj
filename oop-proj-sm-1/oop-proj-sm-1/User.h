@@ -8,6 +8,7 @@ using namespace sf;
 class Post;
 class Page;
 class Date;
+class DisplayLayout;
 class User
 {
 private:
@@ -27,25 +28,25 @@ public:
 	/*void ViewHome();*/
 	string GetId();
 	void ViewLikedPages();
-	void ViewLikedPosts(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr);
-	void DisplayPosts(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
-	void ViewTimeline(Date& current, RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
+	void ViewLikedPosts(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
+	void DisplayPosts(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
+	void ViewTimeline(Date& current, RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	void AddFriend(User*);
 	void AddPost(Date&);
 	void AddPost(Date& current, string id, string desc, string date);
 	void AddPost(Date& current, string id, string desc, string date,string type, string value);
 	void AddPost(Date& current, string id, string desc, string date,Post*original);
-	void ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
+	void ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	void LikePage(Page** pagearr,int totalpages);
 	void LikePage(Page*);
 	int GetNumPosts();
-	bool DisplayValidPosts(Date& current,RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
+	bool DisplayValidPosts(Date& current,RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	void DisplayDetails();
-	void ViewHome(Date& current, RenderWindow&window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
-	void DisplayDetails(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
-	void DisplayFriends(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
-	void DisplayLikedPages(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
-	void DisplayLikedPosts(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr);
+	void ViewHome(Date& current, RenderWindow&window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
+	void DisplayDetails(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
+	void DisplayFriends(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
+	void DisplayLikedPages(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
+	void DisplayLikedPosts(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	
 	inline string GetName()
 	{

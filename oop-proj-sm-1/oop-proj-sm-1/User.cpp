@@ -4,6 +4,7 @@
 #include "Post.h"
 #include "Common.h"
 #include"Activity.h"
+#include "PopUpForm.h"
 using namespace sf;
 User::User()
 {
@@ -45,31 +46,31 @@ void User::ViewLikedPages()
 	}
 }
 
-void User::ViewLikedPosts(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape** toDrawArr, Text**& textDrawArr)
+void User::ViewLikedPosts(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
 {
 	for (int i = 0; i < numLikedPosts_; i++)
 	{
-		lPostArr_[i]->DisplayPost(window, font, height, width, num, toDrawArr, textDrawArr);
+		lPostArr_[i]->DisplayPost(window, font, height, width, num, displayArr);
 	}
 }
-void User::DisplayPosts(RenderWindow& window, Font& font, int height, int width, int&num, RectangleShape**& toDrawArr, Text**& textDrawArr)
+void User::DisplayPosts(RenderWindow& window, Font& font, int height, int width, int&num, DisplayLayout**& displayArr)
 {
 	for (int i = 0; i < numPosts_; i++)
 	{
-		oPostArr_[i]->DisplayPost(window, font, height, width, num, toDrawArr,textDrawArr);
+		oPostArr_[i]->DisplayPost(window, font, height, width, num, displayArr);
 	}
 }
-void User::ViewTimeline(Date& current, RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr)
+void User::ViewTimeline(Date& current, RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
 {
 	bool exists = 0;
 	for (int i = 0; i < numFriends_; i++)
 	{
-		exists=friendsArr_[i]->DisplayValidPosts(current,window, font, height, width, num,toDrawArr,textDrawArr);
+		exists=friendsArr_[i]->DisplayValidPosts(current,window, font, height, width, num,displayArr);
 	}
 	bool exists2 = 0;
 	for (int i = 0; i <numLikedPages_; i++)
 	{
-		exists2=lPageArr_[i]->DisplayValidPosts(current,window, font, height, width,num,toDrawArr,textDrawArr);
+		exists2=lPageArr_[i]->DisplayValidPosts(current,window, font, height, width,num,displayArr);
 	}
 	if (!exists && !exists2)
 	{
@@ -116,7 +117,7 @@ void User::AddPost(Date& current,string id, string desc, string date)
 	delete[]oPostArr_;
 	oPostArr_ = tempArr;
 }
-void User::ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr)
+void User::ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
 {
 	string memoryId, desc;
 	cout << "enter id:";
@@ -128,7 +129,7 @@ void User::ShareMemory(RenderWindow& window, Font& font, int height, int width, 
 		{
 			cout << "what message to display with it?";
 			getline(cin,desc);
-			oPostArr_[i]->DisplayPost(window, font, height, width, num,toDrawArr,textDrawArr);
+			oPostArr_[i]->DisplayPost(window, font, height, width, num,displayArr);
 		}
 	}
 }
@@ -164,7 +165,7 @@ int User::GetNumPosts()
 {
 	return numPosts_;
 }
-bool User::DisplayValidPosts(Date&current,RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr)
+bool User::DisplayValidPosts(Date&current,RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
 {
 	bool exists = 0;
 	for (int j = 0; j < numPosts_; j++)
@@ -172,7 +173,7 @@ bool User::DisplayValidPosts(Date&current,RenderWindow& window, Font& font, int 
 		if (oPostArr_[j]->ValidDate(current))
 		{
 			exists = 1;
-			oPostArr_[j]->DisplayPost(window,font,height, width, num,toDrawArr,textDrawArr);
+			oPostArr_[j]->DisplayPost(window,font,height, width, num,displayArr);
 		}
 	}
 	return exists;
@@ -202,59 +203,46 @@ User::~User()
 	delete[]lPostArr_;
 }
 
-void User::ViewHome(Date&current, sf::RenderWindow&window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr)
+void User::ViewHome(Date&current, sf::RenderWindow&window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
 {
-	DisplayValidPosts(current, window, font, height, width, num,toDrawArr,textDrawArr);
+	DisplayValidPosts(current, window, font, height, width, num,displayArr);
 	
 
 }
-void User::DisplayFriends(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr)
+void User::DisplayFriends(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
 {
-	RectangleShape** temp = new RectangleShape * [numFriends_ + numLikedPages_ + 1];
-	Text** temp2 = new Text * [numFriends_ + numLikedPages_ + 1];
+	DisplayLayout** temp = new DisplayLayout * [numFriends_ + numLikedPages_ + 1];
+	
 
-	temp[0] = toDrawArr[0];
-	temp2[0] = textDrawArr[0];
-	delete[]toDrawArr;
-	delete[]textDrawArr;
-	toDrawArr = temp;
-	textDrawArr = temp2;
-	textDrawArr[0]->setFont(font);
-	textDrawArr[0]->setFillColor(Color::Black);
+	temp[0] = displayArr[0];
+	
+	delete[]displayArr;
+
+	displayArr = temp;
 	for (int i = 0; i < numFriends_; i++)
 	{
-		toDrawArr[i + 1] = new RectangleShape;
-		*toDrawArr[i + 1] = *toDrawArr[0];
-		textDrawArr[i + 1] = new Text;
-		*textDrawArr[i + 1] = *textDrawArr[0];
+		displayArr[i + 1] = new DisplayLayout(font, { displayArr[0]->getPosition().x,displayArr[0]->getPosition().y + (num * displayArr[0]->getSize().y) }, displayArr[0]->getSize());
+		
 		cout << friendsArr_[i]->GetId() + " : " + friendsArr_[i]->GetName() << endl;
-		textDrawArr[i + 1]->setString(friendsArr_[i]->GetId() + " : " + friendsArr_[i]->GetName());
-		toDrawArr[i + 1]->setPosition(Vector2f(toDrawArr[0]->getPosition().x, toDrawArr[0]->getPosition().y + (num * toDrawArr[0]->getSize().y)));
-		textDrawArr[i + 1]->setPosition(toDrawArr[i + 1]->getPosition());
+		displayArr[i + 1]->setData(friendsArr_[i]->GetId(), "", "", friendsArr_[i]->GetName());
 		num++;
 	}
 }
-void User::DisplayDetails(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr)
+void User::DisplayDetails(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**&displayArr)
 {
-	DisplayFriends(window, font, height, width, num, toDrawArr, textDrawArr);
-	DisplayLikedPages(window, font, height, width, num, toDrawArr, textDrawArr);
+	DisplayFriends(window, font, height, width, num, displayArr);
+	DisplayLikedPages(window, font, height, width, num, displayArr);
 	cout << "size:" << numFriends_ + numLikedPages_ + 1 << endl;
 	cout << "num liked" << numLikedPages_ << endl;
 }
 
-void User::DisplayLikedPages(RenderWindow& window, Font& font, int height, int width, int& num, RectangleShape**& toDrawArr, Text**& textDrawArr)
+void User::DisplayLikedPages(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
 {
-	textDrawArr[0]->setFont(font);
-	textDrawArr[0]->setFillColor(Color::Black);
+
 	for (int i =0; i < numLikedPages_;i++)
 	{
-		toDrawArr[num] = new RectangleShape;
-		*toDrawArr[num] = *toDrawArr[0];
-		textDrawArr[num] = new Text;
-		*textDrawArr[num] = *textDrawArr[0];
-		textDrawArr[num]->setString(lPageArr_[i]->GetId() + " : " + lPageArr_[i]->GetName());
-		toDrawArr[num]->setPosition(Vector2f(toDrawArr[0]->getPosition().x, toDrawArr[0]->getPosition().y + (num * toDrawArr[0]->getSize().y)));
-		textDrawArr[num]->setPosition(toDrawArr[num]->getPosition());
+		displayArr[num] = new DisplayLayout(font, { displayArr[0]->getPosition().x,displayArr[0]->getPosition().y + (num * displayArr[0]->getSize().y) }, displayArr[0]->getSize());
+		displayArr[num]->setData(lPageArr_[i]->GetId(), lPageArr_[i]->GetName(), "","");
 		num++;
 	}
 	
