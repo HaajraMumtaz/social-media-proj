@@ -83,3 +83,17 @@ bool Page::DisplayValidPosts(Date& current, sf::RenderWindow& window,sf::Font& f
 	}
 	return exists;
 }
+void Page::AddPost(Date& current, string id, string desc, string date)
+{
+
+	Post** tempArr = new Post * [numPosts_ + 1];
+	for (int i = 0; i < numPosts_; i++)
+	{
+		tempArr[i] = postsArr_[i];
+	}
+	tempArr[numPosts_] = new Post;
+
+	tempArr[numPosts_++]->setPost(id, desc, date);
+	delete[]postsArr_;
+	postsArr_= tempArr;
+}

@@ -147,7 +147,7 @@ void Driver::Run()
     bool popupOpen = 0,completed=0;
     bool subButton1Clicked=0,subButton2Clicked = 0,subButton3Clicked=0;
     bool defaultstate = 0;
-    int state = -1;//0-timeline,1- homepage 2- details 3-userAdd 4-AddPage 5-changeuser 6-addpost 7-LikePage 8-addFriend
+    int state = -1;//0-timeline,1- homepage 2- details 3-userAdd 4-AddPage 5-changeuser 6-addpost 7-LikePage 8-addFriend 9-Add page post
     //allUsers_[1]->DisplayPosts();
 
     string name, id, date;
@@ -263,6 +263,12 @@ void Driver::Run()
                     state = 7;
                     popupOpen = 1;
                 }
+                if (addPagePostB.getGlobalBounds().contains(mousePos) && state != 9)
+                {
+                    state = 9;
+                    popupOpen = 1;
+                    
+                }
             }
             if (state==3|| screenState == 0)
             {
@@ -341,7 +347,10 @@ void Driver::Run()
             {
                 popup.handleEvent(event, 1);
             }
-           
+            if (state == 9)
+            {
+                popup.handleEvent(event, 3,"Page ID:","Enter description:");
+           }
         }
 
         window.clear(myColor);
@@ -583,7 +592,23 @@ void Driver::Run()
                 }
                
             }
-
+            if (state == 9)
+            {
+                popup.draw(window);
+                if (popup.isDone())
+                {
+                    for (int i = 0; i < pageCount_; i++)
+                    {
+                        if (allPages_[i]->GetId() == popup.getTitle())
+                        {
+                            allPages_[i]->AddPost(currentDate_, popup.getID(), popup.getTitle(),currentDate_.getDate());
+                        }
+                    }
+                    popup.reset();
+                    state = -1;
+                    popupOpen = 0;
+                }
+            }
 
         }
         window.display();

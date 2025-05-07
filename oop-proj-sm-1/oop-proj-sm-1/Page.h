@@ -26,6 +26,7 @@ public:
 	void AddLike();
 	void DisplayName();
 	void AddPost();
+	void AddPost(Date& current, string id, string desc, string date);
 	void DisplayPage(Date& current, RenderWindow& window, sf::Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	bool DisplayValidPosts(Date& current, RenderWindow& window,Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	inline string GetName()
