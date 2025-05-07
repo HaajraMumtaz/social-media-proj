@@ -62,5 +62,8 @@
     <ClCompile Include="PopUpForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FileName.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

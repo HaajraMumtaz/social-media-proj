@@ -67,7 +67,7 @@ private:
 public:
     DisplayLayout(const sf::Font&font, sf::Vector2f position, sf::Vector2f size);
     void setData(const string& id, const string& desc, const string& date, const string& owner);
-    void draw(RenderWindow& window);
+    virtual void draw(RenderWindow& window);
     inline Vector2f getPosition()
     {
         return box_.getPosition();
@@ -77,4 +77,29 @@ public:
         return box_.getSize();
     }
     void setBase(const Font& font, Vector2f position, Vector2f size);
+    virtual inline string getDate()
+    {
+        return date_;
+    }
+    virtual inline string getId()
+    {
+        return id_;
+    }
+};
+
+class DisplayMemory : public DisplayLayout
+{
+private:
+    sf::Text bannerText_;   
+    sf::Text commentText_; 
+
+public:
+    DisplayMemory(const sf::Font& font, sf::Vector2f position, sf::Vector2f size);
+
+    // New setter to customize the banner
+    void setMemory(const std::string& originalDate, const std::string& comment, const std::string& id,const std::string& desc, const std::string& date, const std::string& owner);
+
+    // Override draw to draw the banner first, then the post
+    void draw(sf::RenderWindow& window);
+
 };

@@ -117,6 +117,8 @@ void User::AddPost(Date& current,string id, string desc, string date)
 	delete[]oPostArr_;
 	oPostArr_ = tempArr;
 }
+
+
 void User::ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
 {
 	string memoryId, desc;
@@ -261,15 +263,33 @@ void User:: LikePage(Page* pageToLike)
 
 	
 }
-void User::AddPost(Date& current, string id, string desc, string date, Post* original)
+void User::AddMemory(Date& current, string id, string oldId, string desc)
 {
-	Post** tempArr = new Post * [numPosts_ + 1];
-	for (int i = 0; i < numPosts_; i++)
+	int j = 0;
+	bool found = 0;
+	Post** tempArr;
+	for (j; j < numPosts_&&!found; j++)
 	{
-		tempArr[i] = oPostArr_[i];
+		if (oPostArr_[j]->GetId() == oldId)
+			found = 1;
 	}
-	tempArr[numPosts_] = new Memory(original,id,desc,date);
-	numPosts_++;
-	delete[]oPostArr_;
-	oPostArr_ = tempArr;
+	if (found)
+	{
+		tempArr = new Post * [numPosts_ + 1];
+		for (int i = 0; i < numPosts_; i++)
+		{
+			tempArr[i] = oPostArr_[i];
+		}
+		tempArr[numPosts_] = new Memory(oPostArr_[j-1],id,desc,current.getDate());
+		Memory* mem = dynamic_cast<Memory*>(tempArr[numPosts_]);
+		cout << "added new memory:";
+		if (mem)
+		{
+			cout << "id:" << mem->GetId() << "Desc:" << mem->getDesc() << "Date:" << tempArr[numPosts_]->getDate() << "Og ID:" <<
+				mem->getOriginalId() << endl;
+		}
+		numPosts_++;
+		delete[]oPostArr_;
+		oPostArr_ = tempArr;
+	}
 }

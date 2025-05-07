@@ -4,10 +4,12 @@ using namespace std;
 
 #include "User.h"
 #include "Post.h"
+#include "Activity.h" 
 #include "Common.h"
 #include "PopUpForm.h"
 string Post:: GetId()
 {
+    cout << "getting id"<<Id_<< endl;
     return Id_;
 }
 void Post::DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
@@ -21,10 +23,22 @@ void Post::DisplayPost(RenderWindow& window, Font& font, int height, int width, 
         temp[i] = displayArr[i];
        
     }
-    temp[num] = new DisplayLayout(font, { displayArr[0]->getPosition().x,displayArr[0]->getPosition().y + (num * displayArr[0]->getSize().y) }, displayArr[0]->getSize());
+    cout << "testing:" << this->getDate() << "  " << this->GetId() << endl;
+ /*   if (Memory* m = dynamic_cast<Memory*>(this))
+    {
+        cout << "display memory:" << endl;
+        temp[num] = new DisplayMemory(font, { displayArr[0]->getPosition().x,displayArr[0]->getPosition().y + (num * displayArr[0]->getSize().y) }, displayArr[0]->getSize());
+    }
+    else if (Post* p=dynamic_cast<Post*>(this))*/
+    
+    cout << "display post:" << endl;
+    temp[num] = new DisplayLayout(font, { displayArr[num-1]->getPosition().x,displayArr[num-1]->getPosition().y + (displayArr[num-1]->getSize().y) }, displayArr[0]->getSize());
+    cout << "THIS DATE:" << this->date_.getDate() << endl;
+    temp[num]->setData(this->Id_, this->description_, this->date_.getDate(), "");
+
+    
   /*  temp[num]->setPosition(Vector2f(toDrawArr[0]->getPosition().x, temp[0]->getPosition().y +(num* temp[0]->getSize().y)));*/
     
-    temp[num]->setData(this->Id_, this->description_, this->date_.getDate(), "");
     delete[]displayArr;
     displayArr = temp;
     num++;

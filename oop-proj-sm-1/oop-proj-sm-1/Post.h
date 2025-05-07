@@ -30,5 +30,15 @@ public:
 	void SetDate(int d,int m, int y);
 	void setDate(string);
 	bool ValidDate(Date&current);
+	inline string getDate()
+	{
+		cout << "getting date" <<Id_<< endl;
+		return(date_.getDate());
+	}
+	inline string getDesc()
+	{
+		if (this != nullptr)
+			return description_;
+	}
 	virtual ~Post();
 };

@@ -144,6 +144,7 @@
     <ClCompile Include="Activity.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="Driver.cpp" />
+    <ClCompile Include="FileName.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Page.cpp" />
     <ClCompile Include="PopUpForm.cpp" />

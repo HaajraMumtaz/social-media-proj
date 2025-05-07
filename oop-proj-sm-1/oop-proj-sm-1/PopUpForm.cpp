@@ -157,7 +157,7 @@ string PopupForm::getDate()
         dateText_.setFont(font);
         idText_.setFont(font);
         ownerText_.setFont(font);
-
+        
         descText_.setCharacterSize(18);
         dateText_.setCharacterSize(18);
         idText_.setCharacterSize(18);
@@ -202,4 +202,33 @@ string PopupForm::getDate()
             window.draw(ownerText_);
         
         
+    }
+
+
+    DisplayMemory::DisplayMemory(const sf::Font& font, sf::Vector2f position, sf::Vector2f size)
+        : DisplayLayout(font, position + Vector2f(0, 50), size) // Shift base post downward
+    {
+        bannerText_.setFont(font);
+        bannerText_.setCharacterSize(20);
+        bannerText_.setFillColor(sf::Color::Yellow);
+        bannerText_.setPosition(position.x,position.y); // top
+
+        commentText_.setFont(font);
+        commentText_.setCharacterSize(24);
+        commentText_.setFillColor(sf::Color::Cyan);
+        commentText_.setPosition(position + sf::Vector2f(0, 20)); // Banner goes exactly where the original position was
+    }
+
+    void DisplayMemory::setMemory(const std::string& originalDate, const std::string& comment, const std::string& id,const std::string& desc, const std::string& date, const std::string& owner)
+    {
+        bannerText_.setString("Reshared a post from " + originalDate+ comment);
+        commentText_.setString(comment);
+        DisplayLayout::setData(id, desc, date, owner);  // Call parent setter to fill normal post data
+    }
+
+    void DisplayMemory::draw(sf::RenderWindow& window)
+    {
+        window.draw(bannerText_);
+        window.draw(commentText_);
+        DisplayLayout::draw(window);  // Draw the actual post
     }

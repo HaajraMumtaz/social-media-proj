@@ -35,7 +35,7 @@ public:
 	void AddPost(Date&);
 	void AddPost(Date& current, string id, string desc, string date);
 	void AddPost(Date& current, string id, string desc, string date,string type, string value);
-	void AddPost(Date& current, string id, string desc, string date,Post*original);
+	void AddMemory(Date& current, string id, string ogID, string desc);
 	void ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	void LikePage(Page** pagearr,int totalpages);
 	void LikePage(Page*);

@@ -295,7 +295,7 @@ void Driver::Run()
                         subButton2Clicked = 1;
                         
                         popupOpen = 0;
-                        popup.handleEvent(event, 2,"Enter original post ID:","Enter Description:");
+                        popup.handleEvent(event, 3,"Enter original post ID:","Enter Description:");
                        
                     }
                     if (opt3.getGlobalBounds().contains(mousePos)||subButton3Clicked)
@@ -471,8 +471,20 @@ void Driver::Run()
                         if (subButton1Clicked)
                         {
                             subButton1Clicked = 0;
+                            defaultstate = 1;
+                            state = -1;
                             popupOpen = 0;
                             loginUser_->AddPost(currentDate_, popup.getID(), popup.getTitle(), popup.getDate());
+                            popup.reset();
+                        }
+                        if (subButton2Clicked)
+                        {
+                            subButton2Clicked = 0;
+                            defaultstate = 1;
+                            popupOpen = 0;
+                            cout << popup.getID() << popup.getTitle() << popup.getDate() << endl;
+                            loginUser_->AddMemory(currentDate_, popup.getID(), popup.getTitle(), popup.getDate());//this id, old ID, desc
+                            popup.reset();
                         }
                     }
 
