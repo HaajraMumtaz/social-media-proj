@@ -117,7 +117,19 @@ void User::AddPost(Date& current,string id, string desc, string date)
 	delete[]oPostArr_;
 	oPostArr_ = tempArr;
 }
+void User::AddActivity(const string& id,string date)
+{
+	Post** tempArr = new Post * [numPosts_ + 1];
+	for (int i = 0; i < numPosts_; i++)
+	{
+		tempArr[i] = oPostArr_[i];
+	}
+	tempArr[numPosts_] = new Activity();
 
+	tempArr[numPosts_]->setPost(id,"",date);
+	delete[]oPostArr_;
+	oPostArr_ = tempArr;
+}
 
 void User::ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
 {
@@ -292,4 +304,45 @@ void User::AddMemory(Date& current, string id, string oldId, string desc)
 		delete[]oPostArr_;
 		oPostArr_ = tempArr;
 	}
+}
+
+
+void User::setType(string type)
+{
+	cout << "num this:" << numPosts_ << endl;
+	Activity* mem = dynamic_cast<Activity*>(oPostArr_[numPosts_]);
+	if (mem)
+	{
+		mem->setType(type);
+	}
+	else
+		cout << "not type activity" << endl;
+
+}
+void User::setValue(string value)
+{
+	Activity* mem = dynamic_cast<Activity*>(oPostArr_[numPosts_]);
+	if (mem)
+	{
+		mem->setValue(value);
+		numPosts_++;
+	}
+
+	else
+		cout << "not type activity" << endl;
+
+}
+Post* User::searchPost(string id,bool&found)
+{
+
+	for (int i = 0; i < numPosts_&&!found; i++)
+	{
+		if (oPostArr_[i]->GetId() == id)
+		{
+			found = 1;
+			return (oPostArr_[i]);
+		}
+	}
+	if (!found)
+		return nullptr;
 }

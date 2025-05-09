@@ -22,8 +22,12 @@ public:
 	void Input();
 	virtual void setPost(string id, string desc, string date);
 	void SetDetails(const string**&);
+	inline void setId(string id)
+	{
+		Id_ = id;
+	}
 	void AddComment(Comment&);
-	string GetId();
+	virtual string GetId();
 	virtual void DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	void DisplayLikedUsers();
 	void AddLike();
@@ -35,7 +39,7 @@ public:
 		cout << "getting date" <<Id_<< endl;
 		return(date_.getDate());
 	}
-	inline string getDesc()
+	inline virtual string getDesc()
 	{
 		if (this != nullptr)
 			return description_;

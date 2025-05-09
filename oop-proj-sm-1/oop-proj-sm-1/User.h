@@ -47,7 +47,7 @@ public:
 	void DisplayFriends(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	void DisplayLikedPages(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	void DisplayLikedPosts(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
-	
+	void AddActivity(const string& id,string date);
 	inline string GetName()
 	{
 		return name_;
@@ -56,5 +56,8 @@ public:
 	{
 		return numLikedPages_;
 	}
+	void setValue(string value);
+	void setType(string type);
+	Post* searchPost(string id,bool&found);
 	~User();
 };

@@ -97,3 +97,17 @@ void Page::AddPost(Date& current, string id, string desc, string date)
 	delete[]postsArr_;
 	postsArr_= tempArr;
 }
+Post* Page::searchPost(string id, bool& found)
+{
+
+	for (int i = 0; i < numPosts_ && !found; i++)
+	{
+		if (postsArr_[i]->GetId() == id)
+		{
+			found = 1;
+			return (postsArr_[i]);
+		}
+	}
+	if (!found)
+		return nullptr;
+}

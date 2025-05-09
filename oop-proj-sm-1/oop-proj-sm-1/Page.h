@@ -33,6 +33,7 @@ public:
 	{
 		return title_;
 	}
+	Post* searchPost(string id, bool& found);
 	~Page();
 
 
