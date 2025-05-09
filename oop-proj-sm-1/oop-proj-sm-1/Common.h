@@ -35,6 +35,7 @@ private:
 	string text_;
 public:
 	Comment(const string id = "", const string text = "");
+	inline string getComment() { return (userId_ + ":" + text_); }
 	~Comment();
 
 

@@ -26,11 +26,11 @@ public:
 	{
 		Id_ = id;
 	}
-	void AddComment(Comment&);
+	void AddComment(Comment&,int&);
 	virtual string GetId();
 	virtual void DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
-	void DisplayLikedUsers();
-	void AddLike();
+	void DisplayLikedUsers(Text**&arr,int& num2);
+	void AddLike(User*& likee);
 	void SetDate(int d,int m, int y);
 	void setDate(string);
 	bool ValidDate(Date&current);
@@ -44,5 +44,7 @@ public:
 		if (this != nullptr)
 			return description_;
 	}
+	void getComments(RectangleShape**&,int&, Text**& textarr);
+	void AddComment(string comment, string id);
 	virtual ~Post();
 };

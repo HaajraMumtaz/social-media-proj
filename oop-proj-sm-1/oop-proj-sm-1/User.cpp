@@ -195,7 +195,7 @@ bool User::DisplayValidPosts(Date&current,RenderWindow& window, Font& font, int 
 }
 string User:: GetId()
 {
-	cout << "name:" << name_ << endl;
+
 	return id_;
 }
 

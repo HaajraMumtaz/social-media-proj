@@ -51,16 +51,47 @@ void Post::DisplayPost(RenderWindow& window, Font& font, int height, int width, 
     //window.draw(*textDrawArr[num-1]);
     cout << "id:" << Id_ << "descrption:" << description_ << endl;
 }
-void Post:: DisplayLikedUsers()
+void Post:: DisplayLikedUsers(Text**&arr,int&num2)
 {
+
+    Text** temp = new Text * [numberLikes_ + 2];
+    temp[0] = arr[0];
+    delete[]arr;
+    arr = temp;
     for (int i = 0; i < numberLikes_; i++)
     {
-        usersLiked_[i]->DisplayDetails();
+        arr[i + 1] = arr[i];
+        arr[i + 1]->setPosition(arr[i]->getPosition().x, arr[i]->getPosition().y + 30);
+        arr[i + 1]->setString(usersLiked_[i]->GetId());
+        num2++;
     }
+    cout << "array filled" << endl;
 }
-void Post::AddLike()
+void Post::AddLike(User*&likee)
 {
-    numberLikes_++;
+    bool alreadyLiked = 0;
+    for (int i = 0; i < numberLikes_&&!alreadyLiked; i++)
+    {
+        cout << usersLiked_[i]->GetId() << "==" << likee->GetId()<< endl;
+        if (usersLiked_[i]->GetId() == likee->GetId())
+        {
+            alreadyLiked = 1;
+        }
+
+    }
+    User** temp;
+    if (!alreadyLiked)
+    {
+        temp = new User * [numberLikes_ + 1];
+        for (int i = 0; i < numberLikes_; i++)
+        {
+            temp[i] = usersLiked_[i];
+        }
+        delete[]usersLiked_;
+        usersLiked_ = temp;
+        usersLiked_[numberLikes_++] = likee;
+        cout << "succesfully liked!" << endl;
+    }
 }
 bool Post::ValidDate(Date&current)
 {
@@ -80,16 +111,8 @@ bool Post::ValidDate(Date&current)
 Post::~Post()
 {
     cout << "~Post() called " << Id_ << endl;
-    for (int i = 0; i < numberLikes_; i++)
-    {
-        delete[]usersLiked_[i];
-    }
+  
     delete[]usersLiked_;
-
-    for (int i = 0; i < numberComments_; i++)
-    {
-        delete[]commentsArr_[i];
-    }
     delete[]commentsArr_;
   
 }
@@ -127,7 +150,7 @@ Post::Post()
     date_ = Date();
 }
 
-void Post::AddComment(Comment& comment)
+void Post::AddComment(Comment& comment,int&num)
 {
     Comment** temp;
     temp = new Comment* [numberComments_ + 1];
@@ -137,6 +160,7 @@ void Post::AddComment(Comment& comment)
     }
     temp[numberComments_] = &comment;
     commentsArr_ = temp;
+    num++;
 
 }
 
@@ -187,4 +211,43 @@ void Post::setDate(string date)
         }
     }
     date_ = Date(day, month, year);
+}
+
+void Post::getComments(RectangleShape**& arr, int& num,Text**& textarr)
+{
+   
+    RectangleShape** temp = new RectangleShape*[numberComments_ + 1];
+    Text** texttemp = new Text * [numberComments_ + 1];
+    temp[0] = arr[0];
+    texttemp[0] = textarr[0];
+    delete[]textarr;
+    delete[]arr;
+    arr = temp;
+    textarr = texttemp;
+    cout << "number comm:" << numberComments_ << endl;
+    for (int i = 0; i < numberComments_; i++)
+    {
+        arr[i + 1] = arr[0];
+        arr[i + 1]->setPosition({ arr[0]->getPosition().x,num*(arr[0]->getSize().y)+arr[0]->getPosition().y + 60 });
+        textarr[i + 1] = textarr[0];
+        textarr[i + 1]->setPosition({ textarr[0]->getPosition().x,num * (arr[0]->getSize().y)+textarr[0]->getPosition().y + 60 });
+        textarr[i + 1]->setString(commentsArr_[i]->getComment());
+        num++;
+
+    }
+}
+void Post::AddComment(string comment, string id)
+{
+    Comment** temp = new Comment * [numberComments_ + 1];
+    for (int i = 0; i < numberComments_; i++)
+    {
+        temp[i] = commentsArr_[i];
+    }
+    delete[]commentsArr_;
+    commentsArr_ = temp;
+    commentsArr_ [numberComments_] = new Comment(id, comment);
+    numberComments_++;
+    cout << "Added comment successfully!" << endl;
+
+
 }
