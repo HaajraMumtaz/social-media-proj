@@ -24,13 +24,15 @@ void Page::DisplayPosts(Date& current, RenderWindow& window, sf::Font& font, int
 		postsArr_[i]->DisplayPost(window, font, height, width, num, displayArr);
 	}
 }
-int Page:: GetNumLikes()
+string Page:: GetNumLikes()
 {
-	return numLikes_;
+	
+	return (to_string(numLikes_));
 }
 void Page::AddLike()
 {
 	numLikes_++;
+	cout << "num likes in f:" << numLikes_ << endl;
 }
 void Page::DisplayName()
 {

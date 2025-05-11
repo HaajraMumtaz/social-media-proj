@@ -24,31 +24,15 @@ void Post::DisplayPost(RenderWindow& window, Font& font, int height, int width, 
        
     }
     cout << "testing:" << this->getDate() << "  " << this->GetId() << endl;
- /*   if (Memory* m = dynamic_cast<Memory*>(this))
-    {
-        cout << "display memory:" << endl;
-        temp[num] = new DisplayMemory(font, { displayArr[0]->getPosition().x,displayArr[0]->getPosition().y + (num * displayArr[0]->getSize().y) }, displayArr[0]->getSize());
-    }
-    else if (Post* p=dynamic_cast<Post*>(this))*/
+
     
     cout << "display post:" << endl;
     temp[num] = new DisplayLayout(font, { displayArr[num-1]->getPosition().x,displayArr[num-1]->getPosition().y + (displayArr[num-1]->getSize().y) }, displayArr[0]->getSize());
     cout << "THIS DATE:" << this->date_.getDate() << endl;
     temp[num]->setData(this->Id_, this->description_, this->date_.getDate(), "");
-
-    
-  /*  temp[num]->setPosition(Vector2f(toDrawArr[0]->getPosition().x, temp[0]->getPosition().y +(num* temp[0]->getSize().y)));*/
-    
     delete[]displayArr;
     displayArr = temp;
     num++;
-
-    /*text.setPosition(window.getSize().x / 3.0f, (window.getSize().y /6.0f)+(num*textRect.height));*/
-   
-    /*window.draw(text);*/
-    // Center the text
- 
-    //window.draw(*textDrawArr[num-1]);
     cout << "id:" << Id_ << "descrption:" << description_ << endl;
 }
 void Post:: DisplayLikedUsers(Text**&arr,int&num2)

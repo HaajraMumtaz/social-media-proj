@@ -22,7 +22,7 @@ public:
 	Page(const string id="", User* owner=nullptr, const string title="", Post** postarr=nullptr,int numlikes=0,int numposts=0);
 	string GetId();
 	void DisplayPosts(Date& current, RenderWindow& window, sf::Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
-	int GetNumLikes();
+	string GetNumLikes();
 	void AddLike();
 	void DisplayName();
 	void AddPost();

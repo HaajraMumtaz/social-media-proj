@@ -214,23 +214,16 @@ void Driver::Run()
                 if (bbB1.contains(mousePos) && state!=0)
                 {
                     cout << "ok works" << endl;
-                    if (num != 1)
+                    for (int i = 1; i < num; i++)
                     {
-                        for (int i = 1; i < num; i++)
-                        {
-                            delete layoutArr[i];
-                        }
-                        num = 1;
+                        delete layoutArr[i];
                     }
+                    num = 1;
                     loginUser_->ViewTimeline(currentDate_, window, font, height, width, num, layoutArr);
                     state=0;
                     popupOpen = 0;
                     subButton1Clicked = 0;
-                   
                     subButton2Clicked = 0;
-                    state = -1;
-
-                  
                     cout << "DELETED" << endl;
 
                 }
@@ -238,14 +231,13 @@ void Driver::Run()
                 {
                     
                     state = 1;
-                    if (num != 1)
-                    {
+                    
                         for (int i = 1; i < num; i++)
                         {
                             delete layoutArr[i];
                         }
                         num = 1;
-                    }
+                    
                     cout<< "displaying your own posts:";
                     loginUser_->DisplayPosts(window,font,height,width,num,layoutArr);
                     popupOpen = 0;
@@ -259,19 +251,18 @@ void Driver::Run()
                     state = 2;
                     opt1 = opt2 = addPostB;
                     popupOpen = 1;
-
-                    if (num != 1)
-                    {
+                    subButton1Clicked = subButton2Clicked = 0;
+                    
                         for (int i = 1; i < num; i++)
                         {
                           
                             delete layoutArr[i];
                         }
-                        num = 1;
-                    }
+                        num= 1;
+                    
                     opt1.setPosition((inputWindow.getPosition().x + but1.getLocalBounds().width/2)-40, (inputWindow.getPosition().y + but1.getLocalBounds().height));
                     opt2.setPosition(opt1.getPosition().x, opt1.getPosition().y + 100);
-
+                   
                     cout << "atleast here" << endl;
                 }
                 if (bbAddUserB.contains(mousePos) && state!=3)
@@ -309,6 +300,11 @@ void Driver::Run()
                     cout << "add post via window:" << endl;
                     popupOpen = 1;
                 }
+                if (likePageB.getGlobalBounds().contains(mousePos) && state != 7)
+                {
+                    state = 7;
+                    popupOpen = 1;
+                }
                 if (bbAddFriendB.contains(mousePos) && state!=8)
                 {
                     state = 8;
@@ -316,11 +312,7 @@ void Driver::Run()
                     popupOpen = 1;
                 }
                 
-                if (likePageB.getGlobalBounds().contains(mousePos) && state!=7)
-                {
-                    state = 7;
-                    popupOpen = 1;
-                }
+               
                 if (addPagePostB.getGlobalBounds().contains(mousePos) && state != 9)
                 {
                     state = 9;
@@ -365,13 +357,57 @@ void Driver::Run()
                 {
                     state = 13;
                     popupOpen = 1;
+                    subState = -1;
 
                 }
+                
+            }
+           
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Space)
+            {
+                state = -1;
+                popupOpen = 0;
+                popup.reset();
+                subState = -1;
+                subButton1Clicked = subButton2Clicked = subButton3Clicked = 0;
+                   
             }
             if (state==3|| screenState == 0)
             {
                 popup.handleEvent(event, 2);
             }
+            if (state == 2)
+            {
+                cout << "here in event state 2" << endl;
+                if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
+                {
+                    if (opt1.getGlobalBounds().contains(mousePos))
+                    {
+                        
+                        subButton1Clicked = 1;
+                        subButton2Clicked = 0;
+                        popupOpen = 0;
+                        cout << "going in to get stuck" << endl;
+                        loginUser_->DisplayDetails(window, font, height, width, num, layoutArr);
+                    }
+                    if (opt2.getGlobalBounds().contains(mousePos))
+                    {
+                        subButton1Clicked = 0;
+                        subButton2Clicked = 1;
+                        popupOpen = 0;
+                        state = -1;
+                        loginUser_->DisplayLikedPosts(window, font, height, width, num, layoutArr);
+
+                    }
+
+                }
+
+            }
+            if (state == 4)
+            {
+                popup.handleEvent(event, 3, "Enter Owner ID:", "Enter Title:");
+            }
+
             if (state==5 || state==8)
             {
                 popup.handleEvent(event, 1);
@@ -437,35 +473,7 @@ void Driver::Run()
                     }
                 }
             }
-            if (state==4)
-            {
-                popup.handleEvent(event, 3, "Enter Owner ID:", "Enter Title:");
-            }
-            if (state==2)
-            {
-                cout << "here in event state 2" << endl;
-                    if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
-                    {
-                        if (opt1.getGlobalBounds().contains(mousePos))
-                        {
-                            defaultstate = 0;
-                            subButton1Clicked = 1;
-                            popupOpen = 0;
-                            cout << "going in to get stuck" << endl;
-                            loginUser_->DisplayDetails(window, font, height, width, num,layoutArr);
-                        }
-                        if(opt2.getGlobalBounds().contains(mousePos))
-                        {
-                            subButton1Clicked = 0;
-                            defaultstate = 1;
-                            popupOpen = 0;
-                            state = -1;
-                            
-                        }
-                       
-                    }
-   
-            }
+           
             if (state==7)
             {
                 popup.handleEvent(event, 1);
@@ -488,7 +496,12 @@ void Driver::Run()
                     
                     if (commentB1.getGlobalBounds().contains(mousePos) || subButton1Clicked)
                     {
-                        postFound->AddLike(loginUser_);
+                       
+                        if (loginUser_->postAlreadyLiked(postFound))
+                            postFound->AddLike(loginUser_);
+                        else
+                            cout << "already liked" << endl;
+                        
 
 
                     }
@@ -505,7 +518,7 @@ void Driver::Run()
                             delete textarr[i];
                             delete commentArr[i];
                         }*/
-                        num2 = 0;
+                        
                         subButton2Clicked = 0;
                         state = -1;
 
@@ -518,14 +531,14 @@ void Driver::Run()
             
                 
             }
-            if (commentB3.getGlobalBounds().contains(mousePos) && state == 10)
+            if (commentB3.getGlobalBounds().contains(mousePos) && state == 10)//11th state
             {
                 for (int i = 1; i < num2; i++)
                 {
                     delete textarr[i];
                 }
                 num2 = 0;
-                /* cout << "state 10" << endl;*/
+             
                 if (postFound)
                 {
                     cout << "aithon" << endl;
@@ -581,7 +594,26 @@ void Driver::Run()
             }
             if (state == 13)
             {
-                popup.handleEvent(event, 1, "Search Page ID: ");
+                if (subState == -1)
+                {
+                    for (int i = 1; i < num; i++)
+                    {
+                        delete layoutArr[i];
+                    }
+                    num = 1;
+                    popup.handleEvent(event, 1, "Search Page ID: ");
+                }
+                else if (subState == 0)
+                {
+
+                    pageFound->DisplayPosts(currentDate_, window, font, height, width, num, layoutArr);
+                    cout << "likes:" << pageFound->GetNumLikes() << endl;
+                    heading.setString(pageFound->GetId() + " " + pageFound->GetName() + " Number of likes:" + pageFound->GetNumLikes());
+                    cout << "filling in state 13" << endl;
+                    subState = 1;
+                    
+                }
+               
             }
          
         }
@@ -622,26 +654,19 @@ void Driver::Run()
           
             if (state==2)
             {    
-                if (!subButton1Clicked)
+                if (!subButton1Clicked&&!subButton2Clicked)
                 {
                     /*cout << "here in display" << endl;*/
-                    if (!defaultstate)
-                    {
+                   
+                   
                         window.draw(inputWindow);
                         window.draw(opt1);
                         window.draw(opt2);
-                    }
-                    else
-                    {
-                        cout << "in else" << endl;
-                        state = -1;
-                        popupOpen = 0;
-                        
-                    }
+                  
                 }
                 
 
-                if (subButton1Clicked)
+                else
                 {
                     for (int i = 1; i < num; i++)
                     {
@@ -661,6 +686,7 @@ void Driver::Run()
 
                 }
             }
+           
             if (state==3)
             {
                 popup.draw(window);
@@ -824,14 +850,20 @@ void Driver::Run()
 
                 {
                     bool found = 0;
+                    bool unique = 1;
                     for (int i = 0; i < pageCount_ && !found; i++)
                     {
                         if (allPages_[i]->GetId() == popup.getID())
                         {
                             found = 1;
-                            loginUser_->LikePage(allPages_[i]);
+                            unique = loginUser_->PageAlreadyLiked(allPages_[i]);
+                            if (!unique)
+                                cout << "already liked" << endl;
+                            else
+                                loginUser_->LikePage(allPages_[i]);
                         }
                     }
+                    
                     state = -1;
                     popupOpen = 0;
                     popup.reset();
@@ -859,8 +891,6 @@ void Driver::Run()
                     popupOpen = 0;
                 }
             }
-          
-           
             if (state == 9)
             {
                 popup.draw(window);
@@ -1020,7 +1050,37 @@ void Driver::Run()
             }
             if (state == 13)
             {
+                if (subState == -1)
+                {
+                    popup.draw(window);
 
+                    if (popup.isDone())
+                    {
+                        bool found = 0;
+                        for (int i = 0; i < pageCount_ && !found; i++)
+                        {
+                            if (allPages_[i]->GetId() == popup.getID())
+                            {
+                                found = 1;
+                                pageFound = allPages_[i];
+                                subState = 0;
+                                popup.reset();
+                            }
+                        }
+                        if (!found)
+                            state = -1;
+                        popupOpen = 0;
+
+                    }
+                }
+                else if (subState == 1)
+                {
+                    window.draw(heading);
+                    for (int i = 1; i < num; i++)
+                    {
+                        layoutArr[i]->draw(window);
+                    }
+                }
             }
 
         }

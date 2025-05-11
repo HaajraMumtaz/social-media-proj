@@ -32,13 +32,11 @@ public:
 	void DisplayPosts(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	void ViewTimeline(Date& current, RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	void AddFriend(User*);
-	void AddPost(Date&);
+	/*void AddPost(Date&);*/
 	void AddPost(Date& current, string id, string desc, string date);
-	void AddPost(Date& current, string id, string desc, string date,string type, string value);
+	/*void AddPost(Date& current, string id, string desc, string date,string type, string value);*/
 	void AddMemory(Date& current, string id, string ogID, string desc);
-	void ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
-	void LikePage(Page** pagearr,int totalpages);
-	void LikePage(Page*);
+	void LikePage(Page*&);
 	int GetNumPosts();
 	bool DisplayValidPosts(Date& current,RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	void DisplayDetails();
@@ -60,5 +58,7 @@ public:
 	void setValue(string value);
 	void setType(string type);
 	Post* searchPost(string id,bool&found);
+	bool PageAlreadyLiked(Page*);
+	bool postAlreadyLiked(Post*);
 	~User();
 };

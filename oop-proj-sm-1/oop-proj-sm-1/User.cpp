@@ -89,20 +89,20 @@ void User::AddFriend(User*friendptr)
 	delete[]friendsArr_;
 	friendsArr_ = temp;
 }
-void User::AddPost(Date&current)
-{
-
-	Post** tempArr = new Post * [numPosts_ + 1];
-	for (int i = 0; i < numPosts_; i++)
-	{
-		tempArr[i] = oPostArr_[i];
-	}
-	tempArr[numPosts_] = new Post;
-
-	tempArr[numPosts_++]->Input();
-	delete[]oPostArr_;
-	oPostArr_ = tempArr;
-}
+//void User::AddPost(Date&current)
+//{
+//
+//	Post** tempArr = new Post * [numPosts_ + 1];
+//	for (int i = 0; i < numPosts_; i++)
+//	{
+//		tempArr[i] = oPostArr_[i];
+//	}
+//	tempArr[numPosts_] = new Post;
+//
+//	tempArr[numPosts_++]->Input();
+//	delete[]oPostArr_;
+//	oPostArr_ = tempArr;
+//}
 void User::AddPost(Date& current,string id, string desc, string date)
 {
 
@@ -131,50 +131,7 @@ void User::AddActivity(const string& id,string date)
 	oPostArr_ = tempArr;
 }
 
-void User::ShareMemory(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
-{
-	string memoryId, desc;
-	cout << "enter id:";
 
-	getline(cin,memoryId);
-	for (int i = 0; i < numPosts_; i++)
-	{
-		if (memoryId == (oPostArr_[i]->GetId()))
-		{
-			cout << "what message to display with it?";
-			getline(cin,desc);
-			oPostArr_[i]->DisplayPost(window, font, height, width, num,displayArr);
-		}
-	}
-}
-void User:: LikePage(Page** pagearr, int totalpages)
-{
-
-	
-	cout << "enter id of page you want to like:";
-	string id;
-	getline(cin, id);
-	bool found = 0;
-	for (int i = 0; i < totalpages&&!found; i++)
-	{
-		if (pagearr[i]->GetId() == id)
-		{
-			found = 1;
-			Page** temp = new Page * [numLikedPages_ + 1];
-			for (int i = 0; i < numLikedPages_; i++)
-			{
-				temp[i] = lPageArr_[i];
-			}
-			temp[numLikedPages_] = pagearr[i];
-			numLikedPages_++;
-
-			delete[]lPageArr_;
-			lPageArr_ = temp;
-		}
-	}
-
-
-}
 int User::GetNumPosts()
 {
 	return numPosts_;
@@ -282,8 +239,9 @@ void User::DisplayLikedPages(RenderWindow& window, Font& font, int height, int w
 	}
 	
 }
-void User:: LikePage(Page* pageToLike)
+void User:: LikePage(Page*& pageToLike)
 {
+	
 	Page** temp = new Page * [numLikedPages_ + 1];
 	for (int i = 0; i < numLikedPages_; i++)
 	{
@@ -293,6 +251,8 @@ void User:: LikePage(Page* pageToLike)
 	lPageArr_ = temp;
 	lPageArr_[numLikedPages_] = pageToLike;
 	numLikedPages_++;
+	pageToLike->AddLike();
+	cout << "page:" << pageToLike->GetId() << " liked" << endl;
 
 	
 }
@@ -378,4 +338,25 @@ void User::likePost(Post*post)
 
 	lPostArr_ = temp;
 	lPostArr_[numLikedPosts_++] = post;
+}
+
+bool User::PageAlreadyLiked(Page*liked)
+{
+	bool unique = 1;
+	for (int i = 0; i < numLikedPages_&&unique; i++)
+	{
+		if (lPageArr_[i] == liked)
+			unique = 0;
+	}
+	return unique;
+}
+bool User::postAlreadyLiked(Post*liked)
+{
+	bool unique = 1;
+	for (int i = 0; i <numLikedPosts_ && unique; i++)
+	{
+		if (lPostArr_[i] == liked)
+			unique = 0;
+	}
+	return unique;
 }
