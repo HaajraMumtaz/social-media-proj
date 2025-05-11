@@ -223,10 +223,13 @@ void User::ViewHome(Date&current, sf::RenderWindow&window, Font& font, int heigh
 	
 
 }
-void User::DisplayFriends(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
+void User::DisplayFriends(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr,bool mark)
 {
-	DisplayLayout** temp = new DisplayLayout * [numFriends_ + numLikedPages_ + 1];
-	
+	DisplayLayout** temp;
+	if(mark)
+	temp = new DisplayLayout * [numFriends_ + numLikedPages_ + 1];
+	else
+	temp = new DisplayLayout * [numFriends_ + 1];
 
 	temp[0] = displayArr[0];
 	
@@ -238,7 +241,25 @@ void User::DisplayFriends(RenderWindow& window, Font& font, int height, int widt
 		displayArr[i + 1] = new DisplayLayout(font, { displayArr[0]->getPosition().x,displayArr[0]->getPosition().y + (num * displayArr[0]->getSize().y) }, displayArr[0]->getSize());
 		
 		cout << friendsArr_[i]->GetId() + " : " + friendsArr_[i]->GetName() << endl;
-		displayArr[i + 1]->setData(friendsArr_[i]->GetId(), "", "", friendsArr_[i]->GetName());
+		displayArr[i + 1]->setData(friendsArr_[i]->GetId(), friendsArr_[i]->GetName(), "", "","Friend ID: ", "Friend Name: ", "", "");
+		num++;
+	}
+}
+void User::DisplayLikedPosts(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
+{
+	DisplayLayout** temp = new DisplayLayout * [numLikedPosts_ + 1];
+
+	temp[0] = displayArr[0];
+
+	delete[]displayArr;
+
+	displayArr = temp;
+	for (int i = 0; i < numLikedPosts_; i++)
+	{
+		displayArr[i + 1] = new DisplayLayout(font, { displayArr[0]->getPosition().x,displayArr[0]->getPosition().y + (num * displayArr[0]->getSize().y) }, displayArr[0]->getSize());
+
+	
+		displayArr[i + 1]->setData(lPostArr_[i]->GetId(), lPostArr_[i]->getDesc(),"", "","Liked Post ID: ","Liked Post Desc:","","");
 		num++;
 	}
 }
@@ -345,4 +366,16 @@ Post* User::searchPost(string id,bool&found)
 	}
 	if (!found)
 		return nullptr;
+}
+void User::likePost(Post*post)
+{
+	Post** temp = new Post * [numLikedPosts_ + 1];
+	for (int i = 0; i < numLikedPosts_; i++)
+	{
+		temp[i] = lPostArr_[i];
+	}
+	delete[]lPostArr_;
+
+	lPostArr_ = temp;
+	lPostArr_[numLikedPosts_++] = post;
 }

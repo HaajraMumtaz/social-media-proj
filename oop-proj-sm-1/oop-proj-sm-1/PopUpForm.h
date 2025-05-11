@@ -66,7 +66,7 @@ private:
 
 public:
     DisplayLayout(const sf::Font&font, sf::Vector2f position, sf::Vector2f size);
-    void setData(const string& id, const string& desc, const string& date, const string& owner);
+    void setData(const string& id, const string& desc, const string& date, const string& owner, string idPrompt = "ID: ", string descPrompt = "Title: ", string datePrompt = "Date: ", string ownerPrompt = "Owner: ");
     virtual void draw(RenderWindow& window);
     inline Vector2f getPosition()
     {
@@ -85,6 +85,7 @@ public:
     {
         return id_;
     }
+  
 };
 
 class DisplayMemory : public DisplayLayout

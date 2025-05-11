@@ -44,6 +44,7 @@ public:
 		if (this != nullptr)
 			return description_;
 	}
+
 	void getComments(RectangleShape**&,int&, Text**& textarr);
 	void AddComment(string comment, string id);
 	virtual ~Post();

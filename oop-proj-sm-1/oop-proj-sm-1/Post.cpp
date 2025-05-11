@@ -60,9 +60,10 @@ void Post:: DisplayLikedUsers(Text**&arr,int&num2)
     arr = temp;
     for (int i = 0; i < numberLikes_; i++)
     {
-        arr[i + 1] = arr[i];
+        arr[i + 1] = new Text(*arr[i]);
         arr[i + 1]->setPosition(arr[i]->getPosition().x, arr[i]->getPosition().y + 30);
         arr[i + 1]->setString(usersLiked_[i]->GetId());
+        cout << "added::::" << endl;
         num2++;
     }
     cout << "array filled" << endl;
@@ -90,6 +91,7 @@ void Post::AddLike(User*&likee)
         delete[]usersLiked_;
         usersLiked_ = temp;
         usersLiked_[numberLikes_++] = likee;
+        likee->likePost(this);
         cout << "succesfully liked!" << endl;
     }
 }
@@ -216,8 +218,9 @@ void Post::setDate(string date)
 void Post::getComments(RectangleShape**& arr, int& num,Text**& textarr)
 {
    
-    RectangleShape** temp = new RectangleShape*[numberComments_ + 1];
-    Text** texttemp = new Text * [numberComments_ + 1];
+    RectangleShape** temp = new RectangleShape*[numberComments_ + 2];
+    Text** texttemp = new Text * [numberComments_ + 2];
+
     temp[0] = arr[0];
     texttemp[0] = textarr[0];
     delete[]textarr;
@@ -225,13 +228,15 @@ void Post::getComments(RectangleShape**& arr, int& num,Text**& textarr)
     arr = temp;
     textarr = texttemp;
     cout << "number comm:" << numberComments_ << endl;
+    cout << "number slots:" << num << endl;
     for (int i = 0; i < numberComments_; i++)
     {
-        arr[i + 1] = arr[0];
+        arr[i + 1] = new RectangleShape(*arr[0]);
         arr[i + 1]->setPosition({ arr[0]->getPosition().x,num*(arr[0]->getSize().y)+arr[0]->getPosition().y + 60 });
-        textarr[i + 1] = textarr[0];
-        textarr[i + 1]->setPosition({ textarr[0]->getPosition().x,num * (arr[0]->getSize().y)+textarr[0]->getPosition().y + 60 });
+        textarr[i + 1] = new Text(*textarr[0]);
+        textarr[i + 1]->setPosition({arr[i+1]->getPosition().x,arr[i+1]->getPosition().y+20});
         textarr[i + 1]->setString(commentsArr_[i]->getComment());
+        cout << "filling with:" << commentsArr_[i]->getComment() << endl;
         num++;
 
     }

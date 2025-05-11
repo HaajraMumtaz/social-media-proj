@@ -144,7 +144,7 @@ string PopupForm::getDate()
         ownerText_.setFillColor(Color::Black);
     
     }
-
+   
     void DisplayLayout::setBase(const Font& font, Vector2f position, Vector2f size)
     {
         box_.setSize(size);
@@ -169,17 +169,17 @@ string PopupForm::getDate()
         ownerText_.setFillColor(Color::Black);
 
     }
-    void DisplayLayout::setData(const string& id, const string& desc, const string& date, const string& owner)
+    void DisplayLayout::setData(const string& id, const string& desc, const string& date, const string&owner,string idPrompt,string descPrompt,string datePrompt,string ownerPrompt)
     {
         id_ = id;
         description_ = desc;
         date_ = date;
         ownerName_ = owner;
 
-        idText_.setString("ID: " + id_);
-        descText_.setString("Title: " + description_);
-        dateText_.setString("Date: " + date_);
-        ownerText_.setString("Owner: " + ownerName_);
+        idText_.setString(idPrompt + id_);
+        descText_.setString(descPrompt + description_);
+        dateText_.setString(datePrompt + date_);
+        ownerText_.setString(ownerPrompt + ownerName_);
 
         // Adjust text positions relative to box_
         Vector2f pos = box_.getPosition();

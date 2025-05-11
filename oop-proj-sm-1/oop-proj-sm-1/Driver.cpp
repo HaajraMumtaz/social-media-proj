@@ -138,19 +138,23 @@ void Driver::Run()
     commentArr[0] = new RectangleShape();
     commentArr[0]->setFillColor(Color::White);
     commentArr[0]->setSize({300, 70});
+    /*commentArr[0]->getPosition().x, commentArr[0]->getPosition().y + 20*/
     commentArr[0]->setPosition(layout.getPosition().x, layout.getPosition().y+layout.getSize().y);
   
     Text** textarr = new Text * [1];
     textarr[0] = new Text();
-   /* textarr[0]->setPosition(todraw[0]->getPosition().x, todraw[0]->getPosition().y + (1.5 * todraw[0]->getLocalBounds().height) + 60);*/
-    textarr[0]->setPosition(commentArr[0]->getPosition().x,commentArr[0]->getPosition().y+20);
+    textarr[0]->setPosition(todraw[0]->getPosition().x, todraw[0]->getPosition().y + (1.5 * todraw[0]->getLocalBounds().height) + 60);
+  /*  textarr[0]->setPosition(0,0);*/
     textarr[0]->setFont(font);
+    textarr[0]->setString("Users that have liked:");
     textarr[0]->setFillColor(Color::Black);
     layout.setData("u1", "temp", "0/0/0", "haajra");
     Text Sample1;
     Text Sample2;
     int screenState = 0;
     Post* postFound = nullptr;
+    User* userFound = nullptr;
+    Page* pageFound = nullptr;
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //CreateUser();
     //CreateUser();
@@ -164,7 +168,7 @@ void Driver::Run()
     bool popupOpen = 0,completed=0;
     bool subButton1Clicked=0,subButton2Clicked = 0,subButton3Clicked=0;
     bool defaultstate = 0;
-    int state = -1;//0-timeline,1- homepage 2- details 3-userAdd 4-AddPage 5-changeuser 6-addpost 7-LikePage 8-addFriend 9-Add page post 10- Add post ID 11- view liked sub ID 12- Add USer ID 13-search page
+    int state = -1;//0-timeline,1- homepage 2- details 3-userAdd 4-AddPage 5-changeuser 6-addpost 7-LikePage 8-addFriend 9-Add page post 10- Add post ID 11- view liked sub ID 12- search user ID 13-search page
     //allUsers_[1]->DisplayPosts();
     Vector2f windowPos = inputWindow.getPosition();
     RectangleShape feelingB(Vector2f((inputWindow.getSize().x-30)/2, (inputWindow.getSize().y - 30) / 2));
@@ -193,6 +197,10 @@ void Driver::Run()
     commentB3 = commentB2;
     commentB3.setPosition(commentB2.getPosition().x + 40, commentB2.getPosition().y);
     
+    Text heading;
+    heading.setFont(font);
+    heading.setFillColor(Color::Black);
+    heading.setPosition(width / 2, height / 4);
     while (window.isOpen()) {
 
         Event event;
@@ -218,8 +226,12 @@ void Driver::Run()
                     state=0;
                     popupOpen = 0;
                     subButton1Clicked = 0;
-                    commentArr[0]->setPosition(layout.getPosition().x, layout.getPosition().y + layout.getSize().y);
-                    textarr[0]->setPosition(commentArr[0]->getPosition().x, commentArr[0]->getPosition().y + 20);
+                   
+                    subButton2Clicked = 0;
+                    state = -1;
+
+                  
+                    cout << "DELETED" << endl;
 
                 }
                 if (bbB2.contains(mousePos) && state!=1)
@@ -269,6 +281,11 @@ void Driver::Run()
                     popupOpen = 1;
 
                 }
+                if (bbAddPageB.contains(mousePos) && state != 4)
+                {
+                    state = 4;
+                    popupOpen = 1;
+                }
                 if (bbUserB.contains(mousePos)&&state!=5)
                 {
                     
@@ -298,11 +315,7 @@ void Driver::Run()
                     cout << "add friend via window" << endl;
                     popupOpen = 1;
                 }
-                if (bbAddPageB.contains(mousePos) && state!=4)
-                {
-                    state = 4;
-                    popupOpen = 1;
-                }
+                
                 if (likePageB.getGlobalBounds().contains(mousePos) && state!=7)
                 {
                     state = 7;
@@ -318,6 +331,7 @@ void Driver::Run()
                 {
                     for (int k = 1; k < num2; k++)
                     {
+                        cout <<"deleting:" << k << endl;
                         delete commentArr[k];
                         delete textarr[k];
                     }
@@ -325,7 +339,33 @@ void Driver::Run()
                     state = 10;
                     popupOpen = 1;
                     subState = -1;
+               /*     commentArr[0]->setPosition(layout.getPosition().x, layout.getPosition().y + layout.getSize().y);
+                    textarr[0]->setPosition(commentArr[0]->getPosition().x, commentArr[0]->getPosition().y + 20);
+                    */
                     subButton1Clicked = subButton2Clicked = subButton3Clicked = 0;
+                    
+                }
+                if (searchUserB.getGlobalBounds().contains(mousePos) && state != 12)
+                {
+                    state = 12;
+                    popupOpen = 1;
+                    popup.setPrompt("Enter search user ID :");
+                    subButton1Clicked = subButton2Clicked = subButton3Clicked = 0;
+                    subState = -1;
+                    for (int i = 1; i < num; i++)
+                    {
+                        delete layoutArr[i];
+                    }
+                    num = 1;
+                    opt1 = opt2 = addPostB;
+                    opt1.setPosition((inputWindow.getPosition().x + but1.getLocalBounds().width / 2) - 40, (inputWindow.getPosition().y + but1.getLocalBounds().height));
+                    opt2.setPosition(opt1.getPosition().x, opt1.getPosition().y + 100);
+                }
+                if (searchPageB.getGlobalBounds().contains(mousePos) && state != 13)
+                {
+                    state = 13;
+                    popupOpen = 1;
+
                 }
             }
             if (state==3|| screenState == 0)
@@ -442,51 +482,108 @@ void Driver::Run()
                     popup.handleEvent(event, 1);
                     subButton1Clicked = subButton2Clicked = subButton3Clicked;
                 }
-                if (commentB1.getGlobalBounds().contains(mousePos)||subButton1Clicked)
+                else
                 {
-                     postFound->AddLike(loginUser_);
-                      
                     
-                }
-                else if (commentB2.getGlobalBounds().contains(mousePos)||subButton2Clicked)
-                {
-                    subButton2Clicked = 1;
-                    popup.setPrompt("Add comment:");
-                    popup.handleEvent(event, 1);
-                }
-                else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left&&num2>0)
-                {
-                    for (int i = 1; i < num2; i++)
+                    
+                    if (commentB1.getGlobalBounds().contains(mousePos) || subButton1Clicked)
                     {
-                        delete textarr[i];
-                        delete commentArr[i];
-                    }
-                    num2 = 0;
-                    subButton2Clicked = 0;
-                    state = -1;
+                        postFound->AddLike(loginUser_);
 
-                    commentArr[0]->setPosition(layout.getPosition().x, layout.getPosition().y + layout.getSize().y);
-                    textarr[0]->setPosition(commentArr[0]->getPosition().x, commentArr[0]->getPosition().y + 20);
-                    cout << "DELETED" << endl;
+
+                    }
+                    else if (commentB2.getGlobalBounds().contains(mousePos) || subButton2Clicked)
+                    {
+                        subButton2Clicked = 1;
+                        popup.setPrompt("Add comment:");
+                        popup.handleEvent(event, 1);
+                    }
+                    else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left && num2 > 0&& !commentB3.getGlobalBounds().contains(mousePos))
+                    {/*
+                        for (int i = 1; i < num2; i++)
+                        {
+                            delete textarr[i];
+                            delete commentArr[i];
+                        }*/
+                        num2 = 0;
+                        subButton2Clicked = 0;
+                        state = -1;
+
+                        cout << "DELETED" << endl;
+                    }
                 }
+
+               
                 
             
                 
             }
-            if (commentB3.getGlobalBounds().contains(mousePos)&&state==10)
+            if (commentB3.getGlobalBounds().contains(mousePos) && state == 10)
             {
-                    for (int i = 1; i < num2; i++)
-                    {
-                        delete textarr[i];
-                    }
-                    num2 = 0;
-                    
-                    if (postFound)
-                    {
-                        postFound->DisplayLikedUsers(textarr, num2);
-                    }
-                    state = 11;
+                for (int i = 1; i < num2; i++)
+                {
+                    delete textarr[i];
+                }
+                num2 = 0;
+                /* cout << "state 10" << endl;*/
+                if (postFound)
+                {
+                    cout << "aithon" << endl;
+                    postFound->DisplayLikedUsers(textarr, num2);
+                }
+                state = 11;
             }
+            if (state == 12)
+            {
+                if (subState == -1)
+                {
+                    popup.handleEvent(event, 1);
+                    cout << "state -1" << endl;
+
+                }
+                else
+                {
+                    cout << "state 0" << endl;
+                    if (opt1.getGlobalBounds().contains(mousePos) && !subButton1Clicked)
+                    {
+                        subState = 1;
+                        subButton1Clicked = 1;
+                        for (int i = 1; i < num; i++)
+                        {
+                            delete layoutArr[i];
+                        }
+                        num = 1;
+                        userFound->DisplayFriends(window, font, height, width, num, layoutArr,0);
+                       
+                       
+                    }
+                    else if (opt2.getGlobalBounds().contains(mousePos) && !subButton2Clicked)
+                    {
+                        subState = 1;
+                        subButton2Clicked = 1;
+                        for (int i = 1; i < num; i++)
+                        {
+                            delete layoutArr[i];
+
+                        }
+                        num = 1;
+                        userFound->DisplayLikedPosts(window, font, height, width, num, layoutArr);
+                        
+
+                    }
+                    else if(event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left&&!opt1.getGlobalBounds().contains(mousePos) && !opt2.getGlobalBounds().contains(mousePos) && (subButton1Clicked || subButton2Clicked))
+                    {
+                        cout << "cancelling" << endl;
+                        state = -1;
+                        popupOpen = 0;
+                    }
+                }
+            }
+            if (state == 13)
+            {
+                popup.handleEvent(event, 1, "Search Page ID: ");
+            }
+         
         }
 
         window.clear(myColor);
@@ -572,6 +669,37 @@ void Driver::Run()
                     CreateUser(popup.getID(), popup.getTitle());
                     state = -1;
                     popupOpen = 0;
+                    popup.reset();
+                }
+
+            }
+            if (state == 4)
+            {
+                popup.draw(window);
+                if (popup.isDone())
+                {
+                    bool found = 0;
+                    for (int i = 0; i < userCount_ && !found; i++)
+                    {
+                        if (allUsers_[i]->GetId() == popup.getTitle())
+                        {
+                            Page** temp = new Page * [pageCount_ + 1];
+                            for (int i = 0; i < pageCount_; i++)
+                            {
+                                temp[i] = allPages_[i];
+                            }
+                            delete[]allPages_;
+                            allPages_ = temp;
+                            found = 1;
+                            allPages_[pageCount_++] = new Page(popup.getID(), allUsers_[i], popup.getDate());
+                            cout << allPages_[pageCount_ - 1]->GetId() << endl;
+
+                        }
+
+                    }
+                    popupOpen = 0;
+                    state = -1;
+
                     popup.reset();
                 }
 
@@ -689,7 +817,27 @@ void Driver::Run()
                 }
              
             }
-            
+            if (state == 7)
+            {
+                popup.draw(window);
+                if (popup.isDone())
+
+                {
+                    bool found = 0;
+                    for (int i = 0; i < pageCount_ && !found; i++)
+                    {
+                        if (allPages_[i]->GetId() == popup.getID())
+                        {
+                            found = 1;
+                            loginUser_->LikePage(allPages_[i]);
+                        }
+                    }
+                    state = -1;
+                    popupOpen = 0;
+                    popup.reset();
+                }
+
+            }
             if (state==8)
             {
                 popup.draw(window);
@@ -711,58 +859,8 @@ void Driver::Run()
                     popupOpen = 0;
                 }
             }
-            if (state==4)
-            {
-                popup.draw(window);
-                if (popup.isDone())
-                {
-                    bool found = 0;
-                    for (int i = 0; i < userCount_ && !found; i++)
-                    {
-                        if (allUsers_[i]->GetId() == popup.getTitle())
-                        {
-                            Page** temp = new Page * [pageCount_ + 1];
-                            for (int i = 0; i < pageCount_; i++)
-                            {
-                                temp[i] = allPages_[i];
-                            }
-                            delete[]allPages_;
-                            allPages_ = temp;
-                            found = 1;
-                            allPages_[pageCount_++] = new Page(popup.getID(), allUsers_[i], popup.getDate());
-                            cout << allPages_[pageCount_ - 1]->GetId() << endl;
-                            
-                        }
-
-                    }
-                    popupOpen = 0;
-                    state = -1;
-             
-                    popup.reset();
-                }
-             
-            }
-            if (state==7)
-            {
-                popup.draw(window);
-                if (popup.isDone())
-
-                {
-                    bool found =0;
-                    for (int i = 0; i <pageCount_&& !found; i++)
-                    {
-                        if (allPages_[i]->GetId() == popup.getID())
-                        {
-                            found = 1;
-                            loginUser_->LikePage(allPages_[i]);
-                        }
-                    }
-                    state = -1;
-                    popupOpen = 0;
-                    popup.reset();
-                }
-               
-            }
+          
+           
             if (state == 9)
             {
                 popup.draw(window);
@@ -835,8 +933,11 @@ void Driver::Run()
                     layout.draw(window);
                     for (int k = 1; k <= num2; k++)
                     {
+                       
+                       
                         window.draw(*commentArr[k]);
                         window.draw(*textarr[k]);
+                       
                     }
                     window.draw(commentB1);
                     window.draw(commentB2);
@@ -856,19 +957,70 @@ void Driver::Run()
                     }
                  
                 }
-                if (state == 11)
+             
+                
+                
+            }
+            if (state == 11)
+            {
+
+              
+                for (int i = 0; i <= num2; i++)
                 {
-               
-                  
-                    for (int i = 1; i < num2; i++)
+
+                    window.draw(*textarr[i]);
+                }
+
+
+            }
+            if (state == 12)
+            {
+                if (subState == -1)
+                {
+                    popup.draw(window);
+
+                    if (popup.isDone() && subState == -1)
                     {
-                        window.draw(*textarr[i]);
+                        bool found = 0;
+                        for (int i = 0; i < userCount_ && !found; i++)
+                        {
+                            if (allUsers_[i]->GetId() == popup.getID())
+                            {
+                                found = 1;
+                                userFound = allUsers_[i];
+                            }
+                        }
+                        if (found)
+                            subState = 0;
+                        else
+                        {
+                            state = -1;
+                            popupOpen = 0;
+                        }
+                        popup.reset();
+                        
                     }
+                }
+                else if (subState == 0)
+                {
+                    window.draw(inputWindow);
+                    window.draw(opt1);
+                    window.draw(opt2);
+                }
+                else if (subState == 1)
+                {
+                    cout << "displaying" << endl;
+                    for (int i = 1; i < num; i++)
+                    {
+                        layoutArr[i]->draw(window);
+                    }
+                }
 
                 
-                }
-                
-                
+            }
+            if (state == 13)
+            {
+
             }
 
         }

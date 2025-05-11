@@ -44,10 +44,11 @@ public:
 	void DisplayDetails();
 	void ViewHome(Date& current, RenderWindow&window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	void DisplayDetails(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
-	void DisplayFriends(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
+	void DisplayFriends(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr, bool mark=1);
 	void DisplayLikedPages(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	void DisplayLikedPosts(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
 	void AddActivity(const string& id,string date);
+	void likePost(Post*);
 	inline string GetName()
 	{
 		return name_;
