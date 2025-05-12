@@ -560,6 +560,7 @@ void Driver::Run()
                     {
                         subState = 1;
                         subButton1Clicked = 1;
+                        subButton2Clicked = 0;
                         for (int i = 1; i < num; i++)
                         {
                             delete layoutArr[i];
@@ -573,6 +574,7 @@ void Driver::Run()
                     {
                         subState = 1;
                         subButton2Clicked = 1;
+                        subButton1Clicked = 0;
                         for (int i = 1; i < num; i++)
                         {
                             delete layoutArr[i];
