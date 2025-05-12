@@ -42,7 +42,7 @@ Page::~Page()
 {
 	for (int i = 0; i < numPosts_; i++)
 	{
-		delete[]postsArr_[i];
+		delete postsArr_[i];
 	}
 	delete[]postsArr_;
 

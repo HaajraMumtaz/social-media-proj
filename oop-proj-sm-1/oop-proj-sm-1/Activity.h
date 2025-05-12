@@ -10,7 +10,7 @@ private:
 	string value_;
 public:
 	Activity(const string type = "", const string value = "", string desc="", string id="", int d=0, int m=0, int y=0);
-	void setActivity(string type, string value);
+	/*void setActivity(string type, string value);*/
 	void DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr) override;
 	inline void setType(string type)
 	{

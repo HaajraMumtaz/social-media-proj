@@ -99,6 +99,9 @@ Post::~Post()
     cout << "~Post() called " << Id_ << endl;
   
     delete[]usersLiked_;
+
+    for(int i=0;i<numberComments_;i++)
+    delete commentsArr_[i];
     delete[]commentsArr_;
   
 }
@@ -204,7 +207,7 @@ void Post::getComments(RectangleShape**& arr, int& num,Text**& textarr)
    
     RectangleShape** temp = new RectangleShape*[numberComments_ + 2];
     Text** texttemp = new Text * [numberComments_ + 2];
-
+    cout << "retrieving comments" << endl;
     temp[0] = arr[0];
     texttemp[0] = textarr[0];
     delete[]textarr;

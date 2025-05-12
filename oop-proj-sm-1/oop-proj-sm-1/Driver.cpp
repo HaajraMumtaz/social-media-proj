@@ -258,7 +258,7 @@ void Driver::Run()
                           
                             delete layoutArr[i];
                         }
-                        num= 1;
+                        num=1 ;
                     
                     opt1.setPosition((inputWindow.getPosition().x + but1.getLocalBounds().width/2)-40, (inputWindow.getPosition().y + but1.getLocalBounds().height));
                     opt2.setPosition(opt1.getPosition().x, opt1.getPosition().y + 100);
@@ -363,7 +363,7 @@ void Driver::Run()
                 
             }
            
-            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Space)
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Up)
             {
                 state = -1;
                 popupOpen = 0;
@@ -395,7 +395,6 @@ void Driver::Run()
                         subButton1Clicked = 0;
                         subButton2Clicked = 1;
                         popupOpen = 0;
-                        state = -1;
                         loginUser_->DisplayLikedPosts(window, font, height, width, num, layoutArr);
 
                     }
@@ -652,29 +651,7 @@ void Driver::Run()
             window.draw(searchPostB);
             window.draw(searchPageB);
           
-            if (state==2)
-            {    
-                if (!subButton1Clicked&&!subButton2Clicked)
-                {
-                    /*cout << "here in display" << endl;*/
-                   
-                   
-                        window.draw(inputWindow);
-                        window.draw(opt1);
-                        window.draw(opt2);
-                  
-                }
-                
-
-                else
-                {
-                    for (int i = 1; i < num; i++)
-                    {
-                        layoutArr[i]->draw(window);
-                    }
-                }
-                
-            }
+       
           
             /*  window.draw(*todraw[0]);*/
 
@@ -686,7 +663,29 @@ void Driver::Run()
 
                 }
             }
-           
+            if (state == 2)
+            {
+                if (!subButton1Clicked && !subButton2Clicked)
+                {
+                    /*cout << "here in display" << endl;*/
+
+
+                    window.draw(inputWindow);
+                    window.draw(opt1);
+                    window.draw(opt2);
+
+                }
+
+
+                else
+                {
+                    for (int i = 1; i < num; i++)
+                    {
+                        layoutArr[i]->draw(window);
+                    }
+                }
+
+            }
             if (state==3)
             {
                 popup.draw(window);
@@ -944,6 +943,10 @@ void Driver::Run()
                             else
                             {
                                 layout.setData(postFound->GetId(), postFound->getDesc(), postFound->getDate(), allPages_[j - 1]->GetName());
+                                cout << "num bef" << num2 << endl;
+
+                                postFound->getComments(commentArr, num2, textarr);
+                                cout << "num after:" << num2 << endl;
                             }
 
                             subState = 0;
@@ -1064,12 +1067,13 @@ void Driver::Run()
                                 found = 1;
                                 pageFound = allPages_[i];
                                 subState = 0;
-                                popup.reset();
+                                
                             }
                         }
                         if (!found)
                             state = -1;
                         popupOpen = 0;
+                        popup.reset();
 
                     }
                 }
@@ -1086,6 +1090,8 @@ void Driver::Run()
         }
         window.display();
     }
+
+    
 
 }
 
@@ -1180,4 +1186,23 @@ Driver::Driver()
 User* Driver::GetLoginUser()
 {
     return loginUser_;
+}
+
+void Driver:: Deallocate(Text**&TextArr, RectangleShape**&RectArr, DisplayLayout**&LayoutArr,int&num2,int&num)
+{
+    for (int i = 0; i < num; i++)
+    {
+        delete LayoutArr[i];
+    }
+    num = 1;
+    for (int i = 0; i <= num2; i++)
+    {
+        delete TextArr[i];
+        delete RectArr[i];
+    }
+    num2 = 0;
+    delete[]LayoutArr;
+    delete[]TextArr;
+    delete[]RectArr;
+
 }
