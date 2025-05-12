@@ -28,7 +28,7 @@ public:
 	}
 	void AddComment(Comment&,int&);
 	virtual string GetId();
-	virtual void DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr);
+	virtual void DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr, string owner);
 	void DisplayLikedUsers(Text**&arr,int& num2);
 	void AddLike(User*& likee);
 	void SetDate(int d,int m, int y);

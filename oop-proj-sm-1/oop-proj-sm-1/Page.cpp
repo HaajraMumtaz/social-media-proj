@@ -1,7 +1,7 @@
 #include "Page.h"
 #include "Post.h"
 #include "User.h"
-
+#include "Activity.h"
 Page::Page(const string id,User* owner, const string title, Post** postarr,int numlikes, int numposts)
 {
 	Id_ = id;
@@ -21,7 +21,7 @@ void Page::DisplayPosts(Date& current, RenderWindow& window, sf::Font& font, int
 {
 	for (int i = 0; i < numPosts_; i++)
 	{
-		postsArr_[i]->DisplayPost(window, font, height, width, num, displayArr);
+		postsArr_[i]->DisplayPost(window, font, height, width, num, displayArr,this->Id_);
 	}
 }
 string Page:: GetNumLikes()
@@ -80,7 +80,7 @@ bool Page::DisplayValidPosts(Date& current, sf::RenderWindow& window,sf::Font& f
 		{
 			cout << "going in" << endl;
 			exists = 1;
-			postsArr_[j]->DisplayPost(window,font,height,width,num,displayArr);
+			postsArr_[j]->DisplayPost(window,font,height,width,num,displayArr,this->Id_);
 		}
 	}
 	return exists;
@@ -112,4 +112,73 @@ Post* Page::searchPost(string id, bool& found)
 	}
 	if (!found)
 		return nullptr;
+}
+void Page::setType(string type)
+{
+	cout << "num this:" << numPosts_ << endl;
+	Activity* mem = dynamic_cast<Activity*>(postsArr_[numPosts_]);
+	if (mem)
+	{
+		mem->setType(type);
+	}
+	else
+		cout << "not type activity" << endl;
+
+}
+void Page::setValue(string value)
+{
+	Activity* mem = dynamic_cast<Activity*>(postsArr_[numPosts_]);
+	if (mem)
+	{
+		mem->setValue(value);
+		numPosts_++;
+	}
+
+	else
+		cout << "not type activity" << endl;
+
+}
+void Page::AddMemory(Date& current, string id, string oldId, string desc)
+{
+	int j = 0;
+	bool found = 0;
+	Post** tempArr;
+	for (j; j < numPosts_ && !found; j++)
+	{
+		if (postsArr_[j]->GetId() == oldId)
+			found = 1;
+	}
+	if (found)
+	{
+		tempArr = new Post * [numPosts_ + 1];
+		for (int i = 0; i < numPosts_; i++)
+		{
+			tempArr[i] = postsArr_[i];
+		}
+		tempArr[numPosts_] = new Memory(postsArr_[j - 1], id, desc, current.getDate());
+		Memory* mem = dynamic_cast<Memory*>(tempArr[numPosts_]);
+		cout << "added new memory:";
+		if (mem)
+		{
+			cout << "id:" << mem->GetId() << "Desc:" << mem->getDesc() << "Date:" << tempArr[numPosts_]->getDate() << "Og ID:" <<
+				mem->getOriginalId() << endl;
+		}
+		numPosts_++;
+		delete[]postsArr_;
+		postsArr_ = tempArr;
+	}
+}
+
+void Page::AddActivity(const string& id, string date)
+{
+	Post** tempArr = new Post * [numPosts_ + 1];
+	for (int i = 0; i < numPosts_; i++)
+	{
+		tempArr[i] = postsArr_[i];
+	}
+	tempArr[numPosts_] = new Activity();
+
+	tempArr[numPosts_]->setPost(id, "", date);
+	delete[]postsArr_;
+	postsArr_ = tempArr;
 }

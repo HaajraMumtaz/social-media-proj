@@ -34,6 +34,10 @@ public:
 		return title_;
 	}
 	Post* searchPost(string id, bool& found);
+	void AddMemory(Date& current, string id, string ogID, string desc);
+	void AddActivity(const string& id, string date);
+	void setValue(string value);
+	void setType(string type);
 	~Page();
 
 

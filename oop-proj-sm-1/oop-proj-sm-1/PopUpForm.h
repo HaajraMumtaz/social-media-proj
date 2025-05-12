@@ -85,6 +85,10 @@ public:
     {
         return id_;
     }
+    inline void setUser(string user)
+    {
+        ownerName_ = user;
+    }
   
 };
 

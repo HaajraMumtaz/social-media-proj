@@ -12,7 +12,7 @@ string Post:: GetId()
     cout << "getting id"<<Id_<< endl;
     return Id_;
 }
-void Post::DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
+void Post::DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr,string owner)
 {
    
 
@@ -29,7 +29,8 @@ void Post::DisplayPost(RenderWindow& window, Font& font, int height, int width, 
     cout << "display post:" << endl;
     temp[num] = new DisplayLayout(font, { displayArr[num-1]->getPosition().x,displayArr[num-1]->getPosition().y + (displayArr[num-1]->getSize().y) }, displayArr[0]->getSize());
     cout << "THIS DATE:" << this->date_.getDate() << endl;
-    temp[num]->setData(this->Id_, this->description_, this->date_.getDate(), "");
+    temp[num]->setData(this->Id_, this->description_, this->date_.getDate(),owner);
+    
     delete[]displayArr;
     displayArr = temp;
     num++;

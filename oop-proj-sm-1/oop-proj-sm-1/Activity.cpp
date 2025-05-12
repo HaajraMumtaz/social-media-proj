@@ -27,7 +27,7 @@ Memory::Memory(Post*& original, string desc,string id,string date):Post(desc,id,
 	originalPost_ = original;
 	
 }
-void Memory::DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
+void Memory::DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr,string owner)
 {
 
 
@@ -47,7 +47,7 @@ void Memory::DisplayPost(RenderWindow& window, Font& font, int height, int width
     if (mem) {
         cout << "display memory:" << endl;
         
-        mem->setMemory(originalPost_->Post::getDate(), this->getDesc(), originalPost_->Post::GetId(), originalPost_->getDesc(), this->Post::getDate(),"");
+        mem->setMemory(originalPost_->Post::getDate(), this->getDesc(), originalPost_->Post::GetId(), originalPost_->getDesc(), this->Post::getDate(),owner);
         num++;
     }
     else {
@@ -67,7 +67,7 @@ void Memory::DisplayPost(RenderWindow& window, Font& font, int height, int width
 Activity::~Activity() = default;
 Memory::~Memory() = default;
 
-void Activity::DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
+void Activity::DisplayPost(RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr,string owner)
 {
 
 
@@ -88,7 +88,7 @@ void Activity::DisplayPost(RenderWindow& window, Font& font, int height, int wid
 
     cout << "display Activity:" << endl;
     temp[num] = new DisplayLayout(font, { displayArr[num - 1]->getPosition().x,displayArr[num - 1]->getPosition().y + (displayArr[num - 1]->getSize().y) }, displayArr[0]->getSize());
-    temp[num]->setData(this->Post::GetId(), type_+" "+value_, this->Post::getDate(), "");
+    temp[num]->setData(this->Post::GetId(), type_+" "+value_, this->Post::getDate(), owner);
 
 
     /*  temp[num]->setPosition(Vector2f(toDrawArr[0]->getPosition().x, temp[0]->getPosition().y +(num* temp[0]->getSize().y)));*/

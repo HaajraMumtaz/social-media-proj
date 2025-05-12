@@ -50,14 +50,14 @@ void User::ViewLikedPosts(RenderWindow& window, Font& font, int height, int widt
 {
 	for (int i = 0; i < numLikedPosts_; i++)
 	{
-		lPostArr_[i]->DisplayPost(window, font, height, width, num, displayArr);
+		lPostArr_[i]->DisplayPost(window, font, height, width, num, displayArr,this->id_);
 	}
 }
 void User::DisplayPosts(RenderWindow& window, Font& font, int height, int width, int&num, DisplayLayout**& displayArr)
 {
 	for (int i = 0; i < numPosts_; i++)
 	{
-		oPostArr_[i]->DisplayPost(window, font, height, width, num, displayArr);
+		oPostArr_[i]->DisplayPost(window, font, height, width, num, displayArr,this->id_);
 	}
 }
 void User::ViewTimeline(Date& current, RenderWindow& window, Font& font, int height, int width, int& num, DisplayLayout**& displayArr)
@@ -144,7 +144,7 @@ bool User::DisplayValidPosts(Date&current,RenderWindow& window, Font& font, int 
 		if (oPostArr_[j]->ValidDate(current))
 		{
 			exists = 1;
-			oPostArr_[j]->DisplayPost(window,font,height, width, num,displayArr);
+			oPostArr_[j]->DisplayPost(window,font,height, width, num,displayArr,this->id_);
 		}
 	}
 	return exists;
@@ -287,7 +287,6 @@ void User::AddMemory(Date& current, string id, string oldId, string desc)
 	}
 }
 
-
 void User::setType(string type)
 {
 	cout << "num this:" << numPosts_ << endl;
@@ -313,6 +312,7 @@ void User::setValue(string value)
 		cout << "not type activity" << endl;
 
 }
+
 Post* User::searchPost(string id,bool&found)
 {
 
