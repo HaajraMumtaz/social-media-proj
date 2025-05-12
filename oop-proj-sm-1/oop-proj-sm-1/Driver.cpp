@@ -28,8 +28,8 @@ void Driver::Run()
     {
         cout << "unable to load" << endl;
     }
-    Font font;
-    if (!font.loadFromFile("D:\\haajra\\oop-proj\\additional-files\\GeistMonoBold.ttf"))
+    Font fontGeist;
+    if (!fontGeist.loadFromFile("D:\\haajra\\oop-proj\\additional-files\\GeistMonoBold.ttf"))
     {
         cout << "cant load" << endl;
     }
@@ -49,12 +49,15 @@ void Driver::Run()
         cout << "unable to load" << endl;
     }
     float scaleFactor = min(width / buttonTexture.getSize().x, height / buttonTexture.getSize().y);
-
-
+    // Load font
+    sf::Font font;
+    if (!font.loadFromFile("D:\\haajra\\oop-proj\\additional-files\\Montserrat-Regular.ttf")) {
+        std::cerr << "Font failed to load\n";
+    }
     but1.setTexture(buttonTexture);
     but1.setScale(0.9, 0.9);
-
     but1.setPosition(10, window.getSize().y / 3);
+
     Sprite but3 = but1;
     but3.setPosition(but1.getPosition().x, but1.getPosition().y + (height / 3));
     Sprite but2 = but1;
@@ -63,6 +66,39 @@ void Driver::Run()
     FloatRect bbB2 = but2.getGlobalBounds();
     FloatRect bbB3 = but3.getGlobalBounds();
    
+    Text labelTL;
+    labelTL.setFont(font);
+    labelTL.setString("View Timeline");
+    labelTL.setCharacterSize(26);
+    labelTL.setFillColor(sf::Color(60, 60, 60)); 
+
+
+    FloatRect textBounds = labelTL.getLocalBounds();
+    labelTL.setOrigin(textBounds.width / 2, textBounds.height / 2);
+    labelTL.setPosition(
+        bbB1.left + bbB1.width / 2.5,
+        bbB1.top + bbB1.height / 2 - 5
+    );
+
+    Text labelHome = labelTL;
+    labelHome.setOrigin(textBounds.width / 2, textBounds.height / 2);
+    labelHome.setPosition(
+        bbB2.left + bbB2.width / 2.5,
+        bbB2.top + bbB2.height / 2 - 5
+    );
+    labelHome.setString("View Home");
+
+    Text labelDT = labelTL;
+    labelDT.setOrigin(textBounds.width / 2, textBounds.height / 2);
+    labelDT.setPosition(
+        bbB3.left + bbB3.width / 2.5,
+        bbB3.top + bbB3.height / 2 - 5
+    );
+    labelDT.setString("View Details");
+
+
+    
+
     int num = 1;
     RectangleShape** todraw = new RectangleShape * [1];
     todraw[0] = new RectangleShape(Vector2f(width / 2, height / 5));
@@ -74,11 +110,7 @@ void Driver::Run()
     userButton.setPosition(0, 0);
 
     userButton.setPosition(width - userButton.getLocalBounds().width-50, 0);
-    Text loginUserId;
-    loginUserId.setFont(font);
-    loginUserId.setFillColor(Color::Black);
-    loginUserId.setCharacterSize(22);
-    loginUserId.setPosition(userButton.getPosition().x, (userButton.getPosition().y + 50));
+   
     
     Sprite addUserB;
     addUserB.setTexture(addTexture);
@@ -128,12 +160,74 @@ void Driver::Run()
     FloatRect bbUserB = userButton.getGlobalBounds();
     FloatRect bbAddFriendB = addFriendB.getGlobalBounds();
     FloatRect bbAddPageB = addPageB.getGlobalBounds();
-    PopupForm popup(font, Vector2f((width / 2) - 500 / 2, (height / 2) - 350 / 2));
+    PopupForm popup(fontGeist, Vector2f((width / 2) - 500 / 2, (height / 2) - 350 / 2));
   
-    DisplayLayout** layoutArr = new DisplayLayout*[1];
-    layoutArr[0] = new DisplayLayout(font, todraw[0]->getPosition(), { 300, 150 });
 
-    DisplayLayout layout(font, Vector2f(todraw[0]->getPosition().x+(0.25*todraw[0]->getLocalBounds().width),todraw[0]->getPosition().y+(1.5*todraw[0]->getLocalBounds().height)), {300, 150});
+    Text labelSUser = labelDT;
+    labelSUser.setCharacterSize(24);
+    textBounds = labelSUser.getLocalBounds();
+    labelSUser.setPosition(
+        searchUserB.getGlobalBounds().left + (searchUserB.getGlobalBounds().width - textBounds.width) / 2 - textBounds.left + 75,
+        searchUserB.getGlobalBounds().top + 30  
+    );
+    labelSUser.setString("Search User");
+
+    Text labelSPage = labelSUser;
+    labelSPage.setPosition(
+        searchPageB.getGlobalBounds().left + (searchPageB.getGlobalBounds().width - textBounds.width) / 2 - textBounds.left + 75,
+        searchPageB.getGlobalBounds().top + 30
+    );
+    labelSPage.setString("Search Page");
+
+    Text labelSPost = labelSUser;
+    labelSPost.setPosition(
+        searchPostB.getGlobalBounds().left + (searchPostB.getGlobalBounds().width - textBounds.width) / 2 - textBounds.left + 75,
+        searchPostB.getGlobalBounds().top + 30
+    );
+    labelSPost.setString("Search Post");
+
+    Text labelLoggedIn = labelSUser;
+    labelLoggedIn.setString("Logged in user:\n" );
+    labelLoggedIn.setFillColor(Color::Black);
+    labelLoggedIn.setOrigin(labelLoggedIn.getLocalBounds().left + labelLoggedIn.getLocalBounds().width / 2.0f, labelLoggedIn.getLocalBounds().top + labelLoggedIn.getLocalBounds().height / 2.0f);
+    labelLoggedIn.setPosition(userButton.getGlobalBounds().left + userButton.getGlobalBounds().width / 2.0f+20, userButton.getGlobalBounds().top + userButton.getGlobalBounds().height / 2.0f);
+
+
+    Text labelAddUser = labelSPost;
+    labelAddUser.setString("Add User");
+    labelAddUser.setOrigin(labelAddUser.getLocalBounds().left + labelAddUser.getLocalBounds().width / 2.0f, labelAddUser.getLocalBounds().top + labelAddUser.getLocalBounds().height / 2.0f);
+    labelAddUser.setPosition(bbAddUserB.left + bbAddUserB.width / 2.0f, bbAddUserB.top + bbAddUserB.height / 2.0f);
+
+    Text labelAddPage = labelSPost;
+    labelAddPage.setString("Add Page");
+    labelAddPage.setOrigin(labelAddPage.getLocalBounds().left + labelAddPage.getLocalBounds().width / 2.0f, labelAddPage.getLocalBounds().top + labelAddPage.getLocalBounds().height / 2.0f);
+    labelAddPage.setPosition(bbAddPageB.left + bbAddPageB.width / 2.0f, bbAddPageB.top + bbAddPageB.height / 2.0f);
+
+    Text labelAddPost = labelSPost;
+    labelAddPost.setString("Add Post");
+    labelAddPost.setOrigin(labelAddPost.getLocalBounds().left + labelAddPost.getLocalBounds().width / 2.0f, labelAddPost.getLocalBounds().top + labelAddPost.getLocalBounds().height / 2.0f);
+    labelAddPost.setPosition(bbAddPostB.left + bbAddPostB.width / 2.0f, bbAddPostB.top + bbAddPostB.height / 2.0f);
+
+    Text labelAddFriend = labelSPost;
+    labelAddFriend.setString("Add Friend");
+    labelAddFriend.setOrigin(labelAddFriend.getLocalBounds().left + labelAddFriend.getLocalBounds().width / 2.0f, labelAddFriend.getLocalBounds().top + labelAddFriend.getLocalBounds().height / 2.0f);
+    labelAddFriend.setPosition(bbAddFriendB.left + bbAddFriendB.width / 2.0f+10, bbAddFriendB.top + bbAddFriendB.height / 2.0f);
+
+    Text labelLikePage = labelSPost;
+    labelLikePage.setString("Like Page");
+    labelLikePage.setOrigin(labelLikePage.getLocalBounds().left + labelLikePage.getLocalBounds().width / 2.0f, labelLikePage.getLocalBounds().top + labelLikePage.getLocalBounds().height / 2.0f);
+    labelLikePage.setPosition(likePageB.getGlobalBounds().left + likePageB.getGlobalBounds().width / 2.0f+10, likePageB.getGlobalBounds().top + likePageB.getGlobalBounds().height / 2.0f);
+
+    Text labelAddPagePost = labelSPost;
+    labelAddPagePost.setString("Add Page Post");
+    labelAddPagePost.setOrigin(labelAddPagePost.getLocalBounds().left + labelAddPagePost.getLocalBounds().width / 2.0f, labelAddPagePost.getLocalBounds().top + labelAddPagePost.getLocalBounds().height / 2.0f);
+    labelAddPagePost.setPosition(addPagePostB.getGlobalBounds().left + addPagePostB.getGlobalBounds().width / 2.0f+20, addPagePostB.getGlobalBounds().top + addPagePostB.getGlobalBounds().height / 2.0f);
+
+
+    DisplayLayout** layoutArr = new DisplayLayout*[1];
+    layoutArr[0] = new DisplayLayout(fontGeist, todraw[0]->getPosition(), { 300, 150 });
+
+    DisplayLayout layout(fontGeist, Vector2f(todraw[0]->getPosition().x+(0.25*todraw[0]->getLocalBounds().width),todraw[0]->getPosition().y+(1.5*todraw[0]->getLocalBounds().height)), {300, 150});
     RectangleShape** commentArr = new RectangleShape * [1];
     commentArr[0] = new RectangleShape();
     commentArr[0]->setFillColor(Color::White);
@@ -145,7 +239,7 @@ void Driver::Run()
     textarr[0] = new Text();
     textarr[0]->setPosition(todraw[0]->getPosition().x, todraw[0]->getPosition().y + (1.5 * todraw[0]->getLocalBounds().height) + 60);
   /*  textarr[0]->setPosition(0,0);*/
-    textarr[0]->setFont(font);
+    textarr[0]->setFont(fontGeist);
     textarr[0]->setString("Users that have liked:");
     textarr[0]->setFillColor(Color::Black);
     layout.setData("u1", "temp", "0/0/0", "haajra");
@@ -198,7 +292,7 @@ void Driver::Run()
     commentB3.setPosition(commentB2.getPosition().x + 40, commentB2.getPosition().y);
     
     Text heading;
-    heading.setFont(font);
+    heading.setFont(fontGeist);
     heading.setFillColor(Color::Black);
     heading.setPosition(width / 2, height / 4);
     while (window.isOpen()) {
@@ -219,7 +313,7 @@ void Driver::Run()
                         delete layoutArr[i];
                     }
                     num = 1;
-                    loginUser_->ViewTimeline(currentDate_, window, font, height, width, num, layoutArr);
+                    loginUser_->ViewTimeline(currentDate_, window, fontGeist, height, width, num, layoutArr);
                     state=0;
                     popupOpen = 0;
                     subButton1Clicked = 0;
@@ -239,7 +333,7 @@ void Driver::Run()
                         num = 1;
                     
                     cout<< "displaying your own posts:";
-                    loginUser_->DisplayPosts(window,font,height,width,num,layoutArr);
+                    loginUser_->DisplayPosts(window,fontGeist,height,width,num,layoutArr);
                     popupOpen = 0;
                     subButton1Clicked = 0;
                 }
@@ -388,14 +482,14 @@ void Driver::Run()
                         subButton2Clicked = 0;
                         popupOpen = 0;
                         cout << "going in to get stuck" << endl;
-                        loginUser_->DisplayDetails(window, font, height, width, num, layoutArr);
+                        loginUser_->DisplayDetails(window, fontGeist, height, width, num, layoutArr);
                     }
                     if (opt2.getGlobalBounds().contains(mousePos))
                     {
                         subButton1Clicked = 0;
                         subButton2Clicked = 1;
                         popupOpen = 0;
-                        loginUser_->DisplayLikedPosts(window, font, height, width, num, layoutArr);
+                        loginUser_->DisplayLikedPosts(window, fontGeist, height, width, num, layoutArr);
 
                     }
 
@@ -566,7 +660,7 @@ void Driver::Run()
                             delete layoutArr[i];
                         }
                         num = 1;
-                        userFound->DisplayFriends(window, font, height, width, num, layoutArr,0);
+                        userFound->DisplayFriends(window, fontGeist, height, width, num, layoutArr,0);
                        
                        
                     }
@@ -581,7 +675,7 @@ void Driver::Run()
 
                         }
                         num = 1;
-                        userFound->DisplayLikedPosts(window, font, height, width, num, layoutArr);
+                        userFound->DisplayLikedPosts(window, fontGeist, height, width, num, layoutArr);
                         
 
                     }
@@ -607,7 +701,7 @@ void Driver::Run()
                 else if (subState == 0)
                 {
 
-                    pageFound->DisplayPosts(currentDate_, window, font, height, width, num, layoutArr);
+                    pageFound->DisplayPosts(currentDate_, window, fontGeist, height, width, num, layoutArr);
                     cout << "likes:" << pageFound->GetNumLikes() << endl;
                     heading.setString(pageFound->GetId() + " " + pageFound->GetName() + " Number of likes:" + pageFound->GetNumLikes());
                     cout << "filling in state 13" << endl;
@@ -628,7 +722,7 @@ void Driver::Run()
                 screenState = 1;
                 CreateUser(popup.getID(), popup.getTitle());
                 SetLoginUser(allUsers_[0]);
-                loginUserId.setString("Logged in: " + popup.getID());
+                labelLoggedIn.setString("Logged in:\n" + popup.getID());
                 popupOpen = 0;
                 popup.reset();
             }
@@ -648,13 +742,23 @@ void Driver::Run()
             window.draw(addFriendB);
             window.draw(likePageB);
             window.draw(addPagePostB);
-            window.draw(loginUserId);
             window.draw(searchUserB);
             window.draw(searchPostB);
             window.draw(searchPageB);
-          
-       
-          
+            window.draw(labelTL);
+            window.draw(labelHome);
+            window.draw(labelDT);
+            window.draw(labelSUser);
+            window.draw(labelSPost);
+            window.draw(labelSPage);
+            window.draw(labelLoggedIn);
+            window.draw(labelAddUser);
+            window.draw(labelAddPage);
+            window.draw(labelAddPost);
+            window.draw(labelAddFriend);
+            window.draw(labelLikePage);
+            window.draw(labelAddPagePost);
+
             /*  window.draw(*todraw[0]);*/
 
             if (state==0||state==1)
@@ -743,7 +847,7 @@ void Driver::Run()
                         {
                             found = 1;
                             SetLoginUser(allUsers_[i]);
-                            loginUserId.setString("Logged in: " + popup.getID());
+                            labelLoggedIn.setString("Logged in:\n" + popup.getID());
                         }
 
                     }
