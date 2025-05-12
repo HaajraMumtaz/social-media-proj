@@ -162,7 +162,7 @@ void Driver::Run()
     FloatRect bbAddPageB = addPageB.getGlobalBounds();
     PopupForm popup(fontGeist, Vector2f((width / 2) - 500 / 2, (height / 2) - 350 / 2));
 
-
+    bool notUnique = 0;
     Text labelSUser = labelDT;
     labelSUser.setCharacterSize(24);
     textBounds = labelSUser.getLocalBounds();
@@ -643,6 +643,7 @@ void Driver::Run()
                     }
                 }
             }
+            
             if (state == 10)
             {
                 if (subState == -1)
@@ -780,7 +781,22 @@ void Driver::Run()
             }
 
         }
-
+        if (!popupOpen)
+        {
+            handleHover(but1, labelTL, window);
+            handleHover(but2, labelHome, window);
+            handleHover(but3, labelDT, window);
+            handleHover(userButton, labelLoggedIn, window);
+            handleHover(addUserB, labelAddUser, window);
+            handleHover(addPostB, labelAddPost, window);
+            handleHover(addFriendB, labelAddFriend, window);
+            handleHover(likePageB, labelLikePage, window);
+            handleHover(addPagePostB, labelAddPagePost, window);
+            handleHover(searchUserB, labelSUser, window);
+            handleHover(searchPageB, labelSPage, window);
+            handleHover(searchPostB, labelSPost, window);
+            handleHover(addPageB, labelAddPage, window);
+        }
         window.clear(myColor);
         if (screenState == 0)
         {
@@ -865,7 +881,10 @@ void Driver::Run()
                 popup.draw(window);
                 if (popup.isDone())
                 {
-                    CreateUser(popup.getID(), popup.getTitle());
+                    if (searchUnique(popup.getID()))
+                        CreateUser(popup.getID(), popup.getTitle());
+                    else
+                        notUnique = 1;
                     state = -1;
                     popupOpen = 0;
                     popup.reset();
@@ -882,20 +901,27 @@ void Driver::Run()
                     {
                         if (allUsers_[i]->GetId() == popup.getTitle())
                         {
-                            Page** temp = new Page * [pageCount_ + 1];
-                            for (int i = 0; i < pageCount_; i++)
+                            if (searchUnique(popup.getID()))
                             {
-                                temp[i] = allPages_[i];
+                                Page** temp = new Page * [pageCount_ + 1];
+                                for (int i = 0; i < pageCount_; i++)
+                                {
+                                    temp[i] = allPages_[i];
+                                }
+                                delete[]allPages_;
+                                allPages_ = temp;
+                                found = 1;
+                                allPages_[pageCount_++] = new Page(popup.getID(), allUsers_[i], popup.getDate());
+                                cout << allPages_[pageCount_ - 1]->GetId() << endl;
                             }
-                            delete[]allPages_;
-                            allPages_ = temp;
-                            found = 1;
-                            allPages_[pageCount_++] = new Page(popup.getID(), allUsers_[i], popup.getDate());
-                            cout << allPages_[pageCount_ - 1]->GetId() << endl;
+                            else
+                            notUnique = 1;
 
                         }
+                        
 
                     }
+
                     popupOpen = 0;
                     state = -1;
 
@@ -954,24 +980,38 @@ void Driver::Run()
                             defaultstate = 1;
                             state = -1;
                             popupOpen = 0;
-                            loginUser_->AddPost(currentDate_, popup.getID(), popup.getTitle(), popup.getDate());
+                            if (searchUnique(popup.getID()))
+                                loginUser_->AddPost(currentDate_, popup.getID(), popup.getTitle(), popup.getDate());
+                            else
+                                notUnique = 1;
                             popup.reset();
                         }
                         if (subButton2Clicked)
                         {
                             subButton2Clicked = 0;
-                            defaultstate = 1;
+                            state = -1;
                             popupOpen = 0;
                             cout << popup.getID() << popup.getTitle() << popup.getDate() << endl;
+                            if(searchUnique(popup.getID()))
                             loginUser_->AddMemory(currentDate_, popup.getID(), popup.getTitle(), popup.getDate());//this id, old ID, desc
+                            else
+                            notUnique = 1;
                             popup.reset();
                         }
                         if (subButton3Clicked && subState == -1)
                         {
                             cout << "adding activity" << endl;
-                            loginUser_->AddActivity(popup.getID(), currentDate_.getDate());
-                            cout << "added activity\n--------------" << endl;
-                            subState = 0;
+                            if (searchUnique(popup.getID()))
+                            {
+                                loginUser_->AddActivity(popup.getID(), currentDate_.getDate());
+                                cout << "added activity\n--------------" << endl;
+                                subState = 0;
+                            }
+                            else
+                            {
+                                state = -1;
+                                notUnique = 1;
+                            }
                             popup.reset();
                         }
                         else if (subButton3Clicked && subState == 0 && type != "")
@@ -1117,24 +1157,36 @@ void Driver::Run()
                                 defaultstate = 1;
                                 state = -1;
                                 popupOpen = 0;
+                                if(searchUnique(popup.getID()))
                                 pageFound->AddPost(currentDate_, popup.getID(), popup.getTitle(), popup.getDate());
                                 popup.reset();
                             }
                             if (subButton2Clicked)
                             {
                                 subButton2Clicked = 0;
-                                defaultstate = 1;
+                             
                                 popupOpen = 0;
                                 cout << popup.getID() << popup.getTitle() << popup.getDate() << endl;
+                                if(searchUnique(popup.getID()))
                                 pageFound->AddMemory(currentDate_, popup.getID(), popup.getTitle(), popup.getDate());//this id, old ID, desc
+                                else
+                                    notUnique = 1;
                                 popup.reset();
                             }
                             if (subButton3Clicked && subState == -1)
                             {
                                 cout << "adding activity" << endl;
-                                pageFound->AddActivity(popup.getID(), currentDate_.getDate());
-                                cout << "added activity\n--------------" << endl;
-                                subState = 0;
+                                if (searchUnique(popup.getID()))
+                                {
+                                    pageFound->AddActivity(popup.getID(), currentDate_.getDate());
+                                    cout << "added activity\n--------------" << endl;
+                                    subState = 0;
+                                }
+                                else
+                                {
+                                    state = -1;
+                                    notUnique = 1;
+                                }
                                 popup.reset();
                             }
                             else if (subButton3Clicked && subState == 0 && type != "")
@@ -1480,3 +1532,34 @@ void Driver::Deallocate(Text**& TextArr, RectangleShape**& RectArr, DisplayLayou
 
 }
 
+bool Driver::searchUnique(string id)
+{
+    bool unique = 1;
+    for (int i = 0; i < userCount_; i++)
+    {
+        unique=allUsers_[i]->searchUnique(id);
+    }
+    for (int i = 0; i < pageCount_&&unique; i++)
+    {
+        unique=allPages_[i]->searchUnique(id);
+    }
+    return unique;
+}
+
+void Driver:: handleHover(sf::Sprite& sprite, sf::Text& text, const sf::RenderWindow& window, float scaleOnHover) {
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mouseWorldPos = window.mapPixelToCoords(mousePos);
+
+    if (sprite.getGlobalBounds().contains(mouseWorldPos)) {
+       
+        sprite.setScale(scaleOnHover, scaleOnHover);
+        text.setScale(scaleOnHover, scaleOnHover);
+         // Optional color effect
+    }
+    else {
+     
+        sprite.setScale(0.9f, 0.9f);
+        text.setScale(0.9f, 0.9f);
+
+    }
+}

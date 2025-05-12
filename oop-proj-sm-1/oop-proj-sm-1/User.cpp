@@ -360,3 +360,15 @@ bool User::postAlreadyLiked(Post*liked)
 	}
 	return unique;
 }
+bool User::searchUnique(string id)
+{
+	bool unique = 1;
+	if (this->id_ == id)
+		return 0;
+	for (int i = 0; i < numPosts_; i++)
+	{
+		if (oPostArr_[i]->GetId() == id)
+			return 0;
+	}
+	return unique;
+}

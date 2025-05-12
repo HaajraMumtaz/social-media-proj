@@ -60,5 +60,6 @@ public:
 	Post* searchPost(string id,bool&found);
 	bool PageAlreadyLiked(Page*);
 	bool postAlreadyLiked(Post*);
+	bool searchUnique(string id);
 	~User();
 };

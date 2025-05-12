@@ -182,3 +182,16 @@ void Page::AddActivity(const string& id, string date)
 	delete[]postsArr_;
 	postsArr_ = tempArr;
 }
+
+bool Page::searchUnique(string id)
+{
+	bool unique = 1;
+	if (this->Id_ == id)
+		return 0;
+	for (int i = 0; i < numPosts_; i++)
+	{
+		if (postsArr_[i]->GetId() == id)
+			return 0;
+	}
+	return unique;
+}

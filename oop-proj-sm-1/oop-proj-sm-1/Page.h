@@ -38,6 +38,7 @@ public:
 	void AddActivity(const string& id, string date);
 	void setValue(string value);
 	void setType(string type);
+	bool searchUnique(string);
 	~Page();
 
 

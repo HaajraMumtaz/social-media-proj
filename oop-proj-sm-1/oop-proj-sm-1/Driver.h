@@ -27,5 +27,7 @@ public:
 	void CreatePage();
 	void Deallocate(Text**&, RectangleShape**&, DisplayLayout**&, int&num2, int&num);
 	void Run();
+	bool searchUnique(string);
+	void handleHover(sf::Sprite& sprite, sf::Text& text, const sf::RenderWindow& window, float scaleOnHover = 1.02f);
 	~Driver();
 };
