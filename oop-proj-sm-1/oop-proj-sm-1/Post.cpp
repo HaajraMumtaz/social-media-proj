@@ -83,6 +83,8 @@ void Post::AddLike(User*&likee)
 bool Post::ValidDate(Date&current)
 {
     cout << "here" << endl;
+    cout << "today:" << current.getDate() << endl;
+    cout << "display:" << date_.getDate() << endl;
     if ((date_.GetDay() >= current.GetDay() - 1 && date_.GetMonth() == current.GetMonth() && date_.GetYear() == current.GetYear())||(current.GetDay() == 1 && date_.GetMonth() == current.GetMonth() - 1 && date_.GetYear() == current.GetYear()))
     {
         return 1;
@@ -184,7 +186,7 @@ void Post::setDate(string date)
     int day=0, month=0, year=0;
     for (int i = 0; i < date.length();i++)
     {
-        if (date[i] != '//')
+        if (date[i] != '/')
         {
             elem = elem + date[i];
         }
@@ -194,12 +196,12 @@ void Post::setDate(string date)
                 day = stoi(elem);
             else if (i <= 5)
                 month = stoi(elem);
-            else
-                year = stoi(elem);
-            i++;
+            
+            elem = "";
            
         }
     }
+    year = stoi(elem);
     date_ = Date(day, month, year);
 }
 

@@ -3,6 +3,7 @@
 #include <string>
 #include <cstring>
 #include <iostream>
+#include <ctime>
 using namespace std;
 using namespace sf;
 
@@ -14,14 +15,15 @@ private:
 	int month_;
 	int year_;
 public:
-	Date(int d=0,int m=0,int y=0);
+	Date();
+	Date(int d,int m,int y);
 	int GetDay();
 	int GetMonth();
 	int GetYear();
 	inline string getDate()
 	{
-		string date = to_string(this->day_) + "//" + to_string(this->month_);
-		date = date + "//";
+		string date = to_string(this->day_) + "/" + to_string(this->month_);
+		date = date + "/";
 		date = date + to_string(this->year_);
 		return(date);
 	}

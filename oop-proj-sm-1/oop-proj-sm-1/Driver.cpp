@@ -224,6 +224,23 @@ void Driver::Run()
     labelAddPagePost.setPosition(addPagePostB.getGlobalBounds().left + addPagePostB.getGlobalBounds().width / 2.0f + 20, addPagePostB.getGlobalBounds().top + addPagePostB.getGlobalBounds().height / 2.0f);
 
 
+    Text labelOpt1 = labelSPost;
+    labelOpt1.setString("Share Post");
+    labelOpt1.setOrigin(labelOpt1.getLocalBounds().left + labelOpt1.getLocalBounds().width / 2.0f, labelOpt1.getLocalBounds().top + labelOpt1.getLocalBounds().height / 2.0f);
+    labelOpt1.setPosition(opt1.getGlobalBounds().left + opt1.getGlobalBounds().width / 2.0f + 20, opt1.getGlobalBounds().top + opt1.getGlobalBounds().height / 2.0f);
+
+
+
+    Text labelOpt2 = labelSPost;
+    labelOpt2.setString("Share Memory");
+    labelOpt2.setOrigin(labelOpt2.getLocalBounds().left + labelOpt2.getLocalBounds().width / 2.0f, labelOpt2.getLocalBounds().top + labelOpt2.getLocalBounds().height / 2.0f);
+    labelOpt2.setPosition(opt2.getGlobalBounds().left + opt2.getGlobalBounds().width / 2.0f + 20, opt2.getGlobalBounds().top + opt2.getGlobalBounds().height / 2.0f);
+
+
+    Text labelOpt3 = labelSPost;
+    labelOpt3.setString("Share Activity");
+    labelOpt3.setOrigin(labelOpt3.getLocalBounds().left + labelOpt3.getLocalBounds().width / 2.0f, labelOpt3.getLocalBounds().top + labelOpt3.getLocalBounds().height / 2.0f);
+    labelOpt3.setPosition(opt3.getGlobalBounds().left + opt3.getGlobalBounds().width / 2.0f + 20, opt3.getGlobalBounds().top + opt3.getGlobalBounds().height / 2.0f);
     DisplayLayout** layoutArr = new DisplayLayout * [1];
     layoutArr[0] = new DisplayLayout(fontGeist, todraw[0]->getPosition(), { 500, 82 });
 
@@ -356,6 +373,11 @@ void Driver::Run()
 
                     opt1.setPosition((inputWindow.getPosition().x + but1.getLocalBounds().width / 2) - 40, (inputWindow.getPosition().y + but1.getLocalBounds().height));
                     opt2.setPosition(opt1.getPosition().x, opt1.getPosition().y + 100);
+                    labelOpt1.setPosition(opt1.getGlobalBounds().left + opt1.getGlobalBounds().width / 2.0f + 20, opt1.getGlobalBounds().top + opt1.getGlobalBounds().height / 2.0f);
+                    labelOpt2.setPosition(opt2.getGlobalBounds().left + opt2.getGlobalBounds().width / 2.0f + 20, opt2.getGlobalBounds().top + opt2.getGlobalBounds().height / 2.0f);
+                  
+                    labelOpt1.setString("Friends + Pages");
+                    labelOpt2.setString("Liked Posts");
 
                     cout << "atleast here" << endl;
                 }
@@ -391,6 +413,13 @@ void Driver::Run()
                     opt1.setPosition((inputWindow.getPosition().x + but1.getLocalBounds().width / 2) - 40, (inputWindow.getPosition().y + but1.getLocalBounds().height) - 50);
                     opt2.setPosition(opt1.getPosition().x, opt1.getPosition().y + 80);
                     opt3.setPosition(opt2.getPosition().x, opt1.getPosition().y + 160);
+
+                    labelOpt1.setPosition(opt1.getGlobalBounds().left + opt1.getGlobalBounds().width / 2.0f + 20, opt1.getGlobalBounds().top + opt1.getGlobalBounds().height / 2.0f);
+                    labelOpt2.setPosition(opt2.getGlobalBounds().left + opt2.getGlobalBounds().width / 2.0f + 20, opt2.getGlobalBounds().top + opt2.getGlobalBounds().height / 2.0f);
+                    labelOpt3.setPosition(opt3.getGlobalBounds().left + opt3.getGlobalBounds().width / 2.0f + 20, opt3.getGlobalBounds().top + opt3.getGlobalBounds().height / 2.0f);
+                    labelOpt1.setString("Add Post");
+                    labelOpt2.setString("Add Memory");
+                    labelOpt3.setString("Add Activity");
                     cout << "add post via window:" << endl;
                     popupOpen = 1;
                 }
@@ -417,6 +446,14 @@ void Driver::Run()
                     opt1.setPosition((inputWindow.getPosition().x + but1.getLocalBounds().width / 2) - 40, (inputWindow.getPosition().y + but1.getLocalBounds().height) - 50);
                     opt2.setPosition(opt1.getPosition().x, opt1.getPosition().y + 80);
                     opt3.setPosition(opt2.getPosition().x, opt1.getPosition().y + 160);
+
+
+                    labelOpt1.setPosition(opt1.getGlobalBounds().left + opt1.getGlobalBounds().width / 2.0f + 20, opt1.getGlobalBounds().top + opt1.getGlobalBounds().height / 2.0f);
+                    labelOpt2.setPosition(opt2.getGlobalBounds().left + opt2.getGlobalBounds().width / 2.0f + 20, opt2.getGlobalBounds().top + opt2.getGlobalBounds().height / 2.0f);
+                    labelOpt3.setPosition(opt3.getGlobalBounds().left + opt3.getGlobalBounds().width / 2.0f + 20, opt3.getGlobalBounds().top + opt3.getGlobalBounds().height / 2.0f);
+                    labelOpt1.setString("Add Post");
+                    labelOpt2.setString("Add Memory");
+                    labelOpt3.setString("Add Activity");
 
                 }
                 if (searchPostB.getGlobalBounds().contains(mousePos) && state != 10)
@@ -452,6 +489,13 @@ void Driver::Run()
                     opt1 = opt2 = addPostB;
                     opt1.setPosition((inputWindow.getPosition().x + but1.getLocalBounds().width / 2) - 40, (inputWindow.getPosition().y + but1.getLocalBounds().height));
                     opt2.setPosition(opt1.getPosition().x, opt1.getPosition().y + 100);
+
+
+                    labelOpt1.setPosition(opt1.getGlobalBounds().left + opt1.getGlobalBounds().width / 2.0f + 20, opt1.getGlobalBounds().top + opt1.getGlobalBounds().height / 2.0f);
+                    labelOpt2.setPosition(opt2.getGlobalBounds().left + opt2.getGlobalBounds().width / 2.0f + 20, opt2.getGlobalBounds().top + opt2.getGlobalBounds().height / 2.0f);
+
+                    labelOpt1.setString("Friends + Pages");
+                    labelOpt2.setString("Liked Posts");
                 }
                 if (searchPageB.getGlobalBounds().contains(mousePos) && state != 13)
                 {
@@ -863,7 +907,8 @@ void Driver::Run()
                     window.draw(inputWindow);
                     window.draw(opt1);
                     window.draw(opt2);
-
+                    window.draw(labelOpt1);
+                    window.draw(labelOpt2);
                 }
 
 
@@ -959,6 +1004,10 @@ void Driver::Run()
                     window.draw(opt1);
                     window.draw(opt2);
                     window.draw(opt3);
+
+                    window.draw(labelOpt1);
+                    window.draw(labelOpt2);
+                    window.draw(labelOpt3);
                 }
                 else
                 {
@@ -1136,6 +1185,10 @@ void Driver::Run()
                         window.draw(opt1);
                         window.draw(opt2);
                         window.draw(opt3);
+
+                        window.draw(labelOpt1);
+                        window.draw(labelOpt2);
+                        window.draw(labelOpt3);
                     }
                     else
                     {
@@ -1505,7 +1558,7 @@ Driver::Driver()
     allPages_ = nullptr;
     userCount_ = 0;
     pageCount_ = 0;
-    currentDate_ = Date(0, 0, 0);
+    currentDate_ = Date();
 }
 
 User* Driver::GetLoginUser()
