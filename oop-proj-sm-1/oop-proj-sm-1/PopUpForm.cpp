@@ -181,12 +181,17 @@ string PopupForm::getDate()
         dateText_.setString(datePrompt + date_);
         ownerText_.setString(ownerPrompt + ownerName_);
 
-        // Adjust text positions relative to box_
         Vector2f pos = box_.getPosition();
-        idText_.setPosition(pos.x + 10, pos.y + 10);
-        descText_.setPosition(pos.x + 10, pos.y + 40);
-        dateText_.setPosition(pos.x + 10, pos.y + 70);
-        ownerText_.setPosition(pos.x + 10, pos.y + 100);
+       
+        float padding = 10.f;
+        float colGap = 300.f;     // Horizontal gap between columns
+        float rowGap = 30.f;      // Vertical gap between rows
+
+        idText_.setPosition(pos.x + padding, pos.y + padding);                       
+        descText_.setPosition(pos.x + padding, pos.y + padding + rowGap);        
+
+        dateText_.setPosition(pos.x + padding + colGap, pos.y + padding);          
+        ownerText_.setPosition(pos.x + padding + colGap, pos.y + padding + rowGap);
     }
 
     void DisplayLayout::draw(RenderWindow& window)

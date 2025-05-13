@@ -101,8 +101,8 @@ void Driver::Run()
 
     int num = 1;
     RectangleShape** todraw = new RectangleShape * [1];
-    todraw[0] = new RectangleShape(Vector2f(width / 2, height / 5));
-    todraw[0]->setPosition(Vector2f(but1.getPosition().x + bbB1.width + 10, 0));
+    todraw[0] = new RectangleShape(Vector2f(width / 2, height /5 ));
+    todraw[0]->setPosition(Vector2f(but1.getPosition().x + bbB1.width + 80, but1.getPosition().y-(height/5)));
 
     Sprite userButton;
     userButton.setTexture(userTexture);
@@ -225,9 +225,9 @@ void Driver::Run()
 
 
     DisplayLayout** layoutArr = new DisplayLayout * [1];
-    layoutArr[0] = new DisplayLayout(fontGeist, todraw[0]->getPosition(), { 300, 150 });
+    layoutArr[0] = new DisplayLayout(fontGeist, todraw[0]->getPosition(), { 500, 82 });
 
-    DisplayLayout layout(fontGeist, Vector2f(todraw[0]->getPosition().x + (0.25 * todraw[0]->getLocalBounds().width), todraw[0]->getPosition().y + (1.5 * todraw[0]->getLocalBounds().height)), { 300, 150 });
+    DisplayLayout layout(fontGeist, Vector2f(todraw[0]->getPosition().x, todraw[0]->getPosition().y +82), { 500, 82 });
     RectangleShape** commentArr = new RectangleShape * [1];
     commentArr[0] = new RectangleShape();
     commentArr[0]->setFillColor(Color::White);
@@ -282,7 +282,7 @@ void Driver::Run()
 
     CircleShape commentB1;
     commentB1.setRadius(10);
-    commentB1.setPosition(Vector2f(todraw[0]->getPosition().x + 0.25 * todraw[0]->getLocalBounds().width, todraw[0]->getPosition().y + (1.5 * todraw[0]->getLocalBounds().height) + 160));
+    commentB1.setPosition(Vector2f(layout.getPosition().x +70, layout.getPosition().y + (layout.getSize().y+40)));
     commentB1.setFillColor(Color::Red);
     CircleShape commentB2;
     commentB2 = commentB1;
