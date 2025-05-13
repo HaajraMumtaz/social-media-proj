@@ -11,13 +11,13 @@ PopupForm::PopupForm(const Font& font, Vector2f position) {
 
     promptText.setFont(font);
     promptText.setCharacterSize(40);
-    promptText.setFillColor(sf::Color::Cyan);
+    promptText.setFillColor(Color(220, 213, 200));
     promptText.setPosition(position.x + 20, position.y + 20);
     promptText.setString("Enter ID:");
 
     inputDisplay.setFont(font);
     inputDisplay.setCharacterSize(20);
-    inputDisplay.setFillColor(sf::Color::Cyan);
+    inputDisplay.setFillColor(Color(225, 213, 204));
     inputDisplay.setPosition(position.x + 20, position.y + 70);
  
 
@@ -220,13 +220,13 @@ string PopupForm::getDate()
 
         commentText_.setFont(font);
         commentText_.setCharacterSize(24);
-        commentText_.setFillColor(sf::Color::Cyan);
+        commentText_.setFillColor(sf::Color::Yellow);
         commentText_.setPosition(position + sf::Vector2f(0, 20)); // Banner goes exactly where the original position was
     }
 
     void DisplayMemory::setMemory(const std::string& originalDate, const std::string& comment, const std::string& id,const std::string& desc, const std::string& date, const std::string& owner)
     {
-        bannerText_.setString("Reshared a post from " + originalDate+ comment);
+        bannerText_.setString("Reshared a post from " + originalDate);
         commentText_.setString(comment);
         DisplayLayout::setData(id, desc, date, owner);  // Call parent setter to fill normal post data
     }

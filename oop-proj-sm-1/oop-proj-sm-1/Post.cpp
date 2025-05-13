@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <exception>
 using namespace std;
 
 #include "User.h"
@@ -183,7 +184,7 @@ void Post:: setPost(string id, string desc, string date)
 void Post::setDate(string date)
 {
     string elem;
-    int day=0, month=0, year=0;
+    int day=13, month=5, year=2025;
     for (int i = 0; i < date.length();i++)
     {
         if (date[i] != '/')
@@ -201,7 +202,14 @@ void Post::setDate(string date)
            
         }
     }
-    year = stoi(elem);
+    try
+    {
+        year = stoi(elem);
+    }
+    catch (exception& e)
+    {
+        cerr << "cant change" << endl;
+    }
     date_ = Date(day, month, year);
 }
 

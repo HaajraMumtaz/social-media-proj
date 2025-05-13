@@ -19,8 +19,10 @@ void Driver::Run()
     RectangleShape inputWindow(Vector2f(500, 350));
     RectangleShape rect1(Vector2f(100, 100));
 
+    RectangleShape Background(Vector2f(width, height ));
+
     inputWindow.setPosition(Vector2f(((width / 2) - 500 / 2), ((height / 2) - 350 / 2) + 20));
-    inputWindow.setFillColor(Color::Cyan);
+    inputWindow.setFillColor(Color(164, 144, 129));
     Sprite but1;
     int num2 = 0;
     Texture buttonTexture;
@@ -48,6 +50,12 @@ void Driver::Run()
     {
         cout << "unable to load" << endl;
     }
+    Texture bgTexture;
+    if (!bgTexture.loadFromFile("D:\\haajra\\oop-proj\\UI inspo\\canva-elements\\2\\5.png"))
+    {
+        cout << "unable to load" << endl;
+    }
+    Background.setTexture(&bgTexture);
     float scaleFactor = min(width / buttonTexture.getSize().x, height / buttonTexture.getSize().y);
     // Load font
     sf::Font font;
@@ -225,38 +233,45 @@ void Driver::Run()
 
 
     Text labelOpt1 = labelSPost;
+    labelOpt1.setFillColor(Color::Black);
     labelOpt1.setString("Share Post");
     labelOpt1.setOrigin(labelOpt1.getLocalBounds().left + labelOpt1.getLocalBounds().width / 2.0f, labelOpt1.getLocalBounds().top + labelOpt1.getLocalBounds().height / 2.0f);
     labelOpt1.setPosition(opt1.getGlobalBounds().left + opt1.getGlobalBounds().width / 2.0f + 20, opt1.getGlobalBounds().top + opt1.getGlobalBounds().height / 2.0f);
 
 
 
-    Text labelOpt2 = labelSPost;
+    Text labelOpt2 = labelOpt1;
     labelOpt2.setString("Share Memory");
     labelOpt2.setOrigin(labelOpt2.getLocalBounds().left + labelOpt2.getLocalBounds().width / 2.0f, labelOpt2.getLocalBounds().top + labelOpt2.getLocalBounds().height / 2.0f);
     labelOpt2.setPosition(opt2.getGlobalBounds().left + opt2.getGlobalBounds().width / 2.0f + 20, opt2.getGlobalBounds().top + opt2.getGlobalBounds().height / 2.0f);
 
 
-    Text labelOpt3 = labelSPost;
+    Text labelOpt3 = labelOpt1;
     labelOpt3.setString("Share Activity");
     labelOpt3.setOrigin(labelOpt3.getLocalBounds().left + labelOpt3.getLocalBounds().width / 2.0f, labelOpt3.getLocalBounds().top + labelOpt3.getLocalBounds().height / 2.0f);
     labelOpt3.setPosition(opt3.getGlobalBounds().left + opt3.getGlobalBounds().width / 2.0f + 20, opt3.getGlobalBounds().top + opt3.getGlobalBounds().height / 2.0f);
+
+    Text labelOpt4 = labelOpt1;
+
     DisplayLayout** layoutArr = new DisplayLayout * [1];
     layoutArr[0] = new DisplayLayout(fontGeist, todraw[0]->getPosition(), { 500, 82 });
 
     DisplayLayout layout(fontGeist, Vector2f(todraw[0]->getPosition().x, todraw[0]->getPosition().y +82), { 500, 82 });
     RectangleShape** commentArr = new RectangleShape * [1];
     commentArr[0] = new RectangleShape();
-    commentArr[0]->setFillColor(Color::White);
-    commentArr[0]->setSize({ 300, 70 });
+    commentArr[0]->setFillColor(Color(245, 245, 245));     
+    commentArr[0]->setOutlineThickness(2.f);               
+    commentArr[0]->setOutlineColor(Color(180, 180, 180));
+    commentArr[0]->setSize(layout.getSize());
     /*commentArr[0]->getPosition().x, commentArr[0]->getPosition().y + 20*/
     commentArr[0]->setPosition(layout.getPosition().x, layout.getPosition().y + layout.getSize().y);
 
     Text** textarr = new Text * [1];
     textarr[0] = new Text();
+    textarr[0]->setCharacterSize(25);
     textarr[0]->setPosition(todraw[0]->getPosition().x, todraw[0]->getPosition().y + (1.5 * todraw[0]->getLocalBounds().height) + 60);
     /*  textarr[0]->setPosition(0,0);*/
-    textarr[0]->setFont(fontGeist);
+    textarr[0]->setFont(font);
     textarr[0]->setString("Users that have liked:");
     textarr[0]->setFillColor(Color::Black);
     layout.setData("u1", "temp", "0/0/0", "haajra");
@@ -284,7 +299,9 @@ void Driver::Run()
     Vector2f windowPos = inputWindow.getPosition();
     RectangleShape feelingB(Vector2f((inputWindow.getSize().x - 30) / 2, (inputWindow.getSize().y - 30) / 2));
     Vector2f feeingLocal = feelingB.getSize();
-    feelingB.setFillColor(Color::Red);
+    feelingB.setFillColor(Color(225, 213, 204));
+    feelingB.setOutlineColor(Color::Black);
+    feelingB.setOutlineThickness(2);
     feelingB.setPosition(inputWindow.getPosition().x + 10, windowPos.y + 10);
     int subState = -1;
     RectangleShape feelingB2 = feelingB;
@@ -298,20 +315,28 @@ void Driver::Run()
     string name, id, date;
 
     CircleShape commentB1;
-    commentB1.setRadius(10);
-    commentB1.setPosition(Vector2f(layout.getPosition().x +70, layout.getPosition().y + (layout.getSize().y+40)));
-    commentB1.setFillColor(Color::Red);
+    commentB1.setRadius(12);
+    commentB1.setPosition(Vector2f(layout.getPosition().x +70, layout.getPosition().y + (layout.getSize().y)+20));
+    commentB1.setFillColor(Color::Black);
+    commentB1.setOutlineColor(Color(80, 180, 180));
+    commentB1.setOutlineThickness(1);
     CircleShape commentB2;
     commentB2 = commentB1;
-    commentB2.setPosition(commentB1.getPosition().x + 40, commentB1.getPosition().y);
+    commentB2.setPosition(commentB1.getPosition().x + 50, commentB1.getPosition().y);
     CircleShape commentB3;
     commentB3 = commentB2;
-    commentB3.setPosition(commentB2.getPosition().x + 40, commentB2.getPosition().y);
+    commentB3.setPosition(commentB2.getPosition().x + 50, commentB2.getPosition().y);
 
     Text heading;
-    heading.setFont(fontGeist);
-    heading.setFillColor(Color::Black);
-    heading.setPosition(width / 2, height / 4);
+    heading.setFont(font);
+    heading.setString("Your Heading Here");                       
+    heading.setCharacterSize(24);                                  
+    heading.setFillColor(Color::Yellow);                        
+    heading.setStyle(Text::Bold);                                  
+
+    FloatRect textBounds2 = heading.getLocalBounds();
+
+    heading.setPosition(layout.getPosition().x-20, layout.getPosition().y - 70);
     while (window.isOpen()) {
 
         Event event;
@@ -376,7 +401,7 @@ void Driver::Run()
                     labelOpt1.setPosition(opt1.getGlobalBounds().left + opt1.getGlobalBounds().width / 2.0f + 20, opt1.getGlobalBounds().top + opt1.getGlobalBounds().height / 2.0f);
                     labelOpt2.setPosition(opt2.getGlobalBounds().left + opt2.getGlobalBounds().width / 2.0f + 20, opt2.getGlobalBounds().top + opt2.getGlobalBounds().height / 2.0f);
                   
-                    labelOpt1.setString("Friends + Pages");
+                    labelOpt1.setString("Friend+Page");
                     labelOpt2.setString("Liked Posts");
 
                     cout << "atleast here" << endl;
@@ -494,7 +519,7 @@ void Driver::Run()
                     labelOpt1.setPosition(opt1.getGlobalBounds().left + opt1.getGlobalBounds().width / 2.0f + 20, opt1.getGlobalBounds().top + opt1.getGlobalBounds().height / 2.0f);
                     labelOpt2.setPosition(opt2.getGlobalBounds().left + opt2.getGlobalBounds().width / 2.0f + 20, opt2.getGlobalBounds().top + opt2.getGlobalBounds().height / 2.0f);
 
-                    labelOpt1.setString("Friends + Pages");
+                    labelOpt1.setString("Friend+Page");
                     labelOpt2.setString("Liked Posts");
                 }
                 if (searchPageB.getGlobalBounds().contains(mousePos) && state != 13)
@@ -522,7 +547,7 @@ void Driver::Run()
             }
             if (state == 2)
             {
-                cout << "here in event state 2" << endl;
+               /* cout << "here in event state 2" << endl;*/
                 if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
                 {
                     if (opt1.getGlobalBounds().contains(mousePos))
@@ -566,7 +591,7 @@ void Driver::Run()
                     if ((opt1.getGlobalBounds().contains(mousePos) || subButton1Clicked) && !subButton3Clicked)
                     {
 
-                        cout << "here in event state 6" << endl;
+                        /*cout << "here in event state 6" << endl;*/
                         subButton1Clicked = 1;
                         popupOpen = 0;
                         popup.handleEvent(event, 3);
@@ -583,14 +608,26 @@ void Driver::Run()
                     }
                     if (opt3.getGlobalBounds().contains(mousePos) || subButton3Clicked)
                     {
-                        cout << "here:" << subState + 2 << endl;
+                        
                         if (subState == -1)
                         {
-                            subButton1Clicked = subButton2Clicked = 0;
-                            subButton3Clicked = 1;
+                            
 
                             popupOpen = 1;
                             popup.handleEvent(event, 1);
+                            subButton1Clicked = subButton2Clicked = 0;
+                            subButton3Clicked = 1;
+                            labelOpt1.setPosition(feelingB.getPosition().x + 100, feelingB.getPosition().y + 25);
+                            labelOpt2.setPosition(feelingB2.getPosition().x + 100, feelingB2.getPosition().y + 25);
+                            labelOpt3.setPosition(feelingB3.getPosition().x + 100, feelingB3.getPosition().y + 25);
+                            labelOpt4.setPosition(feelingB4.getPosition().x + 100, feelingB4.getPosition().y + 25);
+
+                            labelOpt1.setString("Feeling");
+                            labelOpt2.setString("Thinking About");
+                            labelOpt3.setString("Making");
+                            labelOpt4.setString("Celebrating");
+
+
                         }
                         if (subState == 0)
                         {
@@ -636,7 +673,7 @@ void Driver::Run()
                         if ((opt1.getGlobalBounds().contains(mousePos) || subButton1Clicked) && !subButton3Clicked)
                         {
 
-                            cout << "here in event state 6" << endl;
+                            /*cout << "here in event state 6" << endl;*/
                             subButton1Clicked = 1;
                             popupOpen = 0;
                             popup.handleEvent(event, 3);
@@ -648,17 +685,28 @@ void Driver::Run()
                             subButton2Clicked = 1;
 
                             popupOpen = 0;
-                            popup.handleEvent(event, 3, "Enter original post ID:", "Enter Description:");
+                            popup.handleEvent(event, 3, "Original post ID:", "Enter Description:");
 
                         }
                         if (opt3.getGlobalBounds().contains(mousePos) || subButton3Clicked)
                         {
+
                             cout << "here:" << subState + 2 << endl;
                             if (subState == -1)
                             {
                                 subButton1Clicked = subButton2Clicked = 0;
                                 subButton3Clicked = 1;
+                                subButton1Clicked = subButton2Clicked = 0;
+                                subButton3Clicked = 1;
+                                labelOpt1.setPosition(feelingB.getPosition().x + 10, feelingB.getPosition().y - 25);
+                                labelOpt2.setPosition(feelingB2.getPosition().x + 10, feelingB2.getPosition().y - 25);
+                                labelOpt3.setPosition(feelingB3.getPosition().x + 10, feelingB3.getPosition().y - 25);
+                                labelOpt4.setPosition(feelingB4.getPosition().x + 10, feelingB4.getPosition().y - 25);
 
+                                labelOpt1.setString("Feeling");
+                                labelOpt2.setString("Thinking About");
+                                labelOpt3.setString("Making");
+                                labelOpt4.setString("Celebrating");
                                 popupOpen = 1;
                                 popup.handleEvent(event, 1);
                             }
@@ -692,7 +740,7 @@ void Driver::Run()
             {
                 if (subState == -1)
                 {
-                    popup.setPrompt("Post ID to search:");
+                    popup.setPrompt("Search Post ID:");
                     popup.handleEvent(event, 1);
                     subButton1Clicked = subButton2Clicked = subButton3Clicked;
                 }
@@ -757,12 +805,11 @@ void Driver::Run()
                 if (subState == -1)
                 {
                     popup.handleEvent(event, 1);
-                    cout << "state -1" << endl;
+                   /* cout << "state -1" << endl;*/
 
                 }
                 else
                 {
-                    cout << "state 0" << endl;
                     if (opt1.getGlobalBounds().contains(mousePos) && !subButton1Clicked)
                     {
                         subState = 1;
@@ -794,7 +841,7 @@ void Driver::Run()
                     }
                     else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left && !opt1.getGlobalBounds().contains(mousePos) && !opt2.getGlobalBounds().contains(mousePos) && (subButton1Clicked || subButton2Clicked))
                     {
-                        cout << "cancelling" << endl;
+                       /* cout << "cancelling" << endl;*/
                         state = -1;
                         popupOpen = 0;
                     }
@@ -815,9 +862,9 @@ void Driver::Run()
                 {
 
                     pageFound->DisplayPosts(currentDate_, window, fontGeist, height, width, num, layoutArr);
-                    cout << "likes:" << pageFound->GetNumLikes() << endl;
-                    heading.setString(pageFound->GetId() + " " + pageFound->GetName() + " Number of likes:" + pageFound->GetNumLikes());
-                    cout << "filling in state 13" << endl;
+                    /*cout << "likes:" << pageFound->GetNumLikes() << endl;*/
+                    heading.setString(pageFound->GetName() + " Number of likes:" + pageFound->GetNumLikes());
+                   /* cout << "filling in state 13" << endl;*/
                     subState = 1;
 
                 }
@@ -842,6 +889,7 @@ void Driver::Run()
             handleHover(addPageB, labelAddPage, window);
         }
         window.clear(myColor);
+        window.draw(Background);
         if (screenState == 0)
         {
             popup.draw(window);
@@ -1020,6 +1068,11 @@ void Driver::Run()
                         window.draw(feelingB2);
                         window.draw(feelingB3);
                         window.draw(feelingB4);
+
+                        window.draw(labelOpt1);
+                        window.draw(labelOpt2);
+                        window.draw(labelOpt3);
+                        window.draw(labelOpt4);
                     }
                     if (popup.isDone() || subState == 0)
                     {
@@ -1049,7 +1102,7 @@ void Driver::Run()
                         }
                         if (subButton3Clicked && subState == -1)
                         {
-                            cout << "adding activity" << endl;
+                           /* cout << "adding activity" << endl;*/
                             if (searchUnique(popup.getID()))
                             {
                                 loginUser_->AddActivity(popup.getID(), currentDate_.getDate());
@@ -1079,6 +1132,8 @@ void Driver::Run()
                             subButton3Clicked = 0;
                             popupOpen = 0;
                             state = -1;
+                            labelOpt1.setString("");
+                            labelOpt2 = labelOpt3 = labelOpt1;
                             popup.reset();
                         }
 
@@ -1201,6 +1256,10 @@ void Driver::Run()
                             window.draw(feelingB2);
                             window.draw(feelingB3);
                             window.draw(feelingB4);
+                            window.draw(labelOpt1);
+                            window.draw(labelOpt2);
+                            window.draw(labelOpt3);
+                            window.draw(labelOpt4);
                         }
                         if (popup.isDone() || subState == 0)
                         {
@@ -1228,7 +1287,7 @@ void Driver::Run()
                             }
                             if (subButton3Clicked && subState == -1)
                             {
-                                cout << "adding activity" << endl;
+                                /*cout << "adding activity" << endl;*/
                                 if (searchUnique(popup.getID()))
                                 {
                                     pageFound->AddActivity(popup.getID(), currentDate_.getDate());
@@ -1260,6 +1319,8 @@ void Driver::Run()
                                 state = -1;
                                 pageFound = nullptr;
                                 popup.reset();
+                                labelOpt1.setString("");
+                                labelOpt2 = labelOpt3 = labelOpt1;
                             }
 
                         }
@@ -1417,10 +1478,13 @@ void Driver::Run()
                     window.draw(inputWindow);
                     window.draw(opt1);
                     window.draw(opt2);
+
+                    window.draw(labelOpt1);
+                    window.draw(labelOpt2);
                 }
                 else if (subState == 1)
                 {
-                    cout << "displaying" << endl;
+                   
                     for (int i = 1; i < num; i++)
                     {
                         layoutArr[i]->draw(window);

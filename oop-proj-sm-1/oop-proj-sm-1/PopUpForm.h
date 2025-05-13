@@ -20,7 +20,7 @@ private:
    
 public:
     PopupForm(const sf::Font& font, sf::Vector2f position);
-    void handleEvent(const Event& event,int num, const string& prompt2="Enter name:",const string&prompt3="Enter Date (DD/MM/YYYY):");
+    void handleEvent(const Event& event,int num, const string& prompt2="Enter name:",const string&prompt3="Date(MM/DD/YYYY):");
     void draw(RenderWindow& window);
     bool isDone();
     string getID();
